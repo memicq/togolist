@@ -1,5 +1,5 @@
 class MapMarker {
-  MapMarker(this.title, this.address, this.latitude, this.longitude);
+  MapMarker({this.title, this.address, this.latitude, this.longitude});
 
   String title;
   String address;
