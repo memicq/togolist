@@ -23,28 +23,35 @@ class MapViewState extends State<MapView> {
   Completer<GoogleMapController> _controller = Completer();
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
 
     initLocation();
-    _locationService.onLocationChanged().listen((LocationData result) async {
-      setState(() {
-        _currentLocation = result;
+    Future(() async {
+      _locationService.onLocationChanged().listen((LocationData result) async {
+        setState(() {
+          _currentLocation = result;
+        });
       });
 
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(
-                      _currentLocation.latitude,
-                      _currentLocation.longitude
-                  ),
-                  zoom: 17
-              )
-          )
-      );
+      await Future.delayed(Duration(seconds: 1));
+      initCameraPosition();
     });
+  }
+
+  Future<void> initCameraPosition() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(
+                    _currentLocation.latitude,
+                    _currentLocation.longitude
+                ),
+                zoom: 17
+            )
+        )
+    );
   }
 
   Future<void> initLocation() async {

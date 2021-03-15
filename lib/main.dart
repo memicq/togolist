@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
+import 'package:togolist/widgets/layouts/MultipleChangeNotifierProviderWrapper.dart';
+import 'package:togolist/view_models/UserViewModel.dart';
+import 'package:togolist/widgets/account/LoginView.dart';
+import 'package:togolist/widgets/account/SwitchLoginOrHome.dart';
 import 'package:togolist/widgets/geomap/MapView.dart';
 import 'package:togolist/widgets/layouts/tab_and_backdrop_layout.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
 
 import 'models/TabPage.dart';
@@ -48,19 +52,26 @@ class ToGoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MapViewModel>(
-      create: (_) => MapViewModel()..fetchMarkers(),
-      child: MaterialApp(
+    return MultipleChangeNotifierProviderWrapper(
+      materialApp: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: "/",
+        routes: <String, WidgetBuilder>{
+          "/home": (BuildContext context) =>
+              TabAndBackdropLayout(
+                defaultPage: 1,
+                views: tabViews,
+              ),
+          "/login": (BuildContext context) =>
+              LoginView(),
+        },
         theme: ThemeData(
-          backgroundColor: Colors.white,
-          primaryColor: ColorSettings.primaryColor,
-          fontFamily: 'Quicksand'
+            backgroundColor: Colors.white,
+            primaryColor: ColorSettings.primaryColor,
+            fontFamily: 'Quicksand'
         ),
-        home: TabAndBackdropLayout(
-          defaultPage: 1,
-          views: tabViews,
-        ),
-      )
+        home: SwitchLoginOrHome()
+      ),
     );
   }
 }

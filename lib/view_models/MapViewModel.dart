@@ -9,20 +9,27 @@ class MapViewModel extends ChangeNotifier {
 
   Future<void> fetchMarkers() async {
     final res = await Firestore.instance.collection('markers').getDocuments();
-    final markers = res.documents.map((doc) =>
-        MapMarker(
-            title: doc['title'],
-            address: doc['address'],
-            latitude: doc['latitude'],
-            longitude: doc['longitude']
-        )
-    );
+    final markers = res.documents.map((doc) => MapMarker(
+        markerId: doc.documentID,
+        title: doc['title'],
+        address: doc['address'],
+        latitude: doc['latitude'],
+        longitude: doc['longitude']));
     this.markers = markers.toList();
     notifyListeners();
   }
 
   Future<void> addMarker() async {
     await Firestore.instance.collection('markers').add(marker.toJson());
+    await fetchMarkers();
+    notifyListeners();
+  }
+
+  Future<void> deleteMarker(MapMarker marker) async {
+    await Firestore.instance
+        .collection('markers')
+        .document(marker.markerId)
+        .delete();
     await fetchMarkers();
     notifyListeners();
   }

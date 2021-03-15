@@ -17,12 +17,15 @@ class PlaceView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 5),
         child: Consumer<MapViewModel>(
             builder: (context, model, child){
               return Center(
                   child: ListView(
-                    children: buildCardList(model.markers),
+                    children: [
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      ...buildCardList(model.markers),
+                    ]
                   )
               );
             })

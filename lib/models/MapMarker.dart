@@ -1,10 +1,11 @@
 class MapMarker {
-  MapMarker({this.title, this.address, this.latitude, this.longitude});
-
+  String markerId;
   String title;
   String address;
   double latitude;
   double longitude;
+
+  MapMarker({this.markerId = null, this.title, this.address, this.latitude, this.longitude});
 
   Map<String, dynamic> toJson() {
     return {
