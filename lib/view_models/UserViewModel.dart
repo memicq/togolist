@@ -8,4 +8,10 @@ class UserViewModel extends ChangeNotifier {
     user = currentUser;
     notifyListeners();
   }
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    user = null;
+    notifyListeners();
+  }
 }
