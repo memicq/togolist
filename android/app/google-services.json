@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "481961405450",
+    "project_id": "robust-carver-306011",
+    "storage_bucket": "robust-carver-306011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481961405450:android:8868791538c6b0857243f3",
+        "android_client_info": {
+          "package_name": "com.ttt.togolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481961405450-6q7t815its65l4hjq4c0jdakli376lc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkG6ptpHahNuTQ7Y1giVWUgyuK_S6LZ3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481961405450-6q7t815its65l4hjq4c0jdakli376lc8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "481961405450-hmlnpihga6j7oot0p2pv3a1som06lj3j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.togolist"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

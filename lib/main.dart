@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
+import 'package:togolist/view_models/UserViewModel.dart';
 import 'package:togolist/widgets/account/AccountView.dart';
 import 'package:togolist/widgets/account/LoginSwitcher.dart';
 import 'package:togolist/widgets/account/LoginView.dart';
 import 'package:togolist/widgets/layouts/MultipleChangeNotifierProviderWrapper.dart';
 import 'package:togolist/widgets/geomap/MapView.dart';
-import 'package:togolist/widgets/layouts/tab_and_backdrop_layout.dart';
+import 'package:togolist/widgets/layouts/TabAndBackdropLayout.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
 
 import 'models/TabPage.dart';
 
 void main() {
   runApp(ToGoApp());
+}
+
+bool isReleaseMode() {
+  bool _bool;
+  bool.fromEnvironment('dart.vm.product') ? _bool = true : _bool = false;
+  return _bool;
 }
 
 class ToGoApp extends StatelessWidget {
@@ -50,27 +58,25 @@ class ToGoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultipleChangeNotifierProviderWrapper(
-      materialApp: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: (RouteSettings settings) {
-            switch (settings.name) {
-              case "/login":
-                return MaterialPageRoute(
-                    builder: (context) => LoginView(),
-                  fullscreenDialog: true
-                );
-            }
-          },
-          theme: ThemeData(
-              backgroundColor: Colors.white,
-              primaryColor: ColorSettings.primaryColor,
-              fontFamily: 'Quicksand'),
-          home: LoginSwitcher(
-            child: TabAndBackdropLayout(
-              defaultPage: 1,
-              views: tabViews,
-            ),
-          )),
-    );
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: (RouteSettings settings) {
+              switch (settings.name) {
+                case "/login":
+                  return MaterialPageRoute(
+                      builder: (context) => LoginView(),
+                      fullscreenDialog: true);
+              }
+            },
+            theme: ThemeData(
+                backgroundColor: Colors.white,
+                primaryColor: ColorSettings.primaryColor,
+                fontFamily: 'Quicksand'),
+            home: LoginSwitcher(
+              child: TabAndBackdropLayout(
+                defaultPage: 1,
+                views: tabViews,
+              ),
+            )));
   }
 }

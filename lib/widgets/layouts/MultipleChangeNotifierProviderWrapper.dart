@@ -8,17 +8,21 @@ import '../../view_models/MapViewModel.dart';
  * 複数 ChangeNotifierProvider の管理下に MaterialApp を配置するためのレイアウトクラス
  */
 class MultipleChangeNotifierProviderWrapper extends StatelessWidget {
-  MaterialApp materialApp;
+  Widget child;
 
-  MultipleChangeNotifierProviderWrapper({this.materialApp});
+  MultipleChangeNotifierProviderWrapper({this.child}) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<UserViewModel>(
         create: (_) => UserViewModel(),
-        child: ChangeNotifierProvider<MapViewModel>(
-          create: (_) => MapViewModel()..fetchMarkers(),
-          child: materialApp,
-        ));
+        child: Consumer<UserViewModel>(builder: (context, model, _) {
+          return ChangeNotifierProvider<MapViewModel>(
+            create: (_) =>
+            MapViewModel(),
+            child: child,
+          );
+        })
+    );
   }
 }

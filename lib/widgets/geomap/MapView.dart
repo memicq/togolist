@@ -35,7 +35,9 @@ class MapViewState extends State<MapView> {
       });
 
       await Future.delayed(Duration(seconds: 1));
-      initCameraPosition();
+      if (_currentLocation != null) {
+        initCameraPosition();
+      }
     });
   }
 

@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,9 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
   List<PlaceItem> placeItems = [];
 
   Future<void> fetchPlaces() async {
-    final places = Places.GoogleMapsPlaces(apiKey: Credentials.googleApiKey);
+    String apiKey = (Platform.isIOS) ? Credentials.googleApiKeyIOS : Credentials.googleApiKeyAndroid;
+
+    final places = Places.GoogleMapsPlaces(apiKey: apiKey);
     Places.PlacesSearchResponse response = await places.searchByText(searchQuery.text, language: 'ja');
 
     setState(() {

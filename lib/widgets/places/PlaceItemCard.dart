@@ -5,6 +5,7 @@ import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/widgets/places/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {
   MapMarker marker;
@@ -21,14 +22,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
   void openPlaceDetailPage(BuildContext context) {
     Navigator.of(context, rootNavigator: true)
         .push(MaterialPageRoute(builder: (context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("detail"),
-        ),
-        body: Center(
-          child: Text("detail"),
-        ),
-      );
+      return PlaceDetailView(marker: widget.marker);
     }));
   }
 
@@ -36,6 +30,16 @@ class PlaceItemCardState extends State<PlaceItemCard> {
     setState(() {
       this.showDeleteButton = !this.showDeleteButton;
     });
+  }
+
+  Icon buildIcon() {
+    if (widget.marker == null || !widget.marker.isShared) {
+      return Icon(Icons.place_outlined,
+          color: ColorSettings.primaryColor, size: 18);
+    } else {
+      return Icon(Icons.place_rounded,
+          color: ColorSettings.primaryColor, size: 18);
+    }
   }
 
   Widget buildCard(BuildContext context) {
@@ -54,8 +58,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(right: 8),
-                      child: Icon(Icons.place,
-                          color: ColorSettings.primaryColor, size: 18),
+                      child: buildIcon(),
                     ),
                     Expanded(
                       child: Text(
