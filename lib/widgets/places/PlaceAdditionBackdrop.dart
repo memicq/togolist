@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/const/Credentials.dart';
 import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
@@ -34,7 +35,9 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
       title: selectedPlaceItem.name,
       address: selectedPlaceItem.address,
       latitude: selectedPlaceItem.latitude,
-      longitude: selectedPlaceItem.longitude
+      longitude: selectedPlaceItem.longitude,
+      isShared: false,
+      photos: selectedPlaceItem.photos
     );
     await model.addMarker();
     Navigator.of(context).pop();
@@ -43,70 +46,75 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: SheetShape.defaultRoundedRadius),
-      ),
-      child: Consumer<MapViewModel>(
-          builder: (context, model, child){
-            return Column(
-                children: [
-                  Icon(Icons.drag_handle_rounded, color: Colors.grey),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 5),
-                    child: FlatButton(
-                        minWidth: double.infinity,
-                        color: Colors.grey.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5))
-                        ),
-                        onPressed: () => {
-                          showDialog(
-                              context: this.context,
-                              builder: (context) {
-                                return PlaceAdditionFormDialog(
-                                    updateSelectedItem: updateSelectedItem);
-                              })
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          child: Text(
-                            "場所を検索",
-                            textAlign: TextAlign.left,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(
+              top: SheetShape.defaultRoundedRadius),
+        ),
+        child: Consumer<MapViewModel>(
+            builder: (context, model, child) {
+              return Column(
+                  children: [
+                    Icon(Icons.drag_handle_rounded, color: Colors.grey),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20, top: 5),
+                      child: FlatButton(
+                          minWidth: double.infinity,
+                          color: Colors.grey.shade200,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(5))
                           ),
-                        )),
-                  ),
-                  Container(
-                    child: buildSelectedItem(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: TextButton(
-                              onPressed: () => savePlace(context, model),
-                              child: Center(
-                                child: Text(
-                                  '保存',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      foreground: Paint()..shader = FontShader.linearGradientShader
+                          onPressed: () =>
+                          {
+                            showDialog(
+                                context: this.context,
+                                builder: (context) {
+                                  return PlaceAdditionFormDialog(
+                                      updateSelectedItem: updateSelectedItem);
+                                })
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            child: Text(
+                              "場所を検索",
+                              textAlign: TextAlign.left,
+                            ),
+                          )),
+                    ),
+                    Container(
+                      child: buildSelectedItem(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              child: TextButton(
+                                onPressed: () => savePlace(context, model),
+                                child: Center(
+                                  child: Text(
+                                    '保存',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        foreground: Paint()
+                                          ..shader = FontShader
+                                              .linearGradientShader
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          )
-                        ]
-                    ),
-                  )
-                ]
-            );
-          }
-      )
+                          ]
+                      ),
+                    )
+                  ]
+              );
+            }
+        )
     );
   }
 }

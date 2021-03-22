@@ -5,7 +5,7 @@ import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
-import 'package:togolist/widgets/places/PlaceDetailView.dart';
+import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {
   MapMarker marker;
@@ -33,7 +33,9 @@ class PlaceItemCardState extends State<PlaceItemCard> {
   }
 
   Icon buildIcon() {
-    if (widget.marker == null || !widget.marker.isShared) {
+    if (widget.marker == null ||
+        widget.marker.isShared == null ||
+        !widget.marker.isShared) {
       return Icon(Icons.place_outlined,
           color: ColorSettings.primaryColor, size: 18);
     } else {

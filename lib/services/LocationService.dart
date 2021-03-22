@@ -14,7 +14,6 @@ class LocationService {
   Location _location = new Location();
   String _errorText = null;
 
-
   Future<LocationData> getCurrentLocation() async {
     LocationData location;
 

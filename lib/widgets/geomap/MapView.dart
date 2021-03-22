@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 
 class MapView extends StatefulWidget {
@@ -51,6 +52,23 @@ class MapViewState extends State<MapView> {
                     _currentLocation.longitude
                 ),
                 zoom: 17
+            )
+        )
+    );
+  }
+
+  Future<void> pointCamera(MapMarker marker) async {
+    final GoogleMapController controller = await _controller.future;
+    final currentZoomLevel = await controller.getZoomLevel();
+    const targetZoomLavel = 14;
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(
+                    marker.latitude,
+                    marker.longitude
+                ),
+                zoom: (currentZoomLevel > targetZoomLavel) ? currentZoomLevel : targetZoomLavel
             )
         )
     );
@@ -108,6 +126,7 @@ class MapViewState extends State<MapView> {
                           flat: true,
                           icon: BitmapDescriptor.defaultMarker,
                           anchor: Offset(0.5, 0.8),
+                          onTap: () => pointCamera(marker)
                         )
                     ).toSet()),
               ),

@@ -38,6 +38,11 @@ flutter:
   fonts:
     - family: Quicksand
       fonts:
-        - asset: assets/fonts/quicksand/Quicksand-Regular.ttf
+        - asset: assets/fonts/quicksand/Quicksand-Medium.ttf
+#        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
+#          style: bold
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
 #        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
 #          style: bold

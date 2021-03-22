@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/models/MapMarkerPhoto.dart';
 
 class MapViewModel extends ChangeNotifier {
   String userId;
@@ -33,23 +34,44 @@ class MapViewModel extends ChangeNotifier {
         .collection('markers')
         .getDocuments();
 
-    final markers = res.documents.map((doc) => MapMarker(
-        markerId: doc.documentID,
-        title: doc['title'],
-        address: doc['address'],
-        latitude: doc['latitude'],
-        longitude: doc['longitude'],
-        isShared: doc['isShared']));
+    final markers = await Future.wait(
+        res.documents.map((doc) async {
+          final photosRes = await doc.reference.collection('photos').getDocuments();
+          final photos = photosRes.documents.map((doc) => MapMarkerPhoto(
+            photoReference: doc['photoReference'],
+            height: doc['height'],
+            width: doc['width']
+          )).toList();
+          return MapMarker(
+              markerId: doc.documentID,
+              title: doc['title'],
+              address: doc['address'],
+              latitude: doc['latitude'],
+              longitude: doc['longitude'],
+              isShared: doc['isShared'],
+              photos: photos
+          );
+        })
+    );
     this.markers = markers.toList();
     notifyListeners();
   }
 
   Future<void> addMarker() async {
-    await Firestore.instance
+    var res = await Firestore.instance
         .collection('users')
         .document('${userId}')
         .collection('markers')
         .add(marker.toJson());
+    await marker.photos.forEach((photo) async {
+      await Firestore.instance
+          .collection('users')
+          .document('${userId}')
+          .collection('markers')
+          .document(res.documentID)
+          .collection('photos')
+          .add(photo.toJson());
+    });
     await fetchMarkers();
     notifyListeners();
   }
