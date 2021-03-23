@@ -51,7 +51,7 @@ class MapViewState extends State<MapView> {
                     _currentLocation.latitude,
                     _currentLocation.longitude
                 ),
-                zoom: 17
+                zoom: 17.0
             )
         )
     );
@@ -111,7 +111,7 @@ class MapViewState extends State<MapView> {
                     ),
                     myLocationEnabled: true,
                     myLocationButtonEnabled: false,
-                    zoomControlsEnabled: true,
+                    zoomControlsEnabled: false,
                     zoomGesturesEnabled: true,
                     rotateGesturesEnabled: true,
                     markers: model.markers
@@ -131,6 +131,31 @@ class MapViewState extends State<MapView> {
                     ).toSet()),
               ),
             ),
+            Positioned(
+                bottom: 20.0,
+                right: 20.0,
+                child: FloatingActionButton(
+                    elevation: 2.0,
+                    onPressed: () => {print("kamiura")},
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: FractionalOffset.topLeft,
+                          end: FractionalOffset.bottomRight,
+                          colors: const [
+                            Color(0xffffab88),
+                            Color(0xffff7f50),
+                          ],
+                        ),
+                      ),
+                      child: Icon(Icons.accessibility_new),
+                    )
+                ),
+            )
+
           ],
         );
       },
