@@ -60,7 +60,7 @@ class MapViewState extends State<MapView> {
   Future<void> pointCamera(MapMarker marker) async {
     final GoogleMapController controller = await _controller.future;
     final currentZoomLevel = await controller.getZoomLevel();
-    const targetZoomLavel = 15;
+    const double targetZoomLavel = 15.0;
     controller.animateCamera(
         CameraUpdate.newCameraPosition(
             CameraPosition(
@@ -111,7 +111,7 @@ class MapViewState extends State<MapView> {
                     ),
                     myLocationEnabled: true,
                     myLocationButtonEnabled: false,
-                    zoomControlsEnabled: true,
+                    zoomControlsEnabled: false,
                     zoomGesturesEnabled: true,
                     rotateGesturesEnabled: true,
                     markers: model.markers

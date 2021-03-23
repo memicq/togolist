@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:togolist/services/BackdropService.dart';
+import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
 
 import '../../models/TabPage.dart';
@@ -7,51 +9,11 @@ import '../../models/TabPage.dart';
 class TabAndBackdropLayoutContent extends StatelessWidget {
   String title;
   Widget body;
-  bool showFloatingButton;
 
   TabAndBackdropLayoutContent(
-      {this.title, this.body, this.showFloatingButton = false})
+      {this.title, this.body})
       : assert(title != null),
         assert(body != null);
-
-  // NOTE: TabAndBackdropLayout の content 属性として渡されたときに、onPressed がセットされる
-  Function openRootBackdrop = () => {};
-
-  void setOpenRootBackdrop(Function func) {
-    openRootBackdrop = func;
-  }
-
-  Widget buildFloatingButton() {
-    if (this.showFloatingButton) {
-      return Positioned(
-        right: 20,
-        bottom: 20,
-        child: FloatingActionButton(
-          elevation: 2.0,
-          onPressed: () => openRootBackdrop(),
-          child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: FractionalOffset.topLeft,
-                end: FractionalOffset.bottomRight,
-                colors: const [
-                  Color(0xffffab88),
-                  Color(0xffff7f50),
-                ],
-              ),
-            ),
-            child: Icon(Icons.add),
-          )
-//          Icon(Icons.add),
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +32,9 @@ class TabAndBackdropLayoutContent extends StatelessWidget {
                 )
             ),
           ),
-          body: Stack(
-            children: [
-              Container(
-                constraints: BoxConstraints.expand(),
-                child: this.body,
-              ),
-              buildFloatingButton()
-            ],
+          body: Container(
+            constraints: BoxConstraints.expand(),
+            child: this.body,
           ),
         ));
   }
@@ -90,24 +47,20 @@ class TabAndBackdropLayout extends StatefulWidget {
   TabAndBackdropLayout({this.views, this.defaultPage});
 
   @override
-  State<StatefulWidget> createState() => TameshiState();
+  State<StatefulWidget> createState() => TabAndBackdropLayoutState();
 }
 
-class TameshiState extends State<TabAndBackdropLayout> {
+class TabAndBackdropLayoutState extends State<TabAndBackdropLayout> {
   int page;
+
+  BackdropService backdropService = BackdropService();
 
   @override
   void initState() {
     super.initState();
 
     this.page = widget.defaultPage;
-
-    for (var tabPage in widget.views.values) {
-      if (tabPage.content is TabAndBackdropLayoutContent) {
-        (tabPage.content as TabAndBackdropLayoutContent)
-            .setOpenRootBackdrop(() => openBackdrop());
-      }
-    }
+    this.backdropService.setOpenBackdropFunction(openBackdrop);
   }
 
   Widget buildContent(BuildContext context) {
@@ -145,15 +98,15 @@ class TameshiState extends State<TabAndBackdropLayout> {
     });
   }
 
-  void openBackdrop() {
+  void openBackdrop({Widget page, double height}) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: this.context,
         backgroundColor: Colors.transparent,
         builder: (context) {
           return SizedBox(
-            height: 200,
-            child: PlaceAdditionBackdrop(),
+            height: height,
+            child: page,
           );
         });
   }
