@@ -32,7 +32,7 @@ class ToGoApp extends StatelessWidget {
         title: "map",
         content: TabAndBackdropLayoutContent(
           title: "map",
-          body: MapView(),
+          scaffold: MapView(),
         ),
         baseIcon: Icon(Icons.map_outlined, color: Colors.grey, size: 25),
         activeIcon:
@@ -41,7 +41,7 @@ class ToGoApp extends StatelessWidget {
         title: "places",
         content: TabAndBackdropLayoutContent(
           title: "places",
-          body: PlaceView(),
+          scaffold: PlaceView(),
         ),
         baseIcon:
             Icon(Icons.format_list_bulleted, color: Colors.grey, size: 25),
@@ -51,7 +51,7 @@ class ToGoApp extends StatelessWidget {
       title: "friends",
       content: TabAndBackdropLayoutContent(
         title: "friends",
-        body: FriendView()
+        scaffold: FriendView()
       ),
       baseIcon: Icon(Icons.people_alt_outlined, color: Colors.grey, size: 25),
       activeIcon: Icon(Icons.people_alt_rounded, color: ColorSettings.primaryColor, size: 30)),
@@ -59,7 +59,7 @@ class ToGoApp extends StatelessWidget {
         title: "accounts",
         content: TabAndBackdropLayoutContent(
           title: "accounts",
-          body: AccountView(),
+          scaffold: AccountView(),
         ),
         baseIcon: Icon(Icons.settings, color: Colors.grey, size: 25),
         activeIcon:

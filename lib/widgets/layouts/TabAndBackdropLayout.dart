@@ -8,12 +8,12 @@ import '../../models/TabPage.dart';
 
 class TabAndBackdropLayoutContent extends StatelessWidget {
   String title;
-  Widget body;
+  Widget scaffold;
 
   TabAndBackdropLayoutContent(
-      {this.title, this.body})
+      {this.title, this.scaffold})
       : assert(title != null),
-        assert(body != null);
+        assert(scaffold != null);
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +22,24 @@ class TabAndBackdropLayoutContent extends StatelessWidget {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.grey.shade50
         ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-                this.title,
-                style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 20
-                )
-            ),
-          ),
-          body: Container(
-            constraints: BoxConstraints.expand(),
-            child: this.body,
-          ),
-        ));
+        home: this.scaffold
+    );
+
+//        Scaffold(
+//          appBar: AppBar(
+//            title: Text(
+//                this.title,
+//                style: TextStyle(
+//                    fontFamily: 'Quicksand',
+//                    fontSize: 20
+//                )
+//            ),
+//          ),
+//          body: Container(
+//            constraints: BoxConstraints.expand(),
+//            child: this.body,
+//          ),
+//        ));
   }
 }
 

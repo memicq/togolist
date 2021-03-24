@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:togolist/const/Style.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 
@@ -15,6 +16,12 @@ class FriendViewState extends State<FriendView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            "Friends",
+            style: AppBarTitleStyle.textStyle
+        ),
+      ),
       body: Stack(
         children: [
           Center(

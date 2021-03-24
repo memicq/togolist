@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 
@@ -97,43 +98,51 @@ class MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Consumer<MapViewModel>(
-      builder: (context, model, child) {
-        return Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            Scaffold(
-              body: Container(
-                child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                        zoom: 4.5, target: LatLng(35.41, 139.41)
-                    ),
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    zoomGesturesEnabled: true,
-                    rotateGesturesEnabled: true,
-                    markers: model.markers
-                        .map((marker) =>
-                        Marker(
-                          markerId: MarkerId(marker.address),
-                          position: LatLng(marker.latitude, marker.longitude),
-                          infoWindow: InfoWindow(
-                              title: marker.title,
-                              snippet: marker.address
-                          ),
-                          flat: true,
-                          icon: BitmapDescriptor.defaultMarker,
-                          anchor: Offset(0.5, 0.8),
-                          onTap: () => pointCamera(marker)
-                        )
-                    ).toSet()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            "Map",
+            style: AppBarTitleStyle.textStyle
+        ),
+      ),
+      body: Center(child: Consumer<MapViewModel>(
+        builder: (context, model, child) {
+          return Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              Scaffold(
+                body: Container(
+                  child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                          zoom: 4.5, target: LatLng(35.41, 139.41)
+                      ),
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
+                      zoomGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      markers: model.markers
+                          .map((marker) =>
+                          Marker(
+                              markerId: MarkerId(marker.address),
+                              position: LatLng(marker.latitude, marker.longitude),
+                              infoWindow: InfoWindow(
+                                  title: marker.title,
+                                  snippet: marker.address
+                              ),
+                              flat: true,
+                              icon: BitmapDescriptor.defaultMarker,
+                              anchor: Offset(0.5, 0.8),
+                              onTap: () => pointCamera(marker)
+                          )
+                      ).toSet()),
+                ),
               ),
-            ),
-          ],
-        );
-      },
-    ));
+            ],
+          );
+        },
+      )),
+    );
   }
 }
