@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/widgets/geomap/MapAppBar.dart';
 
 class MapView extends StatefulWidget {
   MapView();
@@ -18,9 +19,17 @@ class MapView extends StatefulWidget {
 }
 
 class MapViewState extends State<MapView> {
+  final double DEFAULT_MAP_ZOOM_LEVEL = 13.0;
+  final double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
+
+  final Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
+  // TODO(kamiura): 初期カメラ位置が特に意味のない値になっているので、そのうち修正する
+  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
+
   Location _locationService = new Location();
   LocationData _currentLocation;
-  String _error = '';
+  String _error = "";
+  bool isCameraInitialized = false;
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -34,12 +43,12 @@ class MapViewState extends State<MapView> {
         setState(() {
           _currentLocation = result;
         });
-      });
 
-      await Future.delayed(Duration(seconds: 1));
-      if (_currentLocation != null) {
-        initCameraPosition();
-      }
+        if (!isCameraInitialized) {
+          initCameraPosition();
+          isCameraInitialized = true;
+        }
+      });
     });
   }
 
@@ -52,7 +61,7 @@ class MapViewState extends State<MapView> {
                     _currentLocation.latitude,
                     _currentLocation.longitude
                 ),
-                zoom: 17
+                zoom: DEFAULT_MAP_ZOOM_LEVEL
             )
         )
     );
@@ -61,7 +70,6 @@ class MapViewState extends State<MapView> {
   Future<void> pointCamera(MapMarker marker) async {
     final GoogleMapController controller = await _controller.future;
     final currentZoomLevel = await controller.getZoomLevel();
-    const double targetZoomLavel = 15.0;
     controller.animateCamera(
         CameraUpdate.newCameraPosition(
             CameraPosition(
@@ -69,7 +77,7 @@ class MapViewState extends State<MapView> {
                     marker.latitude,
                     marker.longitude
                 ),
-                zoom: (currentZoomLevel > targetZoomLavel) ? currentZoomLevel : targetZoomLavel
+                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL) ? currentZoomLevel : PLACE_FOCUS_ZOOM_LEVEL
             )
         )
     );
@@ -99,12 +107,7 @@ class MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            "Map",
-            style: AppBarTitleStyle.textStyle
-        ),
-      ),
+      appBar: MapAppBar(),
       body: Center(child: Consumer<MapViewModel>(
         builder: (context, model, child) {
           return Stack(
@@ -114,9 +117,7 @@ class MapViewState extends State<MapView> {
                 body: Container(
                   child: GoogleMap(
                       onMapCreated: _onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                          zoom: 4.5, target: LatLng(35.41, 139.41)
-                      ),
+                      initialCameraPosition: INITIAL_CAMERA_POSITION,
                       myLocationEnabled: true,
                       myLocationButtonEnabled: false,
                       zoomControlsEnabled: false,
@@ -133,7 +134,7 @@ class MapViewState extends State<MapView> {
                               ),
                               flat: true,
                               icon: BitmapDescriptor.defaultMarker,
-                              anchor: Offset(0.5, 0.8),
+                              anchor: GOOGLE_ANCHOR_OFFSET,
                               onTap: () => pointCamera(marker)
                           )
                       ).toSet()),
