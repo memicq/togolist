@@ -48,7 +48,7 @@ class MapViewModel extends ChangeNotifier {
               address: doc['address'],
               latitude: doc['latitude'],
               longitude: doc['longitude'],
-              isShared: doc['isShared'],
+              visited: doc['visited'],
               photos: photos
           );
         })
@@ -64,11 +64,7 @@ class MapViewModel extends ChangeNotifier {
         .collection('markers')
         .add(marker.toJson());
     await marker.photos.forEach((photo) async {
-      await Firestore.instance
-          .collection('users')
-          .document('${userId}')
-          .collection('markers')
-          .document(res.documentID)
+      await getMarkerDocument(res.documentID)
           .collection('photos')
           .add(photo.toJson());
     });
@@ -77,13 +73,22 @@ class MapViewModel extends ChangeNotifier {
   }
 
   Future<void> deleteMarker(MapMarker marker) async {
-    await Firestore.instance
+    await getMarkerDocument(marker.markerId)
+        .collection('photos')
+        .getDocuments()
+        .then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.documents) ds.reference.delete();
+        });
+    await getMarkerDocument(marker.markerId).delete();
+    await fetchMarkers();
+    notifyListeners();
+  }
+
+  DocumentReference getMarkerDocument(String markerId) {
+    return Firestore.instance
         .collection('users')
         .document('${userId}')
         .collection('markers')
-        .document(marker.markerId)
-        .delete();
-    await fetchMarkers();
-    notifyListeners();
+        .document(markerId);
   }
 }
