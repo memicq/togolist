@@ -6,7 +6,6 @@ import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/geomap/MapAppBar.dart';
@@ -30,6 +29,7 @@ class MapViewState extends State<MapView> {
   LocationData _currentLocation;
   String _error = "";
   bool isCameraInitialized = false;
+  double markerRotation = 0.0;
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -104,6 +104,12 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  void setMarkerRotation(CameraPosition cameraPosition) {
+    setState(() {
+      this.markerRotation = cameraPosition.bearing;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,6 +123,8 @@ class MapViewState extends State<MapView> {
                 body: Container(
                   child: GoogleMap(
                       onMapCreated: _onMapCreated,
+                      onCameraMove: (CameraPosition cameraPosition) =>
+                          setMarkerRotation(cameraPosition),
                       initialCameraPosition: INITIAL_CAMERA_POSITION,
                       myLocationEnabled: true,
                       myLocationButtonEnabled: false,
@@ -135,7 +143,8 @@ class MapViewState extends State<MapView> {
                               flat: true,
                               icon: BitmapDescriptor.defaultMarker,
                               anchor: GOOGLE_ANCHOR_OFFSET,
-                              onTap: () => pointCamera(marker)
+                              onTap: () => pointCamera(marker),
+                              rotation: markerRotation
                           )
                       ).toSet()),
                 ),
