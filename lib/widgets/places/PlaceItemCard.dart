@@ -81,7 +81,6 @@ class PlaceItemCardState extends State<PlaceItemCard> {
   }
 
   void deleteMarker(MapViewModel model) async {
-    print("delete button tapped! ${widget.marker.markerId}");
     await model.deleteMarker(widget.marker);
   }
 
