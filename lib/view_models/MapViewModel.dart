@@ -48,7 +48,7 @@ class MapViewModel extends ChangeNotifier {
               address: doc['address'],
               latitude: doc['latitude'],
               longitude: doc['longitude'],
-              isShared: doc['isShared'],
+              visited: doc['visited'],
               photos: photos
           );
         })
