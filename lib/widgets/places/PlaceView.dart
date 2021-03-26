@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
@@ -13,13 +14,31 @@ import 'SlidablePlaceItemCard.dart';
 class PlaceView extends StatelessWidget {
   BackdropService backdropService = BackdropService();
 
-  var aaa = "変数を追加しました";
-
   PlaceView();
 
+  GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
+
   List<Widget> buildCardList(List<MapMarker> markers) {
-    return markers.map((marker) => SlidablePlaceItemCard(marker: marker)).toList();
+    return markers.map((marker) {
+      GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
+      return SlidablePlaceItemCard(key: key, marker: marker);
+    }).toList();
   }
+
+  // 子供をチェックして開いているやつを閉める
+  void notifySlididableCardOpened(GlobalKey<SlidablePlaceItemCardState> key) {
+    if (openingSlidableCardState != null && openingSlidableCardState != key) {
+      openingSlidableCardState.currentState?.closeSlidable();
+    }
+    openingSlidableCardState = key;
+  }
+
+  void notifySlididableCardClosed(GlobalKey<SlidablePlaceItemCardState> key) {
+    if (openingSlidableCardState == key) {
+      openingSlidableCardState = null;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,11 @@ import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/places/PlaceItemCard.dart';
 
+import 'PlaceView.dart';
+
 class SlidablePlaceItemCard extends StatefulWidget {
   MapMarker marker;
-  SlidablePlaceItemCard({this.marker});
+  SlidablePlaceItemCard({Key key, this.marker}): super(key: key);
 
   @override
   State<StatefulWidget> createState() => SlidablePlaceItemCardState();
@@ -20,6 +22,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
   SlidableController slidableController;
 
   GlobalKey<PlaceItemCardState> placeItemCardGlobalKey = GlobalKey();
+  PlaceView placeView;
 
   @override
   void initState() {
@@ -31,8 +34,18 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
     );
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    placeView = context.findAncestorWidgetOfExactType<PlaceView>();
+  }
+
   void handleSlideIsOpenChanged(bool isOpen) {
-    print("handleSlideIsOpenChanged: $isOpen");
+    if (isOpen) {
+      placeView?.notifySlididableCardOpened(widget.key);
+    } else {
+      placeView?.notifySlididableCardClosed(widget.key);
+    }
   }
 
   void closeSlidable() {
@@ -41,6 +54,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
 
   void deleteMarker(MapViewModel model) async {
     await model.deleteMarker(widget.marker);
+    placeView?.notifySlididableCardClosed(widget.key);
   }
 
   @override
