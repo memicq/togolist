@@ -7,7 +7,8 @@ import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
-import 'package:togolist/widgets/places/PlaceItemCard.dart';
+
+import 'SlidablePlaceItemCard.dart';
 
 class PlaceView extends StatelessWidget {
   BackdropService backdropService = BackdropService();
@@ -15,7 +16,7 @@ class PlaceView extends StatelessWidget {
   PlaceView();
 
   List<Widget> buildCardList(List<MapMarker> markers) {
-    return markers.map((marker) => PlaceItemCard(marker: marker)).toList();
+    return markers.map((marker) => SlidablePlaceItemCard(marker: marker)).toList();
   }
 
   @override
@@ -48,7 +49,9 @@ class PlaceView extends StatelessWidget {
                 icon: Icon(Icons.add),
                 onPressed: () => {
                   backdropService.openBackdrop(
-                      page: PlaceAdditionBackdrop(), height: 200.0)
+                      page: PlaceAdditionBackdrop(),
+                      height: 400.0
+                  )
                 },
               ),
             )

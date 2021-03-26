@@ -31,16 +31,18 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
   }
 
   void savePlace(BuildContext context, MapViewModel model) async {
-    model.marker = MapMarker(
-      title: selectedPlaceItem.name,
-      address: selectedPlaceItem.address,
-      latitude: selectedPlaceItem.latitude,
-      longitude: selectedPlaceItem.longitude,
-      visited: false,
-      photos: selectedPlaceItem.photos
-    );
-    await model.addMarker();
-    Navigator.of(context).pop();
+    if (selectedPlaceItem != null) {
+      model.marker = MapMarker(
+          title: selectedPlaceItem.name,
+          address: selectedPlaceItem.address,
+          latitude: selectedPlaceItem.latitude,
+          longitude: selectedPlaceItem.longitude,
+          visited: false,
+          photos: selectedPlaceItem.photos
+      );
+      await model.addMarker();
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -81,12 +83,14 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
                             ),
                           )),
                     ),
-                    Container(
-                      child: buildSelectedItem(),
+                    Expanded(
+                        child: Container(
+                          child: buildSelectedItem(),
+                        )
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
+                          vertical: 20, horizontal: 20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
