@@ -6,7 +6,7 @@ class MapMarker {
   String address;
   double latitude;
   double longitude;
-  bool isShared = false;
+  bool visited = false;
   List<MapMarkerPhoto> photos = List();
 
   MapMarker({
@@ -15,7 +15,7 @@ class MapMarker {
     this.address,
     this.latitude,
     this.longitude,
-    this.isShared = false,
+    this.visited = false,
     this.photos
   });
 
@@ -25,7 +25,7 @@ class MapMarker {
       'address': this.address,
       'latitude': this.latitude,
       'longitude': this.longitude,
-      'isShared': this.isShared
+      'visited': this.visited
     };
   }
 }

@@ -36,7 +36,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
       address: selectedPlaceItem.address,
       latitude: selectedPlaceItem.latitude,
       longitude: selectedPlaceItem.longitude,
-      isShared: false,
+      visited: false,
       photos: selectedPlaceItem.photos
     );
     await model.addMarker();

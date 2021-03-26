@@ -34,8 +34,8 @@ class PlaceItemCardState extends State<PlaceItemCard> {
 
   Icon buildIcon() {
     if (widget.marker == null ||
-        widget.marker.isShared == null ||
-        !widget.marker.isShared) {
+        widget.marker.visited == null ||
+        !widget.marker.visited) {
       return Icon(Icons.place_outlined,
           color: ColorSettings.primaryColor, size: 18);
     } else {
@@ -81,7 +81,6 @@ class PlaceItemCardState extends State<PlaceItemCard> {
   }
 
   void deleteMarker(MapViewModel model) async {
-    print("delete button tapped! ${widget.marker.markerId}");
     await model.deleteMarker(widget.marker);
   }
 
