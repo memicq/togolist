@@ -13,6 +13,8 @@ import 'SlidablePlaceItemCard.dart';
 class PlaceView extends StatelessWidget {
   BackdropService backdropService = BackdropService();
 
+  var aaa = "変数を追加しました";
+
   PlaceView();
 
   List<Widget> buildCardList(List<MapMarker> markers) {
