@@ -37,9 +37,10 @@ class PlaceView extends StatelessWidget {
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Center(
-                    child: ListView(children: [
-                  Padding(padding: EdgeInsets.only(top: 10)),
-                  ...buildCardList(model.markers),
+                    child: ListView(
+                        children:[
+                          Padding(padding: EdgeInsets.only(top: 10)),
+                          ...buildCardList(model.markers),
                 ]))),
             Positioned(
               right: 20,
