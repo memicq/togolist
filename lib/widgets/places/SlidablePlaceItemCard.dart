@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
@@ -10,7 +11,8 @@ import 'PlaceView.dart';
 
 class SlidablePlaceItemCard extends StatefulWidget {
   MapMarker marker;
-  SlidablePlaceItemCard({Key key, this.marker}): super(key: key);
+  LocationData location;
+  SlidablePlaceItemCard({Key key, this.marker, this.location}): super(key: key);
 
   @override
   State<StatefulWidget> createState() => SlidablePlaceItemCardState();
@@ -61,7 +63,11 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
   Widget build(BuildContext context) {
     return Slidable(
       controller: slidableController,
-      child: PlaceItemCard(key: placeItemCardGlobalKey, marker: widget.marker),
+      child: PlaceItemCard(
+          key: placeItemCardGlobalKey,
+          marker: widget.marker,
+          location: widget.location
+      ),
       actionPane: SlidableScrollActionPane(),
       secondaryActions: [
         Padding(

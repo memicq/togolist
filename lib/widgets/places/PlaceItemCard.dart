@@ -1,21 +1,50 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:geodesy/geodesy.dart';
+import 'package:location/location.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {
   MapMarker marker;
-  PlaceItemCard({Key key, this.marker}): super(key: key);
+  LocationData location;
+
+  PlaceItemCard({Key key, this.marker, this.location}) : super(key: key);
 
   @override
   State<PlaceItemCard> createState() => PlaceItemCardState();
 }
 
 class PlaceItemCardState extends State<PlaceItemCard> {
-
   SlidableState slidable;
+  Geodesy geodesy = Geodesy();
+
+  double distanceKm;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.location != null) {
+      LatLng userLatLng =
+          LatLng(widget.location.latitude, widget.location.longitude);
+      LatLng markerLatLng =
+          LatLng(widget.marker.latitude, widget.marker.longitude);
+      double distanceMeter =
+          geodesy.distanceBetweenTwoGeoPoints(userLatLng, markerLatLng);
+      this.distanceKm = ((distanceMeter / 100.0).roundToDouble() / 10.0);
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (slidable == null) {
+      slidable = Slidable.of(context);
+    }
+  }
 
   void openPlaceDetailPage(BuildContext context) {
     Navigator.of(context, rootNavigator: true)
@@ -36,22 +65,34 @@ class PlaceItemCardState extends State<PlaceItemCard> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (slidable == null) {
-      slidable = Slidable.of(context);
-    }
-  }
-
   void closeSlidable() {
     slidable.close();
+  }
+
+  Widget buildDistance() {
+    if (distanceKm != null) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(right: 2, bottom: 1),
+                child: Icon(Icons.directions_walk, size: 16, color: Color(0xBB000000))
+            ),
+            Text(
+              "$distanceKm km",
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xBB000000)
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
@@ -80,6 +121,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    buildDistance()
                   ],
                 ),
                 Text(widget.marker.address,

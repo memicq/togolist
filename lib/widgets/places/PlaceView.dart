@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:location/location.dart';
+import 'package:geodesy/geodesy.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/BackdropService.dart';
@@ -18,14 +22,35 @@ class PlaceView extends StatefulWidget {
 }
 
 class PlaceViewState extends State<PlaceView> {
-  BackdropService backdropService = BackdropService();
   GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
 
+  BackdropService backdropService = BackdropService();
+  Location _locationService = Location();
+  StreamSubscription _onLocationChangeSubscription;
+  LocationData _currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future(() async {
+      LocationData loc = await _locationService.getLocation();
+      setState(() {
+        _currentLocation = loc;
+      });
+
+      _onLocationChangeSubscription = _locationService.onLocationChanged().listen((LocationData result) async {
+        setState(() {
+          _currentLocation = result;
+        });
+      });
+    });
+  }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
     return markers.map((marker) {
       GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
-      return SlidablePlaceItemCard(key: key, marker: marker);
+      return SlidablePlaceItemCard(key: key, marker: marker, location: _currentLocation);
     }).toList();
   }
 
@@ -42,6 +67,8 @@ class PlaceViewState extends State<PlaceView> {
       openingSlidableCardState = null;
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

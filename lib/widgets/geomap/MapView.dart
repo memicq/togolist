@@ -23,7 +23,8 @@ class MapViewState extends State<MapView> {
   static const Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
 
   // TODO(kamiura): 初期カメラ位置が特に意味のない値になっているので、そのうち修正する
-  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
+  final CameraPosition INITIAL_CAMERA_POSITION =
+      CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
 
   CameraPosition currentCameraPosition;
   Location _locationService = new Location();
