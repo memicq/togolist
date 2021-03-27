@@ -38,12 +38,6 @@ class PlaceViewState extends State<PlaceView> {
       setState(() {
         _currentLocation = loc;
       });
-
-      _onLocationChangeSubscription = _locationService.onLocationChanged().listen((LocationData result) async {
-        setState(() {
-          _currentLocation = result;
-        });
-      });
     });
   }
 

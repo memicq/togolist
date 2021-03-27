@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,7 +28,7 @@ class MapViewState extends State<MapView> {
       CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
 
   CameraPosition currentCameraPosition;
-  Location _locationService = new Location();
+  Location _locationService = Location();
   StreamSubscription _onLocationChangeSubscription;
   LocationData _currentLocation;
   bool isCameraInitialized = false;
@@ -148,7 +149,7 @@ class MapViewState extends State<MapView> {
                   bottom: 20.0,
                   right: 20.0,
                   child: GradatedIconButton(
-                      icon: Icon(Icons.my_location),
+                      icon: Icon(FontAwesomeIcons.locationArrow, size: 16,),
                       onPressed: () => currentPlaceCamera()))
             ]);
           }),
