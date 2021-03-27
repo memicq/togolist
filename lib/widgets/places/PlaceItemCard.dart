@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
-import 'package:togolist/widgets/places/SlidablePlaceItemCard.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {

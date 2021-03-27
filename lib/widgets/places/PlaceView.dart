@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
@@ -79,6 +78,7 @@ class PlaceView extends StatelessWidget {
           ],
         );
       }),
+      resizeToAvoidBottomInset: false,
     );
   }
 }
