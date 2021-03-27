@@ -22,7 +22,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
   SlidableController slidableController;
 
   GlobalKey<PlaceItemCardState> placeItemCardGlobalKey = GlobalKey();
-  PlaceView placeView;
+  PlaceViewState placeViewState;
 
   @override
   void initState() {
@@ -37,14 +37,14 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    placeView = context.findAncestorWidgetOfExactType<PlaceView>();
+    placeViewState = context.findAncestorStateOfType<PlaceViewState>();
   }
 
   void handleSlideIsOpenChanged(bool isOpen) {
     if (isOpen) {
-      placeView?.notifySlididableCardOpened(widget.key);
+      placeViewState?.notifySlididableCardOpened(widget.key);
     } else {
-      placeView?.notifySlididableCardClosed(widget.key);
+      placeViewState?.notifySlididableCardClosed(widget.key);
     }
   }
 
@@ -54,7 +54,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
 
   void deleteMarker(MapViewModel model) async {
     await model.deleteMarker(widget.marker);
-    placeView?.notifySlididableCardClosed(widget.key);
+    placeViewState?.notifySlididableCardClosed(widget.key);
   }
 
   @override

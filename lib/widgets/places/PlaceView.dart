@@ -10,12 +10,17 @@ import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
 
 import 'SlidablePlaceItemCard.dart';
 
-class PlaceView extends StatelessWidget {
-  BackdropService backdropService = BackdropService();
-
+class PlaceView extends StatefulWidget {
   PlaceView();
 
+  @override
+  State<StatefulWidget> createState() => PlaceViewState();
+}
+
+class PlaceViewState extends State<PlaceView> {
+  BackdropService backdropService = BackdropService();
   GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
+
 
   List<Widget> buildCardList(List<MapMarker> markers) {
     return markers.map((marker) {
