@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/geomap/MapAppBar.dart';
@@ -28,57 +29,26 @@ class MapViewState extends State<MapView> {
       CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
 
   CameraPosition currentCameraPosition;
-  Location _locationService = Location();
-  StreamSubscription _onLocationChangeSubscription;
-  LocationData _currentLocation;
+
   bool isCameraInitialized = false;
   double markerRotation = 0.0;
 
   Completer<GoogleMapController> _controller = Completer();
 
-  @override
-  void initState() {
-    super.initState();
-
-    Future(() async {
-      _currentLocation = await _locationService.getLocation();
-
-      _onLocationChangeSubscription = _locationService
-          .onLocationChanged()
-          .listen((LocationData result) async {
-        setState(() {
-          _currentLocation = result;
-        });
-
-        if (!isCameraInitialized) {
-          initCameraPosition();
-          isCameraInitialized = true;
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _onLocationChangeSubscription?.cancel();
-  }
-
-  Future<void> initCameraPosition() async {
+  Future<void> initCameraPosition(LocationData currentLocation) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: DEFAULT_MAP_ZOOM_LEVEL)));
   }
 
-  Future<void> currentPlaceCamera() async {
+  Future<void> currentPlaceCamera(LocationData currentLocation) async {
     final GoogleMapController controller = await _controller.future;
     final currentZoomLevel = await controller.getZoomLevel();
 
-    if (_currentLocation != null) {
+    if (currentLocation != null) {
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
             ? currentZoomLevel
             : PLACE_FOCUS_ZOOM_LEVEL,
@@ -97,7 +67,8 @@ class MapViewState extends State<MapView> {
             : PLACE_FOCUS_ZOOM_LEVEL)));
   }
 
-  void _onMapCreated(GoogleMapController controller) {
+  void _onMapCreated(GoogleMapController controller, LocationData location) {
+    initCameraPosition(location);
     setState(() {
       _controller.complete(controller);
     });
@@ -115,11 +86,12 @@ class MapViewState extends State<MapView> {
         appBar: MapAppBar(),
         body: Center(
           child: Consumer<MapViewModel>(builder: (context, model, child) {
-            return Stack(alignment: Alignment.topLeft, children: [
+            return Consumer<LocationViewModel>(builder: (lContext, lModel, lChild) {
+              return Stack(alignment: Alignment.topLeft, children: [
               Scaffold(
                 body: Container(
-                  child: GoogleMap(
-                      onMapCreated: _onMapCreated,
+                    child: GoogleMap(
+                      onMapCreated: (controller) => _onMapCreated(controller, lModel.currentLocation),
                       onCameraMove: (CameraPosition cameraPosition) {
                         currentCameraPosition = cameraPosition;
                         setMarkerRotation(cameraPosition);
@@ -142,16 +114,20 @@ class MapViewState extends State<MapView> {
                               anchor: GOOGLE_ANCHOR_OFFSET,
                               onTap: () => pointCamera(marker),
                               rotation: markerRotation))
-                          .toSet()),
+                          .toSet())
                 ),
               ),
               Positioned(
                   bottom: 20.0,
                   right: 20.0,
                   child: GradatedIconButton(
-                      icon: Icon(FontAwesomeIcons.locationArrow, size: 16,),
-                      onPressed: () => currentPlaceCamera()))
-            ]);
+                      icon: Icon(
+                        FontAwesomeIcons.locationArrow,
+                        size: 16,
+                      ),
+                      onPressed: () => currentPlaceCamera(lModel.currentLocation)))
+              ]);
+            });
           }),
         ));
   }

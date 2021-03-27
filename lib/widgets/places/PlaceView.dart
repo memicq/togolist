@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
-import 'package:geodesy/geodesy.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/BackdropService.dart';
+import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
@@ -25,26 +25,14 @@ class PlaceViewState extends State<PlaceView> {
   GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
 
   BackdropService backdropService = BackdropService();
-  Location _locationService = Location();
-  StreamSubscription _onLocationChangeSubscription;
-  LocationData _currentLocation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future(() async {
-      LocationData loc = await _locationService.getLocation();
-      setState(() {
-        _currentLocation = loc;
-      });
-    });
-  }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
     return markers.map((marker) {
       GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
-      return SlidablePlaceItemCard(key: key, marker: marker, location: _currentLocation);
+      return Consumer<LocationViewModel>(builder: (context, model, child) {
+        return SlidablePlaceItemCard(
+            key: key, marker: marker, location: model.currentLocation);
+      });
     }).toList();
   }
 
@@ -61,8 +49,6 @@ class PlaceViewState extends State<PlaceView> {
       openingSlidableCardState = null;
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
