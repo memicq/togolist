@@ -25,13 +25,13 @@ class MapViewState extends State<MapView> {
   final Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
 
   // TODO(kamiura): 初期カメラ位置が特に意味のない値になっているので、そのうち修正する
-  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(
-      zoom: 4.5, target: LatLng(35.41, 139.41));
+  final CameraPosition INITIAL_CAMERA_POSITION =
+      CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
   CameraPosition currentCameraPosition;
 
   Location _locationService = new Location();
+  StreamSubscription _onLocationChangeSubscription;
   LocationData _currentLocation;
-  String _error = "";
   bool isCameraInitialized = false;
   double markerRotation = 0.0;
 
@@ -41,9 +41,12 @@ class MapViewState extends State<MapView> {
   void initState() {
     super.initState();
 
-    initLocation();
     Future(() async {
-      _locationService.onLocationChanged().listen((LocationData result) async {
+      _currentLocation = await _locationService.getLocation();
+
+      _onLocationChangeSubscription = _locationService
+          .onLocationChanged()
+          .listen((LocationData result) async {
         setState(() {
           _currentLocation = result;
         });
@@ -56,73 +59,43 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    _onLocationChangeSubscription?.cancel();
+  }
+
   Future<void> initCameraPosition() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(
-                    _currentLocation.latitude,
-                    _currentLocation.longitude
-                ),
-                zoom: DEFAULT_MAP_ZOOM_LEVEL
-
-            )
-        )
-    );
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+        zoom: DEFAULT_MAP_ZOOM_LEVEL)));
   }
 
   Future<void> currentPlaceCamera() async {
     final GoogleMapController controller = await _controller.future;
     final currentZoomLevel = await controller.getZoomLevel();
-    controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(
-                    _currentLocation.latitude,
-                    _currentLocation.longitude
-                ),
-                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
-                    ? currentZoomLevel
-                    : PLACE_FOCUS_ZOOM_LEVEL,
-                bearing: currentCameraPosition.bearing,
 
-            )
-        )
-    );
+    if (_currentLocation != null) {
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+        zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
+            ? currentZoomLevel
+            : PLACE_FOCUS_ZOOM_LEVEL,
+        bearing: currentCameraPosition.bearing,
+      )));
+    }
   }
 
   Future<void> pointCamera(MapMarker marker) async {
     final GoogleMapController controller = await _controller.future;
     final currentZoomLevel = await controller.getZoomLevel();
-    controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(
-                    marker.latitude,
-                    marker.longitude
-                ),
-                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
-                    ? currentZoomLevel
-                    : PLACE_FOCUS_ZOOM_LEVEL
-            )
-        )
-    );
-  }
-
-  Future<void> initLocation() async {
-    LocationData myLocation;
-
-    try {
-      myLocation = await _locationService.getLocation();
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENITED')
-        _error = 'Permission denited';
-      else if (e.code == 'PERMISSION_DENITED_NEVER_ASK')
-        _error =
-        'Permission denited - please ask the user to enable it from the app settings';
-      myLocation = null;
-    }
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(marker.latitude, marker.longitude),
+        zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
+            ? currentZoomLevel
+            : PLACE_FOCUS_ZOOM_LEVEL)));
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -141,58 +114,46 @@ class MapViewState extends State<MapView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MapAppBar(),
-        body: Center(child: Consumer<MapViewModel>(
-            builder: (context, model, child) {
-              return Stack(
-                  alignment: Alignment.topLeft,
-                  children: [
-                    Scaffold(
-                      body: Container(
-                        child: GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            onCameraMove: (CameraPosition cameraPosition){
-                              currentCameraPosition = cameraPosition;
-                              setMarkerRotation(cameraPosition);
-                            },
-                            initialCameraPosition: INITIAL_CAMERA_POSITION,
-                            myLocationEnabled: true,
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            zoomGesturesEnabled: true,
-                            rotateGesturesEnabled: true,
-                            markers: model.markers
-                                .map((marker) =>
-                                Marker(
-                                    markerId: MarkerId(marker.address),
-                                    position: LatLng(
-                                        marker.latitude, marker.longitude),
-                                    infoWindow: InfoWindow(
-                                        title: marker.title,
-                                        snippet: marker.address
-                                    ),
-                                    flat: true,
-                                    icon: BitmapDescriptor.defaultMarker,
-                                    anchor: GOOGLE_ANCHOR_OFFSET,
-                                    onTap: () => pointCamera(marker),
-                                    rotation: markerRotation
-                                )
-                            ).toSet()),
-                      ),
-                    ),
-                    Positioned(
-                        bottom: 20.0,
-                        right: 20.0,
-                        child: GradatedIconButton(
-                            icon: Icon(Icons.accessibility_new),
-                            onPressed: () => currentPlaceCamera()
-                            )
-                    )
-                  ]
-              );
-            }
-
-        ),
-        )
-    );
+        body: Center(
+          child: Consumer<MapViewModel>(builder: (context, model, child) {
+            return Stack(alignment: Alignment.topLeft, children: [
+              Scaffold(
+                body: Container(
+                  child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      onCameraMove: (CameraPosition cameraPosition) {
+                        currentCameraPosition = cameraPosition;
+                        setMarkerRotation(cameraPosition);
+                      },
+                      initialCameraPosition: INITIAL_CAMERA_POSITION,
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
+                      zoomGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      markers: model.markers
+                          .map((marker) => Marker(
+                              markerId: MarkerId(marker.address),
+                              position:
+                                  LatLng(marker.latitude, marker.longitude),
+                              infoWindow: InfoWindow(
+                                  title: marker.title, snippet: marker.address),
+                              flat: true,
+                              icon: BitmapDescriptor.defaultMarker,
+                              anchor: GOOGLE_ANCHOR_OFFSET,
+                              onTap: () => pointCamera(marker),
+                              rotation: markerRotation))
+                          .toSet()),
+                ),
+              ),
+              Positioned(
+                  bottom: 20.0,
+                  right: 20.0,
+                  child: GradatedIconButton(
+                      icon: Icon(Icons.my_location),
+                      onPressed: () => currentPlaceCamera()))
+            ]);
+          }),
+        ));
   }
 }

@@ -24,22 +24,6 @@ class TabAndBackdropLayoutContent extends StatelessWidget {
         ),
         home: this.scaffold
     );
-
-//        Scaffold(
-//          appBar: AppBar(
-//            title: Text(
-//                this.title,
-//                style: TextStyle(
-//                    fontFamily: 'Quicksand',
-//                    fontSize: 20
-//                )
-//            ),
-//          ),
-//          body: Container(
-//            constraints: BoxConstraints.expand(),
-//            child: this.body,
-//          ),
-//        ));
   }
 }
 
