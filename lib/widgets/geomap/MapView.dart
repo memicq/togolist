@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,16 +18,14 @@ class MapView extends StatefulWidget {
 }
 
 class MapViewState extends State<MapView> {
-  final double DEFAULT_MAP_ZOOM_LEVEL = 13.0;
-  final double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
-
-  final Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
+  static const double DEFAULT_MAP_ZOOM_LEVEL = 13.0;
+  static const double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
+  static const Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
 
   // TODO(kamiura): 初期カメラ位置が特に意味のない値になっているので、そのうち修正する
-  final CameraPosition INITIAL_CAMERA_POSITION =
-      CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
-  CameraPosition currentCameraPosition;
+  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
 
+  CameraPosition currentCameraPosition;
   Location _locationService = new Location();
   StreamSubscription _onLocationChangeSubscription;
   LocationData _currentLocation;
