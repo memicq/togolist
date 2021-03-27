@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/geomap/MapAppBar.dart';
 
 class MapView extends StatefulWidget {
@@ -22,8 +23,11 @@ class MapViewState extends State<MapView> {
   final double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
 
   final Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
+
   // TODO(kamiura): 初期カメラ位置が特に意味のない値になっているので、そのうち修正する
-  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(zoom: 4.5, target: LatLng(35.41, 139.41));
+  final CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(
+      zoom: 4.5, target: LatLng(35.41, 139.41));
+  CameraPosition currentCameraPosition;
 
   Location _locationService = new Location();
   LocationData _currentLocation;
@@ -34,7 +38,7 @@ class MapViewState extends State<MapView> {
   Completer<GoogleMapController> _controller = Completer();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     initLocation();
@@ -62,6 +66,27 @@ class MapViewState extends State<MapView> {
                     _currentLocation.longitude
                 ),
                 zoom: DEFAULT_MAP_ZOOM_LEVEL
+
+            )
+        )
+    );
+  }
+
+  Future<void> currentPlaceCamera() async {
+    final GoogleMapController controller = await _controller.future;
+    final currentZoomLevel = await controller.getZoomLevel();
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(
+                    _currentLocation.latitude,
+                    _currentLocation.longitude
+                ),
+                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
+                    ? currentZoomLevel
+                    : PLACE_FOCUS_ZOOM_LEVEL,
+                bearing: currentCameraPosition.bearing,
+
             )
         )
     );
@@ -77,7 +102,9 @@ class MapViewState extends State<MapView> {
                     marker.latitude,
                     marker.longitude
                 ),
-                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL) ? currentZoomLevel : PLACE_FOCUS_ZOOM_LEVEL
+                zoom: (currentZoomLevel > PLACE_FOCUS_ZOOM_LEVEL)
+                    ? currentZoomLevel
+                    : PLACE_FOCUS_ZOOM_LEVEL
             )
         )
     );
@@ -93,7 +120,7 @@ class MapViewState extends State<MapView> {
         _error = 'Permission denited';
       else if (e.code == 'PERMISSION_DENITED_NEVER_ASK')
         _error =
-            'Permission denited - please ask the user to enable it from the app settings';
+        'Permission denited - please ask the user to enable it from the app settings';
       myLocation = null;
     }
   }
@@ -113,46 +140,59 @@ class MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MapAppBar(),
-      body: Center(child: Consumer<MapViewModel>(
-        builder: (context, model, child) {
-          return Stack(
-            alignment: Alignment.topLeft,
-            children: [
-              Scaffold(
-                body: Container(
-                  child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      onCameraMove: (CameraPosition cameraPosition) =>
-                          setMarkerRotation(cameraPosition),
-                      initialCameraPosition: INITIAL_CAMERA_POSITION,
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      zoomGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      markers: model.markers
-                          .map((marker) =>
-                          Marker(
-                              markerId: MarkerId(marker.address),
-                              position: LatLng(marker.latitude, marker.longitude),
-                              infoWindow: InfoWindow(
-                                  title: marker.title,
-                                  snippet: marker.address
-                              ),
-                              flat: true,
-                              icon: BitmapDescriptor.defaultMarker,
-                              anchor: GOOGLE_ANCHOR_OFFSET,
-                              onTap: () => pointCamera(marker),
-                              rotation: markerRotation
-                          )
-                      ).toSet()),
-                ),
-              ),
-            ],
-          );
-        },
-      )),
+        appBar: MapAppBar(),
+        body: Center(child: Consumer<MapViewModel>(
+            builder: (context, model, child) {
+              return Stack(
+                  alignment: Alignment.topLeft,
+                  children: [
+                    Scaffold(
+                      body: Container(
+                        child: GoogleMap(
+                            onMapCreated: _onMapCreated,
+                            onCameraMove: (CameraPosition cameraPosition){
+                              currentCameraPosition = cameraPosition;
+                              setMarkerRotation(cameraPosition);
+                            },
+                            initialCameraPosition: INITIAL_CAMERA_POSITION,
+                            myLocationEnabled: true,
+                            myLocationButtonEnabled: false,
+                            zoomControlsEnabled: false,
+                            zoomGesturesEnabled: true,
+                            rotateGesturesEnabled: true,
+                            markers: model.markers
+                                .map((marker) =>
+                                Marker(
+                                    markerId: MarkerId(marker.address),
+                                    position: LatLng(
+                                        marker.latitude, marker.longitude),
+                                    infoWindow: InfoWindow(
+                                        title: marker.title,
+                                        snippet: marker.address
+                                    ),
+                                    flat: true,
+                                    icon: BitmapDescriptor.defaultMarker,
+                                    anchor: GOOGLE_ANCHOR_OFFSET,
+                                    onTap: () => pointCamera(marker),
+                                    rotation: markerRotation
+                                )
+                            ).toSet()),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 20.0,
+                        right: 20.0,
+                        child: GradatedIconButton(
+                            icon: Icon(Icons.accessibility_new),
+                            onPressed: () => currentPlaceCamera()
+                            )
+                    )
+                  ]
+              );
+            }
+
+        ),
+        )
     );
   }
 }
