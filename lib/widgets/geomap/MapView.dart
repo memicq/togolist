@@ -122,8 +122,7 @@ class MapViewState extends State<MapView> {
                   right: 20.0,
                   child: GradatedIconButton(
                       icon: Icon(
-                        FontAwesomeIcons.locationArrow,
-                        size: 16,
+                        Icons.near_me,
                       ),
                       onPressed: () => currentPlaceCamera(lModel.currentLocation)))
               ]);

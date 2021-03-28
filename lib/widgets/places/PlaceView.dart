@@ -12,6 +12,7 @@ import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
 
+import 'PlaceListSortingArea.dart';
 import 'SlidablePlaceItemCard.dart';
 
 class PlaceView extends StatefulWidget {
@@ -70,8 +71,9 @@ class PlaceViewState extends State<PlaceView> {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Center(
                     child: ListView(children: [
-                  Padding(padding: EdgeInsets.only(top: 10)),
-                  ...buildCardList(model.markers),
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      PlaceListSortingArea(),
+                      ...buildCardList(model.markers),
                 ]))),
             Positioned(
               right: 20,

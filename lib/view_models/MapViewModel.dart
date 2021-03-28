@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:togolist/const/PlaceListSortingKey.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/MapMarkerPhoto.dart';
 
@@ -8,8 +9,8 @@ class MapViewModel extends ChangeNotifier {
   String userId;
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  List<MapMarker> markers = List();
   MapMarker marker;
+  List<MapMarker> markers = List();
 
   MapViewModel() {
     Future(() async {
@@ -54,6 +55,7 @@ class MapViewModel extends ChangeNotifier {
         })
     );
     this.markers = markers.toList();
+    this._sort(PlaceListSortingKey.PLACE_NAME, PlaceListSortingOrder.ASC);
     notifyListeners();
   }
 
@@ -64,7 +66,7 @@ class MapViewModel extends ChangeNotifier {
         .collection('markers')
         .add(marker.toJson());
     await marker.photos.forEach((photo) async {
-      await getMarkerDocument(res.documentID)
+      await _getMarkerDocument(res.documentID)
           .collection('photos')
           .add(photo.toJson());
     });
@@ -73,18 +75,30 @@ class MapViewModel extends ChangeNotifier {
   }
 
   Future<void> deleteMarker(MapMarker marker) async {
-    await getMarkerDocument(marker.markerId)
+    await _getMarkerDocument(marker.markerId)
         .collection('photos')
         .getDocuments()
         .then((snapshot) {
           for (DocumentSnapshot ds in snapshot.documents) ds.reference.delete();
         });
-    await getMarkerDocument(marker.markerId).delete();
+    await _getMarkerDocument(marker.markerId).delete();
     await fetchMarkers();
     notifyListeners();
   }
 
-  DocumentReference getMarkerDocument(String markerId) {
+  void sortMarkers({
+    PlaceListSortingKey sortingKey = PlaceListSortingKey.PLACE_NAME,
+    PlaceListSortingOrder sortingOrder = PlaceListSortingOrder.ASC
+  }) {
+    this._sort(sortingKey, sortingOrder);
+    notifyListeners();
+  }
+
+  void _sort(PlaceListSortingKey sortingKey, PlaceListSortingOrder sortingOrder) {
+    this.markers.sort((a, b) => a.title.compareTo(b.title));
+  }
+
+  DocumentReference _getMarkerDocument(String markerId) {
     return Firestore.instance
         .collection('users')
         .document('${userId}')
