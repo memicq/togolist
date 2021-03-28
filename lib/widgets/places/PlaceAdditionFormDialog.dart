@@ -137,6 +137,7 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
           Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: 350,
+              width: 300,
               child: Column(
                 children: [
                   Container(
