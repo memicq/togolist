@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:togolist/const/PlaceListSortingKey.dart';
+import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/MapMarkerPhoto.dart';
 
@@ -95,7 +95,11 @@ class MapViewModel extends ChangeNotifier {
   }
 
   void _sort(PlaceListSortingKey sortingKey, PlaceListSortingOrder sortingOrder) {
-    this.markers.sort((a, b) => a.title.compareTo(b.title));
+    if (sortingOrder == PlaceListSortingOrder.ASC) {
+      this.markers.sort((a, b) => a.title.compareTo(b.title));
+    } else {
+      this.markers.sort((b, a) => a.title.compareTo(b.title));
+    }
   }
 
   DocumentReference _getMarkerDocument(String markerId) {

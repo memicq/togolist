@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:location/location.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
@@ -37,7 +35,6 @@ class PlaceViewState extends State<PlaceView> {
     }).toList();
   }
 
-  // 子供をチェックして開いているやつを閉める
   void notifySlididableCardOpened(GlobalKey<SlidablePlaceItemCardState> key) {
     if (openingSlidableCardState != null && openingSlidableCardState != key) {
       openingSlidableCardState.currentState?.closeSlidable();
@@ -72,7 +69,7 @@ class PlaceViewState extends State<PlaceView> {
                 child: Center(
                     child: ListView(children: [
                       Padding(padding: EdgeInsets.only(top: 10)),
-                      PlaceListSortingArea(),
+                      PlaceListSortingArea(mapViewModel: model),
                       ...buildCardList(model.markers),
                 ]))),
             Positioned(

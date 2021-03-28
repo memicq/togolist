@@ -1,4 +1,3 @@
-
 enum PlaceListSortingKey {
   PLACE_NAME,
   DISTANCE,
@@ -28,6 +27,17 @@ extension PlaceListSortingKeyExt on PlaceListSortingKey {
         break;
       case PlaceListSortingKey.DISTANCE:
         return "距離";
+        break;
+    }
+  }
+
+  bool get isNumber {
+    switch (this) {
+      case PlaceListSortingKey.DISTANCE:
+        return true;
+        break;
+      case PlaceListSortingKey.PLACE_NAME:
+        return false;
         break;
     }
   }

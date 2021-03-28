@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:togolist/const/PlaceListSortingKey.dart';
-import 'package:togolist/const/Shape.dart';
+import 'package:provider/provider.dart';
+import 'package:togolist/models/PlaceListSortingKey.dart';
+import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/places/PlaceListSortingDialog.dart';
+import 'package:togolist/widgets/places/PlaceView.dart';
 
 class PlaceListSortingArea extends StatefulWidget {
+  MapViewModel mapViewModel;
+  PlaceListSortingArea({this.mapViewModel});
+
   @override
   State<StatefulWidget> createState() => PlaceListSortingAreaState();
 }
 
 class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
+  PlaceViewState placeViewState;
 
-  Icon buildIcon() {
-    return Icon(
-      FontAwesomeIcons.sortNumericDown,
-      color: Colors.deepOrange.shade400,
-      size: 17,
-    );
+  PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
+  PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
+
+  @override
+  void initState() {
+    super.initState();
+    placeViewState = context.findAncestorStateOfType<PlaceViewState>();
+  }
+
+  IconData buildIcon() {
+    if (_sortingKey.isNumber) {
+      if (_sortingOrder == PlaceListSortingOrder.ASC)
+        return FontAwesomeIcons.sortNumericDown;
+      else
+        return FontAwesomeIcons.sortNumericDownAlt;
+    } else {
+      if (_sortingOrder == PlaceListSortingOrder.ASC) {
+        return FontAwesomeIcons.sortAlphaDown;
+      } else {
+        return FontAwesomeIcons.sortAlphaDownAlt;
+      }
+    }
   }
 
   void openSortingDialog() {
@@ -24,48 +46,70 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
         context: context,
         builder: (context) {
           return PlaceListSortingDialog(
-            initialSortingKey: PlaceListSortingKey.PLACE_NAME,
-            onSortingKeyChanged: onSortingKeyChanged
+            initialSortingKey: _sortingKey,
+            onSortingKeyChanged: onSortingKeyChanged,
+            distanceDisabled: true,
           );
-        }
-    );
+        });
   }
 
   void onSortingKeyChanged(PlaceListSortingKey sortingKey) {
-    print(sortingKey);
+    setState(() {
+      this._sortingKey = sortingKey;
+    });
+
+    widget.mapViewModel.sortMarkers(
+        sortingKey: this._sortingKey,
+        sortingOrder: this._sortingOrder
+    );
+  }
+
+  void toggleSortingOrder() {
+    if (_sortingOrder == PlaceListSortingOrder.ASC) {
+      setState(() {
+        _sortingOrder = PlaceListSortingOrder.DESC;
+      });
+    } else {
+      setState(() {
+        _sortingOrder = PlaceListSortingOrder.ASC;
+      });
+    }
+
+    widget.mapViewModel.sortMarkers(
+        sortingKey: this._sortingKey,
+        sortingOrder: this._sortingOrder
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              height: 35,
-              child: TextButton(
-                child: Text(
-                    "名前順",
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold
-                    )
-                ),
-                onPressed: openSortingDialog,
-              ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        SizedBox(
+          height: 35,
+          child: TextButton(
+            child: Text("${this._sortingKey.name}順",
+                style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold)),
+            onPressed: openSortingDialog,
+          ),
+        ),
+        SizedBox(
+          height: 35,
+          width: 35,
+          child: TextButton(
+            child: Icon(
+              buildIcon(),
+              color: Colors.deepOrange.shade400,
+              size: 17,
             ),
-            SizedBox(
-              height: 35,
-              width: 35,
-              child: TextButton(
-                child: buildIcon(),
-                onPressed: (){},
-              ),
-            ),
-          ]
-      ),
+            onPressed: toggleSortingOrder,
+          ),
+        ),
+      ]),
     );
   }
 }

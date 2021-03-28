@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:togolist/const/PlaceListSortingKey.dart';
+import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/const/Shape.dart';
 
 class PlaceListSortingDialog extends StatefulWidget {
   PlaceListSortingKey initialSortingKey;
   Function onSortingKeyChanged = (PlaceListSortingKey sortingKey){};
+  bool distanceDisabled = false;
 
-  PlaceListSortingDialog({this.initialSortingKey, this.onSortingKeyChanged});
+  PlaceListSortingDialog({this.initialSortingKey, this.onSortingKeyChanged, this.distanceDisabled = false});
 
   @override
   State<StatefulWidget> createState() => PlaceListSortingDialogState();
@@ -39,7 +39,7 @@ class PlaceListSortingDialogState extends State<PlaceListSortingDialog> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              Text("ソートのキーを選択"),
+              Text("並び替えのキーを選択"), // TODO: 「キー」という言葉はおそらくわかりにくいので修正する
               Divider(),
               Column(
                 children: [
@@ -61,7 +61,7 @@ class PlaceListSortingDialogState extends State<PlaceListSortingDialog> {
                     activeColor: Colors.orange,
                     value: PlaceListSortingKey.DISTANCE.code,
                     groupValue: _selected,
-                    onChanged: onChangeRadio,
+                    onChanged: (widget.distanceDisabled) ? null : onChangeRadio,
                   ),
                 ],
               )
