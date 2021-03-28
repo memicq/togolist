@@ -7,7 +7,7 @@ import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
-import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
+import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
 
 import 'PlaceListSortingArea.dart';
@@ -80,7 +80,7 @@ class PlaceViewState extends State<PlaceView> {
                 onPressed: () => {
                   backdropService.openBackdrop(
                       page: PlaceAdditionBackdrop(),
-                      height: 400.0
+                      height: 435.0
                   )
                 },
               ),

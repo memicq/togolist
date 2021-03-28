@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
-import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
+import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 
 import '../../models/TabPage.dart';
 

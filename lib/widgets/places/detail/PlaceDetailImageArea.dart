@@ -14,7 +14,8 @@ class PlaceDetailImageArea extends StatelessWidget {
       height: 200,
       width: double.infinity,
       color: Colors.black12,
-      child: Container(child: Image.network(
+      child:
+      Container(child: Image.network(
           "https://maps.googleapis.com/maps/api/place/photo"
               "?maxwidth=400"
               "&photoreference=${this.googlePhotos[0].photoReference}"

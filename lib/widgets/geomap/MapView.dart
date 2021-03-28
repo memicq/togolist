@@ -68,7 +68,9 @@ class MapViewState extends State<MapView> {
   }
 
   void _onMapCreated(GoogleMapController controller, LocationData location) {
-    initCameraPosition(location);
+    if (location != null) {
+      initCameraPosition(location);
+    }
     setState(() {
       _controller.complete(controller);
     });

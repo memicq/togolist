@@ -142,7 +142,7 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
                 children: [
                   Container(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: Text("場所を選択"),
+                    child: Text("名前で場所検索"),
                   ),
                   Container(
                     height: 40,
