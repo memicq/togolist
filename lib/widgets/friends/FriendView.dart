@@ -20,7 +20,13 @@ class FriendViewState extends State<FriendView> {
       appBar: AppBar(
         title: Text(
             "Friends",
-            style: AppBarTitleStyle.textStyle
+            style: TextStyle(
+              color:Colors.pinkAccent
+
+
+            )
+            //AppBarTitleStyle.textStyle
+
         ),
         actions: [
           FlatButton(
