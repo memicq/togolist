@@ -56,37 +56,39 @@ class PlaceViewState extends State<PlaceView> {
         child: AppBar(
           title: Text("Places", style: AppBarTitleStyle.textStyle),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(50.0),
-            child: PlaceAppBarBottom()
-          ),
+              preferredSize: const Size.fromHeight(50.0),
+              child: PlaceAppBarBottom()),
         ),
       ),
       body: Consumer<MapViewModel>(builder: (context, model, child) {
-        return Stack(
-          children: [
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Center(
-                    child: ListView(children: [
-                      Padding(padding: EdgeInsets.only(top: 10)),
-                      PlaceListSortingArea(mapViewModel: model),
-                      ...buildCardList(model.markers),
-                ]))),
-            Positioned(
-              right: 20,
-              bottom: 20,
-              child: GradatedIconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => {
-                  backdropService.openBackdrop(
-                      page: PlaceAdditionBackdrop(),
-                      height: 435.0
-                  )
-                },
-              ),
-            )
-          ],
-        );
+        return Consumer<LocationViewModel>(builder: (lcontext, lmodel, lchild) {
+          return Stack(
+            children: [
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Center(
+                      child: ListView(children: [
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    PlaceListSortingArea(
+                      mapViewModel: model,
+                      locationDisabled: (lmodel.currentLocation == null),
+                    ),
+                    ...buildCardList(model.markers),
+                  ]))),
+              Positioned(
+                right: 20,
+                bottom: 20,
+                child: GradatedIconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () => {
+                    backdropService.openBackdrop(
+                        page: PlaceAdditionBackdrop(), height: 435.0)
+                  },
+                ),
+              )
+            ],
+          );
+        });
       }),
       resizeToAvoidBottomInset: false,
     );

@@ -34,6 +34,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
       double distanceMeter =
           geodesy.distanceBetweenTwoGeoPoints(userLatLng, markerLatLng);
       this.distanceKm = ((distanceMeter / 100.0).roundToDouble() / 10.0);
+      widget.marker.distanceFromMe = this.distanceKm;
     }
   }
 

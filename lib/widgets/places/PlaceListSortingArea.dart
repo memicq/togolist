@@ -8,7 +8,8 @@ import 'package:togolist/widgets/places/PlaceView.dart';
 
 class PlaceListSortingArea extends StatefulWidget {
   MapViewModel mapViewModel;
-  PlaceListSortingArea({this.mapViewModel});
+  bool locationDisabled = false;
+  PlaceListSortingArea({this.mapViewModel, this.locationDisabled = false});
 
   @override
   State<StatefulWidget> createState() => PlaceListSortingAreaState();
@@ -48,7 +49,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
           return PlaceListSortingDialog(
             initialSortingKey: _sortingKey,
             onSortingKeyChanged: onSortingKeyChanged,
-            distanceDisabled: true,
+            distanceDisabled: widget.locationDisabled,
           );
         });
   }

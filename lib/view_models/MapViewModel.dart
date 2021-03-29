@@ -95,10 +95,18 @@ class MapViewModel extends ChangeNotifier {
   }
 
   void _sort(PlaceListSortingKey sortingKey, PlaceListSortingOrder sortingOrder) {
-    if (sortingOrder == PlaceListSortingOrder.ASC) {
-      this.markers.sort((a, b) => a.title.compareTo(b.title));
-    } else {
-      this.markers.sort((b, a) => a.title.compareTo(b.title));
+    if (sortingKey == PlaceListSortingKey.PLACE_NAME) {
+      if (sortingOrder == PlaceListSortingOrder.ASC) {
+        this.markers.sort((a, b) => a.title.compareTo(b.title));
+      } else {
+        this.markers.sort((b, a) => a.title.compareTo(b.title));
+      }
+    } else if (sortingKey == PlaceListSortingKey.DISTANCE) {
+      if (sortingOrder == PlaceListSortingOrder.ASC) {
+        this.markers.sort((a, b) => a.distanceFromMe.compareTo(b.distanceFromMe));
+      } else {
+        this.markers.sort((b, a) => a.distanceFromMe.compareTo(b.distanceFromMe));
+      }
     }
   }
 
