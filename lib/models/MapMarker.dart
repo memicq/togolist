@@ -9,6 +9,8 @@ class MapMarker {
   bool visited = false;
   List<MapMarkerPhoto> photos = List();
 
+  double distanceFromMe = null;
+
   MapMarker({
     this.markerId = null,
     this.title,

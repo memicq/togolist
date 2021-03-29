@@ -6,7 +6,8 @@ import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
-import 'package:togolist/widgets/places/PlaceAdditionFormDialog.dart';
+import 'package:togolist/widgets/places/addition_form/PlaceAdditionFormDialog.dart';
+import 'package:togolist/widgets/places/addition_form/PlaceAdditionPreviewArea.dart';
 
 class PlaceAdditionBackdrop extends StatefulWidget {
   @override
@@ -22,25 +23,28 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
     });
   }
 
-  Widget buildSelectedItem() {
-    if (selectedPlaceItem == null)
-      return Text("未選択");
-    else {
-      return Text(selectedPlaceItem.name + " が選択されました");
+  void savePlace(BuildContext context, MapViewModel model) async {
+    if (selectedPlaceItem != null) {
+      model.marker = MapMarker(
+          title: selectedPlaceItem.name,
+          address: selectedPlaceItem.address,
+          latitude: selectedPlaceItem.latitude,
+          longitude: selectedPlaceItem.longitude,
+          visited: false,
+          photos: selectedPlaceItem.photos
+      );
+      await model.addMarker();
+      Navigator.of(context).pop();
     }
   }
 
-  void savePlace(BuildContext context, MapViewModel model) async {
-    model.marker = MapMarker(
-      title: selectedPlaceItem.name,
-      address: selectedPlaceItem.address,
-      latitude: selectedPlaceItem.latitude,
-      longitude: selectedPlaceItem.longitude,
-      visited: false,
-      photos: selectedPlaceItem.photos
-    );
-    await model.addMarker();
-    Navigator.of(context).pop();
+  void openPlaceAdditionDialog() {
+    showDialog(
+        context: this.context,
+        builder: (context) {
+          return PlaceAdditionFormDialog(
+              updateSelectedItem: updateSelectedItem);
+        });
   }
 
   @override
@@ -54,39 +58,35 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
         child: Consumer<MapViewModel>(
             builder: (context, model, child) {
               return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.drag_handle_rounded, color: Colors.grey),
+                    Center(
+                      child: Icon(Icons.drag_handle_rounded, color: Colors.grey),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 20, right: 20, top: 5),
                       child: FlatButton(
-                          minWidth: double.infinity,
-                          color: Colors.grey.shade200,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
-                          onPressed: () =>
-                          {
-                            showDialog(
-                                context: this.context,
-                                builder: (context) {
-                                  return PlaceAdditionFormDialog(
-                                      updateSelectedItem: updateSelectedItem);
-                                })
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            child: Text(
-                              "場所を検索",
-                              textAlign: TextAlign.left,
-                            ),
-                          )),
+                        color: Colors.deepOrangeAccent,
+                        textColor: Colors.white,
+                        onPressed: openPlaceAdditionDialog,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.search_outlined),
+                            Text("名前で検索"),
+                          ],
+                        ),
+                      )
                     ),
-                    Container(
-                      child: buildSelectedItem(),
+                    Divider(),
+                    Expanded(
+                      child: PlaceAdditionPreviewArea(
+                          placeItem: this.selectedPlaceItem
+                      ),
                     ),
+                    Divider(),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
+                      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

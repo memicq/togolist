@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
 
 import '../../view_models/MapViewModel.dart';
@@ -18,9 +19,11 @@ class MultipleChangeNotifierProviderWrapper extends StatelessWidget {
         create: (_) => UserViewModel(),
         child: Consumer<UserViewModel>(builder: (context, model, _) {
           return ChangeNotifierProvider<MapViewModel>(
-            create: (_) =>
-            MapViewModel(),
-            child: child,
+            create: (_) => MapViewModel(),
+            child: ChangeNotifierProvider<LocationViewModel>(
+              create: (_) => LocationViewModel(),
+              child: child
+            )
           );
         })
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
-import 'package:togolist/widgets/places/PlaceAdditionBackdrop.dart';
+import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 
 import '../../models/TabPage.dart';
 
@@ -24,22 +24,6 @@ class TabAndBackdropLayoutContent extends StatelessWidget {
         ),
         home: this.scaffold
     );
-
-//        Scaffold(
-//          appBar: AppBar(
-//            title: Text(
-//                this.title,
-//                style: TextStyle(
-//                    fontFamily: 'Quicksand',
-//                    fontSize: 20
-//                )
-//            ),
-//          ),
-//          body: Container(
-//            constraints: BoxConstraints.expand(),
-//            child: this.body,
-//          ),
-//        ));
   }
 }
 

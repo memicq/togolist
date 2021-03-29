@@ -19,6 +19,7 @@ class PlaceAdditionFormDialog extends StatefulWidget {
 }
 
 class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
+  bool isSearchedOnce = false;
   var searchQuery = TextEditingController();
 
   List<PlaceItem> placeItems = [];
@@ -33,19 +34,20 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
         await places.searchByText(searchQuery.text, language: 'ja');
 
     setState(() {
+      this.isSearchedOnce = true;
       placeItems = response.results.map((res) {
         List<MapMarkerPhoto> photos = (res.photos != null ? res.photos : List())
             .map((photo) => MapMarkerPhoto(
                 photoReference: photo.photoReference,
                 height: photo.height.toInt(),
-                width: photo.width.toInt())).toList();
+                width: photo.width.toInt()))
+            .toList();
         return PlaceItem(
-          name: res.name,
-          address: res.formattedAddress,
-          latitude: res.geometry.location.lat,
-          longitude: res.geometry.location.lng,
-          photos: photos
-        );
+            name: res.name,
+            address: res.formattedAddress,
+            latitude: res.geometry.location.lat,
+            longitude: res.geometry.location.lng,
+            photos: photos);
       }).toList();
     });
   }
@@ -80,13 +82,50 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
   }
 
   Widget buildResultArea() {
-    return Scrollbar(
-        isAlwaysShown: false,
-        child: SingleChildScrollView(
-          child: Column(
-            children: buildPlacesList(),
-          ),
-        ));
+    if (this.isSearchedOnce && this.placeItems.isNotEmpty) {
+      return Scrollbar(
+          isAlwaysShown: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: buildPlacesList(),
+            ),
+          )
+      );
+    } else if (this.isSearchedOnce && this.placeItems.isEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.not_listed_location_outlined, size: 70, color: Colors.black26),
+          Container(
+            padding: EdgeInsets.only(bottom: 50),
+            child: Text(
+                "結果なし",
+                style: TextStyle(
+                    color: Colors.black45,
+                    fontSize: 13
+                )
+            ),
+          )
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.search, size: 70, color: Colors.black26),
+          Container(
+            padding: EdgeInsets.only(bottom: 50),
+            child: Text(
+                "こちらに検索結果が表示されます",
+                style: TextStyle(
+                    color: Colors.black45,
+                  fontSize: 13
+                )
+            ),
+          )
+        ],
+      );
+    }
   }
 
   @override
@@ -98,11 +137,12 @@ class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
           Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: 350,
+              width: 300,
               child: Column(
                 children: [
                   Container(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: Text("場所を選択"),
+                    child: Text("名前で場所検索"),
                   ),
                   Container(
                     height: 40,
