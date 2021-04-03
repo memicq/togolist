@@ -27,7 +27,7 @@ class PlaceViewState extends State<PlaceView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<PlaceViewModel>(context, listen: true).fetchMarkers();
+    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
   }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
