@@ -37,8 +37,7 @@ class MapViewState extends State<MapView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    MapViewModel viewModel = Provider.of<MapViewModel>(context, listen: true);
-    viewModel.fetchMarkers();
+    Provider.of<MapViewModel>(context, listen: true).fetchMarkers();
   }
 
   Future<void> initCameraPosition(LocationData currentLocation) async {

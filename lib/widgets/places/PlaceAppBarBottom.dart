@@ -4,6 +4,7 @@ import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 
 class PlaceAppBarBottom extends StatelessWidget {
+  TextEditingController _queryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,12 @@ class PlaceAppBarBottom extends StatelessWidget {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(2))),
                   child: TextField(
+                    controller: _queryController,
+//                    onEditingComplete: on,
                     style: TextStyle(
                         fontSize: 14.0, height: 1.2, color: Colors.black),
                     decoration: InputDecoration(
-                        hintText: "名前・住所で検索（未実装）",
+                        hintText: "名前・住所で検索",
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10),
                         isDense: true),

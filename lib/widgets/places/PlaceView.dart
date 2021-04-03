@@ -27,8 +27,7 @@ class PlaceViewState extends State<PlaceView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    PlaceViewModel viewModel = Provider.of<PlaceViewModel>(context, listen: true);
-    viewModel.fetchMarkers();
+    Provider.of<PlaceViewModel>(context, listen: true).fetchMarkers();
   }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
@@ -63,7 +62,8 @@ class PlaceViewState extends State<PlaceView> {
           title: Text("Places", style: AppBarTitleStyle.textStyle),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(50.0),
-              child: PlaceAppBarBottom()),
+              child: PlaceAppBarBottom()
+          ),
         ),
       ),
       body: Consumer<PlaceViewModel>(builder: (context, model, child) {

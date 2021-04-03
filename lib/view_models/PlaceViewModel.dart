@@ -8,9 +8,12 @@ class PlaceViewModel extends ChangeNotifier {
 
   List<MapMarker> viewMarkers = List();
 
+  PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
+  PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
+
   Future<void> fetchMarkers() async {
     this.viewMarkers = await _markerRepositoryFB.listMarker();
-    this._sort(PlaceListSortingKey.PLACE_NAME, PlaceListSortingOrder.ASC);
+    this._sort();
     notifyListeners();
   }
 
@@ -30,23 +33,33 @@ class PlaceViewModel extends ChangeNotifier {
     PlaceListSortingKey sortingKey = PlaceListSortingKey.PLACE_NAME,
     PlaceListSortingOrder sortingOrder = PlaceListSortingOrder.ASC
   }) {
-    this._sort(sortingKey, sortingOrder);
+    this._sortingKey = sortingKey;
+    this._sortingOrder = sortingOrder;
+    this._sort();
     notifyListeners();
   }
 
-  void _sort(PlaceListSortingKey sortingKey, PlaceListSortingOrder sortingOrder) {
-    if (sortingKey == PlaceListSortingKey.PLACE_NAME) {
-      if (sortingOrder == PlaceListSortingOrder.ASC) {
+  void _sort() {
+    if (_sortingKey == PlaceListSortingKey.PLACE_NAME) {
+      if (_sortingOrder == PlaceListSortingOrder.ASC) {
         this.viewMarkers.sort((a, b) => a.title.compareTo(b.title));
       } else {
         this.viewMarkers.sort((b, a) => a.title.compareTo(b.title));
       }
-    } else if (sortingKey == PlaceListSortingKey.DISTANCE) {
-      if (sortingOrder == PlaceListSortingOrder.ASC) {
+    } else if (_sortingKey == PlaceListSortingKey.DISTANCE) {
+      if (_sortingOrder == PlaceListSortingOrder.ASC) {
         this.viewMarkers.sort((a, b) => a.distanceFromMe.compareTo(b.distanceFromMe));
       } else {
         this.viewMarkers.sort((b, a) => a.distanceFromMe.compareTo(b.distanceFromMe));
       }
     }
+  }
+
+  PlaceListSortingKey getCurrentSortingKey() {
+    return _sortingKey;
+  }
+
+  PlaceListSortingOrder getCurrentSortingOrder() {
+    return _sortingOrder;
   }
 }

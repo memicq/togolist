@@ -18,13 +18,16 @@ class PlaceListSortingArea extends StatefulWidget {
 class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
   PlaceViewState placeViewState;
 
-  PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
-  PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
+  PlaceListSortingKey _sortingKey;
+  PlaceListSortingOrder _sortingOrder;
 
   @override
   void initState() {
     super.initState();
     placeViewState = context.findAncestorStateOfType<PlaceViewState>();
+
+    _sortingKey = widget.placeViewModel.getCurrentSortingKey();
+    _sortingOrder = widget.placeViewModel.getCurrentSortingOrder();
   }
 
   IconData buildIcon() {
