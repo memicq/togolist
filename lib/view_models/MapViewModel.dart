@@ -18,6 +18,18 @@ class MapViewModel extends ChangeNotifier {
     });
   }
 
+  Future<void> toggleVisited(MapMarker marker) async {
+    bool updated = !marker.visited;
+    await _getMarkerDocument(marker.markerId).updateData({
+      "visited": updated
+    });
+    MapMarker m = this.markers.firstWhere((m) => m.markerId == marker.markerId);
+    if (m != null){
+      m.visited = updated;
+    }
+    notifyListeners();
+  }
+
   void updateUserDatabase() async {
     final FirebaseUser user = await auth.currentUser();
     if (user != null) {
@@ -39,9 +51,9 @@ class MapViewModel extends ChangeNotifier {
         res.documents.map((doc) async {
           final photosRes = await doc.reference.collection('photos').getDocuments();
           final photos = photosRes.documents.map((doc) => MapMarkerPhoto(
-            photoReference: doc['photoReference'],
-            height: doc['height'],
-            width: doc['width']
+              photoReference: doc['photoReference'],
+              height: doc['height'],
+              width: doc['width']
           )).toList();
           return MapMarker(
               markerId: doc.documentID,
@@ -79,11 +91,10 @@ class MapViewModel extends ChangeNotifier {
         .collection('photos')
         .getDocuments()
         .then((snapshot) {
-          for (DocumentSnapshot ds in snapshot.documents) ds.reference.delete();
-        });
+      for (DocumentSnapshot ds in snapshot.documents) ds.reference.delete();
+    });
     await _getMarkerDocument(marker.markerId).delete();
     await fetchMarkers();
-    notifyListeners();
   }
 
   void sortMarkers({

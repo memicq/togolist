@@ -14,8 +14,9 @@ class PlaceDetailView extends StatelessWidget {
     return tags
         .map((tag) => Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Chip(
-                label: Text(
+              child:
+                Chip(
+                   label: Text(
                   tag,
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),

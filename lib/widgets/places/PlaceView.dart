@@ -68,8 +68,8 @@ class PlaceViewState extends State<PlaceView> {
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Center(
                       child: ListView(children: [
-                    Padding(padding: EdgeInsets.only(top: 10)),
-                    PlaceListSortingArea(
+                        Padding(padding: EdgeInsets.only(top: 10)),
+                        PlaceListSortingArea(
                       mapViewModel: model,
                       locationDisabled: (lmodel.currentLocation == null),
                     ),
