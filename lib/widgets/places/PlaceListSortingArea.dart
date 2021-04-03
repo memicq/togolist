@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/places/PlaceListSortingDialog.dart';
@@ -9,6 +8,7 @@ import 'package:togolist/widgets/places/PlaceView.dart';
 class PlaceListSortingArea extends StatefulWidget {
   MapViewModel mapViewModel;
   bool locationDisabled = false;
+
   PlaceListSortingArea({this.mapViewModel, this.locationDisabled = false});
 
   @override
@@ -60,9 +60,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     });
 
     widget.mapViewModel.sortMarkers(
-        sortingKey: this._sortingKey,
-        sortingOrder: this._sortingOrder
-    );
+        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   void toggleSortingOrder() {
@@ -77,9 +75,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     }
 
     widget.mapViewModel.sortMarkers(
-        sortingKey: this._sortingKey,
-        sortingOrder: this._sortingOrder
-    );
+        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   @override
@@ -87,6 +83,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+
         SizedBox(
           height: 35,
           child: TextButton(

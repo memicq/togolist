@@ -88,45 +88,45 @@ class MapViewState extends State<MapView> {
         appBar: MapAppBar(),
         body: Center(
           child: Consumer<MapViewModel>(builder: (context, model, child) {
-            return Consumer<LocationViewModel>(builder: (lContext, lModel, lChild) {
+            return Consumer<LocationViewModel>(
+                builder: (lContext, lModel, lChild) {
               return Stack(alignment: Alignment.topLeft, children: [
-              Scaffold(
-                body: Container(
+                Container(
                     child: GoogleMap(
-                      onMapCreated: (controller) => _onMapCreated(controller, lModel.currentLocation),
-                      onCameraMove: (CameraPosition cameraPosition) {
-                        currentCameraPosition = cameraPosition;
-                        setMarkerRotation(cameraPosition);
-                      },
-                      initialCameraPosition: INITIAL_CAMERA_POSITION,
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      zoomGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      markers: model.markers
-                          .map((marker) => Marker(
-                              markerId: MarkerId(marker.address),
-                              position:
-                                  LatLng(marker.latitude, marker.longitude),
-                              infoWindow: InfoWindow(
-                                  title: marker.title, snippet: marker.address),
-                              flat: true,
-                              icon: BitmapDescriptor.defaultMarker,
-                              anchor: GOOGLE_ANCHOR_OFFSET,
-                              onTap: () => pointCamera(marker),
-                              rotation: markerRotation))
-                          .toSet())
-                ),
-              ),
-              Positioned(
-                  bottom: 20.0,
-                  right: 20.0,
-                  child: GradatedIconButton(
-                      icon: Icon(
-                        Icons.near_me,
-                      ),
-                      onPressed: () => currentPlaceCamera(lModel.currentLocation)))
+                        onMapCreated: (controller) =>
+                            _onMapCreated(controller, lModel.currentLocation),
+                        onCameraMove: (CameraPosition cameraPosition) {
+                          currentCameraPosition = cameraPosition;
+                          setMarkerRotation(cameraPosition);
+                        },
+                        initialCameraPosition: INITIAL_CAMERA_POSITION,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        zoomGesturesEnabled: true,
+                        rotateGesturesEnabled: true,
+                        markers: model.markers
+                            .map((marker) => Marker(
+                                markerId: MarkerId(marker.address),
+                                position:
+                                    LatLng(marker.latitude, marker.longitude),
+                                infoWindow: InfoWindow(
+                                    title: marker.title,
+                                    snippet: marker.address),
+                                flat: true,
+                                icon: BitmapDescriptor.defaultMarker,
+                                anchor: GOOGLE_ANCHOR_OFFSET,
+                                onTap: () => pointCamera(marker),
+                                rotation: markerRotation))
+                            .toSet())),
+                Positioned(
+                    bottom: 20.0,
+                    right: 20.0,
+                    child: GradatedIconButton(
+                        icon: Icon(
+                          Icons.near_me,
+                        ),
+                        onPressed: () => currentPlaceCamera(lModel.currentLocation)))
               ]);
             });
           }),

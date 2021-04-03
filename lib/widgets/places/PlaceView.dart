@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
-import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';

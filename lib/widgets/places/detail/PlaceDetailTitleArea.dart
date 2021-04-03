@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
@@ -19,13 +17,13 @@ class PlaceDetailTitleArea extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children:<Widget> [
           Row(
             children: [
               Padding(
                 padding: EdgeInsets.only(right: 5),
-                child:
-                buildIcon()
+                child: buildIcon(),
               ),
               Text(
                 this.marker.title,
@@ -34,12 +32,13 @@ class PlaceDetailTitleArea extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            this.marker.address,
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-          
-
+          Padding(
+            padding: EdgeInsets.only(top: 3),
+            child: Text(
+              this.marker.address,
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          )
         ],
       ),
     );

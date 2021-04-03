@@ -33,8 +33,6 @@ class LoginViewState extends State<LoginView> {
 
       final FirebaseUser user = (await auth.signInWithCredential(credential)).user;
 
-
-
       return user;
     } catch (e) {
       print(e);
@@ -103,17 +101,6 @@ class LoginViewState extends State<LoginView> {
                       color: Colors.redAccent,
                       textColor: Colors.white,
                     ),
-                    FlatButton(
-                      onPressed: () => {},
-                      child: SizedBox(
-                          width: 140,
-                          child: Center(
-                            child: Text("Login by Facebook"),
-                          )
-                      ),
-                      color: Colors.blueAccent,
-                      textColor: Colors.white,
-                    )
                   ]
               )
           )

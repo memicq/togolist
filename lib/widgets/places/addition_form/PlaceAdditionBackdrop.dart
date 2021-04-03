@@ -6,6 +6,7 @@ import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/widgets/common/GradatedTextButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionFormDialog.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionPreviewArea.dart';
 
@@ -92,21 +93,10 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
                           children: [
                             SizedBox(
                               width: 100,
-                              child: TextButton(
+                              child: GradatedTextButton(
+                                text: '保存',
                                 onPressed: () => savePlace(context, model),
-                                child: Center(
-                                  child: Text(
-                                    '保存',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        foreground: Paint()
-                                          ..shader = FontShader
-                                              .linearGradientShader
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              )
                             ),
                           ]
                       ),

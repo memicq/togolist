@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:togolist/models/MapMarkerFilterCondition.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/MapMarkerPhoto.dart';
@@ -11,6 +12,8 @@ class MapViewModel extends ChangeNotifier {
 
   MapMarker marker;
   List<MapMarker> markers = List();
+
+  MapMarkerFilterCondition condition = MapMarkerFilterCondition();
 
   MapViewModel() {
     Future(() async {
@@ -55,6 +58,7 @@ class MapViewModel extends ChangeNotifier {
         })
     );
     this.markers = markers.toList();
+    this._filter(this.condition);
     this._sort(PlaceListSortingKey.PLACE_NAME, PlaceListSortingOrder.ASC);
     notifyListeners();
   }
@@ -94,6 +98,11 @@ class MapViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  void updateCondition(MapMarkerFilterCondition condition) {
+    this.condition = condition;
+  }
+
   void _sort(PlaceListSortingKey sortingKey, PlaceListSortingOrder sortingOrder) {
     if (sortingKey == PlaceListSortingKey.PLACE_NAME) {
       if (sortingOrder == PlaceListSortingOrder.ASC) {
@@ -108,6 +117,18 @@ class MapViewModel extends ChangeNotifier {
         this.markers.sort((b, a) => a.distanceFromMe.compareTo(b.distanceFromMe));
       }
     }
+  }
+
+  void _filter(MapMarkerFilterCondition condition) {
+    var filteredMarkers = this.markers;
+
+    if (condition.visitedCondition == MapMarkerFilterVisited.VISITED) {
+      filteredMarkers = this.markers.where((m) => m.visited == true).toList();
+    } else if (condition.visitedCondition == MapMarkerFilterVisited.NOT_VISITED) {
+      filteredMarkers = this.markers.where((m) => m.visited == false).toList();
+    }
+
+    this.markers = filteredMarkers;
   }
 
   DocumentReference _getMarkerDocument(String markerId) {
