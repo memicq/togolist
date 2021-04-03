@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,6 +33,13 @@ class MapViewState extends State<MapView> {
   double markerRotation = 0.0;
 
   Completer<GoogleMapController> _controller = Completer();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MapViewModel viewModel = Provider.of<MapViewModel>(context, listen: true);
+    viewModel.fetchMarkers();
+  }
 
   Future<void> initCameraPosition(LocationData currentLocation) async {
     final GoogleMapController controller = await _controller.future;
@@ -105,7 +111,7 @@ class MapViewState extends State<MapView> {
                         zoomControlsEnabled: false,
                         zoomGesturesEnabled: true,
                         rotateGesturesEnabled: true,
-                        markers: model.markers
+                        markers: model.viewMarkers
                             .map((marker) => Marker(
                                 markerId: MarkerId(marker.address),
                                 position:

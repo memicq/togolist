@@ -6,6 +6,7 @@ import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionFormDialog.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionPreviewArea.dart';
@@ -24,9 +25,9 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
     });
   }
 
-  void savePlace(BuildContext context, MapViewModel model) async {
+  void savePlace(BuildContext context, PlaceViewModel model) async {
     if (selectedPlaceItem != null) {
-      model.marker = MapMarker(
+      MapMarker marker = MapMarker(
           title: selectedPlaceItem.name,
           address: selectedPlaceItem.address,
           latitude: selectedPlaceItem.latitude,
@@ -34,7 +35,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
           visited: false,
           photos: selectedPlaceItem.photos
       );
-      await model.addMarker();
+      await model.addMarker(marker);
       Navigator.of(context).pop();
     }
   }
@@ -56,7 +57,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
           borderRadius: BorderRadius.vertical(
               top: SheetShape.defaultRoundedRadius),
         ),
-        child: Consumer<MapViewModel>(
+        child: Consumer<PlaceViewModel>(
             builder: (context, model, child) {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
