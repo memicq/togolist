@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 
-class PlaceAppBarBottom extends StatelessWidget {
-  TextEditingController _queryController = TextEditingController();
+class PlaceAppBarBottom extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => PlaceAppBarBottomState();
+}
+
+class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
+  TextEditingController queryString = TextEditingController();
+  PlaceViewModel placeViewModel;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
+    queryString.text = placeViewModel.getFilterQuery();
+  }
+
+  void filterByQuery() {
+    placeViewModel.filterMarkers(queryString.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +39,8 @@ class PlaceAppBarBottom extends StatelessWidget {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(2))),
                   child: TextField(
-                    controller: _queryController,
-//                    onEditingComplete: on,
+                    controller: queryString,
+                    onEditingComplete: filterByQuery,
                     style: TextStyle(
                         fontSize: 14.0, height: 1.2, color: Colors.black),
                     decoration: InputDecoration(

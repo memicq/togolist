@@ -10,9 +10,11 @@ class PlaceViewModel extends ChangeNotifier {
 
   PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
   PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
+  String _filterQuery = '';
 
   Future<void> fetchMarkers() async {
     this.viewMarkers = await _markerRepositoryFB.listMarker();
+    this._filter();
     this._sort();
     notifyListeners();
   }
@@ -29,6 +31,12 @@ class PlaceViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void filterMarkers(String query) {
+    this._filterQuery = query;
+    this._filter();
+    notifyListeners();
+  }
+
   void sortMarkers({
     PlaceListSortingKey sortingKey = PlaceListSortingKey.PLACE_NAME,
     PlaceListSortingOrder sortingOrder = PlaceListSortingOrder.ASC
@@ -37,6 +45,13 @@ class PlaceViewModel extends ChangeNotifier {
     this._sortingOrder = sortingOrder;
     this._sort();
     notifyListeners();
+  }
+
+  void _filter() {
+    List<MapMarker> filteredMarkers = this.viewMarkers.where((marker) =>
+    marker.title.contains(this._filterQuery) || marker.address.contains(this._filterQuery)
+    ).toList();
+    this.viewMarkers = filteredMarkers;
   }
 
   void _sort() {
@@ -61,5 +76,9 @@ class PlaceViewModel extends ChangeNotifier {
 
   PlaceListSortingOrder getCurrentSortingOrder() {
     return _sortingOrder;
+  }
+
+  String getFilterQuery() {
+    return _filterQuery;
   }
 }
