@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/repositories/MarkerRepositoryFB.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
 
@@ -33,8 +34,6 @@ class LoginViewState extends State<LoginView> {
 
       final FirebaseUser user = (await auth.signInWithCredential(credential)).user;
 
-
-
       return user;
     } catch (e) {
       print(e);
@@ -47,13 +46,12 @@ class LoginViewState extends State<LoginView> {
       isButtonDisplayed = false;
     });
 
-    await doSignIn().then((FirebaseUser user) {
+    await doSignIn().then((FirebaseUser user) async {
       final userViewModel = Provider.of<UserViewModel>(context, listen: false);
       userViewModel.setUser(user);
 
       if (userViewModel.user != null) {
-        final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
-        mapViewModel.updateUserDatabase();
+        await MarkerRepositoryFB().updateUser();
 
         Navigator.of(context, rootNavigator: true).pop();
       } else {
@@ -103,17 +101,6 @@ class LoginViewState extends State<LoginView> {
                       color: Colors.redAccent,
                       textColor: Colors.white,
                     ),
-                    FlatButton(
-                      onPressed: () => {},
-                      child: SizedBox(
-                          width: 140,
-                          child: Center(
-                            child: Text("Login by Facebook"),
-                          )
-                      ),
-                      color: Colors.blueAccent,
-                      textColor: Colors.white,
-                    )
                   ]
               )
           )

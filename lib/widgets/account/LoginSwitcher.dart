@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
+import 'package:togolist/repositories/MarkerRepositoryFB.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
 
@@ -21,13 +22,12 @@ class LoginSwitcherState extends State<LoginSwitcher> {
   void checkUser() async {
     final currentUser = await FirebaseAuth.instance.currentUser();
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
 
     if(currentUser == null){
       Navigator.of(context, rootNavigator: true).pushNamed("/login");
     } else {
       await userViewModel.setUser(currentUser);
-      await mapViewModel.updateUserDatabase();
+      await MarkerRepositoryFB().updateUser();
       setState(() {
         this.isLoading = false;
       });

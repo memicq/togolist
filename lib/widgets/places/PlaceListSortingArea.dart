@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/PlaceListSortingDialog.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
 
 class PlaceListSortingArea extends StatefulWidget {
-  MapViewModel mapViewModel;
+  PlaceViewModel placeViewModel;
   bool locationDisabled = false;
-  PlaceListSortingArea({this.mapViewModel, this.locationDisabled = false});
+
+  PlaceListSortingArea({this.placeViewModel, this.locationDisabled = false});
 
   @override
   State<StatefulWidget> createState() => PlaceListSortingAreaState();
@@ -18,13 +18,16 @@ class PlaceListSortingArea extends StatefulWidget {
 class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
   PlaceViewState placeViewState;
 
-  PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
-  PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
+  PlaceListSortingKey _sortingKey;
+  PlaceListSortingOrder _sortingOrder;
 
   @override
   void initState() {
     super.initState();
     placeViewState = context.findAncestorStateOfType<PlaceViewState>();
+
+    _sortingKey = widget.placeViewModel.getCurrentSortingKey();
+    _sortingOrder = widget.placeViewModel.getCurrentSortingOrder();
   }
 
   IconData buildIcon() {
@@ -59,10 +62,8 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
       this._sortingKey = sortingKey;
     });
 
-    widget.mapViewModel.sortMarkers(
-        sortingKey: this._sortingKey,
-        sortingOrder: this._sortingOrder
-    );
+    widget.placeViewModel.sortMarkers(
+        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   void toggleSortingOrder() {
@@ -76,10 +77,8 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
       });
     }
 
-    widget.mapViewModel.sortMarkers(
-        sortingKey: this._sortingKey,
-        sortingOrder: this._sortingOrder
-    );
+    widget.placeViewModel.sortMarkers(
+        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   @override
@@ -87,6 +86,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+
         SizedBox(
           height: 35,
           child: TextButton(

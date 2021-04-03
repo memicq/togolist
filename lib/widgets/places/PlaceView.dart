@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
-import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
@@ -24,6 +23,12 @@ class PlaceViewState extends State<PlaceView> {
   GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
 
   BackdropService backdropService = BackdropService();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
+  }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
     return markers.map((marker) {
@@ -60,7 +65,7 @@ class PlaceViewState extends State<PlaceView> {
               child: PlaceAppBarBottom()),
         ),
       ),
-      body: Consumer<MapViewModel>(builder: (context, model, child) {
+      body: Consumer<PlaceViewModel>(builder: (context, model, child) {
         return Consumer<LocationViewModel>(builder: (lcontext, lmodel, lchild) {
           return Stack(
             children: [
@@ -68,12 +73,12 @@ class PlaceViewState extends State<PlaceView> {
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Center(
                       child: ListView(children: [
-                        Padding(padding: EdgeInsets.only(top: 10)),
-                        PlaceListSortingArea(
-                      mapViewModel: model,
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    PlaceListSortingArea(
+                      placeViewModel: model,
                       locationDisabled: (lmodel.currentLocation == null),
                     ),
-                    ...buildCardList(model.markers),
+                    ...buildCardList(model.viewMarkers),
                   ]))),
               Positioned(
                 right: 20,

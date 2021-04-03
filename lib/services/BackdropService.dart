@@ -12,7 +12,7 @@ class BackdropService {
 
   BackdropService._internal();
 
-  Function openBackdrop = () { print("openBackDrop is null"); };
+  Function openBackdrop = ({Widget page, double height}) { print("openBackDrop is null"); };
   void setOpenBackdropFunction(Function openBackdrop){
     this.openBackdrop = openBackdrop;
   }

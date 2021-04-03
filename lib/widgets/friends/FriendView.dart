@@ -18,21 +18,12 @@ class FriendViewState extends State<FriendView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Friends",
-            style: TextStyle(
-              color:Colors.pinkAccent
-
-
-            )
-            //AppBarTitleStyle.textStyle
-
-        ),
+        title: Text("Friends"),
         actions: [
           FlatButton(
               onPressed: (){},
               child: Icon(
-                  Icons.person_add,
+                Icons.person_add,
                 color: ColorSettings.primaryColor['lighten'],
               )
           )

@@ -1,10 +1,9 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 
 class PlaceDetailTitleArea extends StatefulWidget {
   MapMarker marker;
@@ -22,7 +21,7 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MapViewModel>(builder: (context, model, child) {
+    return Consumer<PlaceViewModel>(builder: (context, model, child) {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: Column(

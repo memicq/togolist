@@ -47,14 +47,14 @@ class ToGoApp extends StatelessWidget {
             Icon(Icons.format_list_bulleted, color: Colors.grey, size: 25),
         activeIcon:
             Icon(Icons.view_list, color: ColorSettings.primaryColor, size: 30)),
-    3: TabPage(
-      title: "friends",
-      content: TabAndBackdropLayoutContent(
-        title: "friends",
-        scaffold: FriendView()
-      ),
-      baseIcon: Icon(Icons.people_alt_outlined, color: Colors.grey, size: 25),
-      activeIcon: Icon(Icons.people_alt_rounded, color: ColorSettings.primaryColor, size: 30)),
+//    3: TabPage(
+//      title: "friends",
+//      content: TabAndBackdropLayoutContent(
+//        title: "friends",
+//        scaffold: FriendView()
+//      ),
+//      baseIcon: Icon(Icons.people_alt_outlined, color: Colors.grey, size: 25),
+//      activeIcon: Icon(Icons.people_alt_rounded, color: ColorSettings.primaryColor, size: 30)),
     4: TabPage(
         title: "accounts",
         content: TabAndBackdropLayoutContent(

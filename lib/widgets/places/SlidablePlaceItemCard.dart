@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/PlaceItemCard.dart';
 
 import 'PlaceView.dart';
@@ -54,7 +55,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
     placeItemCardGlobalKey.currentState?.closeSlidable();
   }
 
-  void deleteMarker(MapViewModel model) async {
+  void deleteMarker(PlaceViewModel model) async {
     await model.deleteMarker(widget.marker);
     placeViewState?.notifySlididableCardClosed(widget.key);
   }
@@ -72,7 +73,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
       secondaryActions: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 4),
-          child: Consumer<MapViewModel>(builder: (context, model, child) {
+          child: Consumer<PlaceViewModel>(builder: (context, model, child) {
             return IconSlideAction(
               caption: '削除',
               color: Colors.red,
