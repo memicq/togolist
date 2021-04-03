@@ -96,4 +96,15 @@ class MarkerRepositoryFB {
         .document('${marker.markerId}')
         .delete();
   }
+
+  Future<void> updateVisited(MapMarker marker, bool visited) async {
+    await Firestore.instance
+        .collection('users')
+        .document('${this.userId}')
+        .collection('markers')
+        .document('${marker.markerId}')
+        .updateData({
+          "visited": visited
+        });
+  }
 }

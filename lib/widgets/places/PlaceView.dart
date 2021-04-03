@@ -62,8 +62,7 @@ class PlaceViewState extends State<PlaceView> {
           title: Text("Places", style: AppBarTitleStyle.textStyle),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(50.0),
-              child: PlaceAppBarBottom()
-          ),
+              child: PlaceAppBarBottom()),
         ),
       ),
       body: Consumer<PlaceViewModel>(builder: (context, model, child) {

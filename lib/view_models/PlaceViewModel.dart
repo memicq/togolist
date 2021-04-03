@@ -31,6 +31,14 @@ class PlaceViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> toggleVisited(MapMarker marker) async {
+    bool updated = !marker.visited;
+    await _markerRepositoryFB.updateVisited(marker, updated);
+    MapMarker m = this.viewMarkers.firstWhere((m) => m.markerId == marker.markerId);
+    if (m != null){ m.visited = updated; }
+    notifyListeners();
+  }
+
   void filterMarkers(String query) {
     this._filterQuery = query;
     this._filter();
