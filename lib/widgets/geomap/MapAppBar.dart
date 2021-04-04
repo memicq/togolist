@@ -34,7 +34,7 @@ class MapAppBarState extends State<MapAppBar> {
 
   void openMapMarkerFilterBackdrop() {
     _backdropService.openBackdrop(
-        page: MapMarkerFilterBackdrop(), height: 180.0);
+        page: MapMarkerFilterBackdrop(), height: 250.0);
   }
 
   @override

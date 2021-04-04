@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarkerFilterCondition.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
+import 'package:togolist/widgets/geomap/MapMarkerFilterItemTile.dart';
 
 class MapMarkerFilterBackdrop extends StatefulWidget {
   MapMarkerFilterBackdrop();
@@ -22,9 +24,9 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
     condition = mapViewModel.condition;
   }
 
-  void setVisitedCondition(MapMarkerFilterVisited cond) {
+  void setVisitedCondition(int visitedIndex) {
     setState(() {
-      this.condition.visitedCondition = cond;
+      this.condition.visitedCondition = MapMarkerFilterVisited.values[visitedIndex];
     });
   }
 
@@ -43,41 +45,24 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
         borderRadius: BorderRadius.vertical(
             top: SheetShape.defaultRoundedRadius),
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 20),
       child: Column(
         children: [
           Text("フィルターを選択"), // TODO: 「キー」という言葉はおそらくわかりにくいので修正する
           Divider(),
-          Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            defaultColumnWidth: IntrinsicColumnWidth(),
+          Column(
             children: [
-              TableRow(
-                  children: [
-                    Text("行ったこと", style: TextStyle(fontWeight: FontWeight.bold)),
-                    Row(
-                      children: [
-                        Radio(
-                          value: MapMarkerFilterVisited.NOT_SET,
-                          groupValue: this.condition.visitedCondition,
-                          onChanged: setVisitedCondition,
-                        ),
-                        Text("未設定"),
-                        Radio(
-                          value: MapMarkerFilterVisited.VISITED,
-                          groupValue: this.condition.visitedCondition,
-                          onChanged: setVisitedCondition,
-                        ),
-                        Text("あり"),
-                        Radio(
-                          value: MapMarkerFilterVisited.NOT_VISITED,
-                          groupValue: this.condition.visitedCondition,
-                          onChanged: setVisitedCondition,
-                        ),
-                        Text("なし"),
-                      ],
-                    )
-                  ]
+              MapMarkerFilterItemTile(
+                iconData: FontAwesomeIcons.shoePrints,
+                title: '足跡',
+                description: '行った / 行ってない で絞り込む',
+                items: [
+                  DropdownMenuItem(child: Text("未設定"), value: MapMarkerFilterVisited.NOT_SET.index),
+                  DropdownMenuItem(child: Text("行った"), value: MapMarkerFilterVisited.VISITED.index),
+                  DropdownMenuItem(child: Text("行ってない"), value: MapMarkerFilterVisited.NOT_VISITED.index),
+                ],
+                selected: this.condition.visitedCondition.index,
+                onChanged: setVisitedCondition,
               )
             ],
           ),

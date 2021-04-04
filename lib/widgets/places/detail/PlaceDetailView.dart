@@ -53,10 +53,6 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
               onChanged: onChangeVisitedSwitch,
               activeColor: ColorSettings.primaryColor,
             ),
-//            Transform.rotate(
-//              angle: -pi/4,
-//              child: Icon(FontAwesomeIcons.shoePrints),
-//            )
           ],
         ),
         body: Container(
