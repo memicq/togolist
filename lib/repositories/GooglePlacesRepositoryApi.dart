@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:google_maps_webservice/places.dart';

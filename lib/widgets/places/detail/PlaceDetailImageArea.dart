@@ -22,12 +22,14 @@ class PlaceDetailImageArea extends StatelessWidget {
   }
 
   List<Widget> buildImages() {
-    return this.images.map((image) {
+    List<Widget> images = this.images.map((image) {
       return Padding(
         padding: EdgeInsets.only(left: 10),
         child: image,
       );
     }).toList();
+    images.shuffle();
+    return images;
   }
 
   @override

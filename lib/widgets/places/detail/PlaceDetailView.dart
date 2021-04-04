@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
@@ -49,7 +52,11 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
               value: this._isVisited,
               onChanged: onChangeVisitedSwitch,
               activeColor: ColorSettings.primaryColor,
-            )
+            ),
+//            Transform.rotate(
+//              angle: -pi/4,
+//              child: Icon(FontAwesomeIcons.shoePrints),
+//            )
           ],
         ),
         body: Container(

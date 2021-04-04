@@ -60,7 +60,7 @@ class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
                     style: TextStyle(
                         fontSize: 14.0, height: 1.2, color: Colors.black),
                     decoration: InputDecoration(
-                      hintText: "名前・住所で検索",
+                      hintText: "一覧から名前・住所で検索",
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                       isDense: true,
                       border: InputBorder.none,
