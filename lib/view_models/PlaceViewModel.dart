@@ -60,7 +60,7 @@ class PlaceViewModel extends ChangeNotifier {
 
   void _filter() {
     List<MapMarker> filteredMarkers = this._fullMarkers.where((marker) =>
-    marker.title.contains(this._filterQuery) || marker.address.contains(this._filterQuery)
+    marker.name.contains(this._filterQuery) || marker.address.contains(this._filterQuery)
     ).toList();
     this.viewMarkers = filteredMarkers;
   }
@@ -68,9 +68,9 @@ class PlaceViewModel extends ChangeNotifier {
   void _sort() {
     if (_sortingKey == PlaceListSortingKey.PLACE_NAME) {
       if (_sortingOrder == PlaceListSortingOrder.ASC) {
-        this.viewMarkers.sort((a, b) => a.title.compareTo(b.title));
+        this.viewMarkers.sort((a, b) => a.name.compareTo(b.name));
       } else {
-        this.viewMarkers.sort((b, a) => a.title.compareTo(b.title));
+        this.viewMarkers.sort((b, a) => a.name.compareTo(b.name));
       }
     } else if (_sortingKey == PlaceListSortingKey.DISTANCE) {
       if (_sortingOrder == PlaceListSortingOrder.ASC) {

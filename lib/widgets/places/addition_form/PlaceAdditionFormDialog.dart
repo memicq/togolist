@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:togolist/const/Shape.dart';
-import 'package:togolist/models/MapMarkerPhoto.dart';
 import 'package:togolist/models/PlaceItem.dart';
-import 'package:google_maps_webservice/places.dart' as Places;
-import 'package:togolist/const/Credentials.dart';
+import 'package:togolist/repositories/GooglePlacesRepositoryApi.dart';
 
 class PlaceAdditionFormDialog extends StatefulWidget {
   Function updateSelectedItem;
@@ -21,34 +17,16 @@ class PlaceAdditionFormDialog extends StatefulWidget {
 class PlaceAdditionFormDialogState extends State<PlaceAdditionFormDialog> {
   bool isSearchedOnce = false;
   var searchQuery = TextEditingController();
+  GooglePlacesRepositoryApi _placesRepositoryApi = GooglePlacesRepositoryApi();
 
   List<PlaceItem> placeItems = [];
 
   Future<void> fetchPlaces() async {
-    String apiKey = (Platform.isIOS)
-        ? Credentials.googleApiKeyIOS
-        : Credentials.googleApiKeyAndroid;
-
-    final places = Places.GoogleMapsPlaces(apiKey: apiKey);
-    Places.PlacesSearchResponse response =
-        await places.searchByText(searchQuery.text, language: 'ja');
+    List<PlaceItem> items = await _placesRepositoryApi.searchPlaceByText(searchQuery.text);
 
     setState(() {
       this.isSearchedOnce = true;
-      placeItems = response.results.map((res) {
-        List<MapMarkerPhoto> photos = (res.photos != null ? res.photos : List())
-            .map((photo) => MapMarkerPhoto(
-                photoReference: photo.photoReference,
-                height: photo.height.toInt(),
-                width: photo.width.toInt()))
-            .toList();
-        return PlaceItem(
-            name: res.name,
-            address: res.formattedAddress,
-            latitude: res.geometry.location.lat,
-            longitude: res.geometry.location.lng,
-            photos: photos);
-      }).toList();
+      placeItems = items;
     });
   }
 

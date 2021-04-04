@@ -2,32 +2,56 @@ import 'package:togolist/models/MapMarkerPhoto.dart';
 
 class MapMarker {
   String markerId;
-  String title;
-  String address;
+  String googlePlaceId;
+
+  String name;
   double latitude;
   double longitude;
-  bool visited = false;
-  List<MapMarkerPhoto> photos = List();
+  String address;
+  String adrAddress;
 
+  String website;
+  String phoneNumber;
+
+  List<String> types;
+  List<MapMarkerPhoto> photos = List();
+  bool permanentlyClosed;
+
+  bool visited = false;
+  String memo = '';
   double distanceFromMe = null;
 
   MapMarker({
     this.markerId = null,
-    this.title,
-    this.address,
+    this.googlePlaceId,
+    this.name,
     this.latitude,
     this.longitude,
+    this.address,
+    this.adrAddress,
+    this.website,
+    this.phoneNumber,
+    this.types,
+    this.photos,
+    this.permanentlyClosed,
     this.visited = false,
-    this.photos
+    this.memo = '',
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'title': this.title,
-      'address': this.address,
+      'googlePlaceId': this.googlePlaceId,
+      'name': this.name,
       'latitude': this.latitude,
       'longitude': this.longitude,
-      'visited': this.visited
+      'address': this.address,
+      'adrAddress': this.adrAddress,
+      'website': this.website,
+      'phoneNumber': this.phoneNumber,
+      'typeString': this.types.join(','),
+      'permanentlyClosed': this.permanentlyClosed,
+      'visited': this.visited,
+      'memo': this.memo
     };
   }
 }

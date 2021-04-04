@@ -116,7 +116,7 @@ class MapViewState extends State<MapView> {
                                 position:
                                     LatLng(marker.latitude, marker.longitude),
                                 infoWindow: InfoWindow(
-                                    title: marker.title,
+                                    title: marker.name,
                                     snippet: marker.address),
                                 flat: true,
                                 icon: BitmapDescriptor.defaultMarker,

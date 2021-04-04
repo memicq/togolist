@@ -37,12 +37,19 @@ class MarkerRepositoryFB {
           final photos = await listMarkerPhotos(doc.documentID);
           return MapMarker(
               markerId: doc.documentID,
-              title: doc['title'],
-              address: doc['address'],
+              googlePlaceId: doc['googlePlaceId'],
+              name: doc['name'],
               latitude: doc['latitude'],
               longitude: doc['longitude'],
+              address: doc['address'],
+              adrAddress: doc['adrAddress'],
+              website: doc['website'],
+              phoneNumber: doc['phoneNumber'],
+              types: (doc['typeString'] as String).split(','),
+              photos: photos,
+              permanentlyClosed: doc['permanentlyClosed'],
               visited: doc['visited'],
-              photos: photos
+              memo: doc['memo']
           );
         }).toList()
     );

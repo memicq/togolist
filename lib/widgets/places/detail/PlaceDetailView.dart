@@ -46,7 +46,7 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
           backgroundColor: Colors.white,
           actions: <Widget>[
             Switch(
-              value: _isVisited,
+              value: this._isVisited,
               onChanged: onChangeVisitedSwitch,
               activeColor: ColorSettings.primaryColor,
             )

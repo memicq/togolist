@@ -132,7 +132,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                     ),
                     Expanded(
                       child: Text(
-                        widget.marker.title,
+                        widget.marker.name,
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,

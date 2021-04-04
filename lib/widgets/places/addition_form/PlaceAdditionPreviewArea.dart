@@ -9,8 +9,8 @@ class PlaceAdditionPreviewArea extends StatelessWidget {
   PlaceAdditionPreviewArea({this.placeItem});
 
   Widget buildPlacePreviewImageArea() {
-    if (this.placeItem != null && this.placeItem.photos != null) {
-      return PlaceDetailImageArea(googlePhotos: this.placeItem.photos);
+    if (this.placeItem != null && this.placeItem.placeItemDetail.photos != null) {
+      return PlaceDetailImageArea(googlePhotos: this.placeItem.placeItemDetail.photos);
     } else {
       return Container(
         height: 200,

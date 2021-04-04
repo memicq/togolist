@@ -5,6 +5,7 @@ import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
+import 'package:togolist/repositories/GooglePlacesRepositoryApi.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
@@ -17,9 +18,13 @@ class PlaceAdditionBackdrop extends StatefulWidget {
 }
 
 class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
+  GooglePlacesRepositoryApi _placesRepositoryApi = GooglePlacesRepositoryApi();
+
   PlaceItem selectedPlaceItem = null;
 
-  void updateSelectedItem(PlaceItem item) {
+  void updateSelectedItem(PlaceItem item) async {
+    PlaceItemDetail detail = await _placesRepositoryApi.fetchPlaceDetailByPlaceId(item.googlePlaceId);
+    item.setPlaceItemDetail(detail);
     setState(() {
       this.selectedPlaceItem = item;
     });
@@ -28,12 +33,18 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
   void savePlace(BuildContext context, PlaceViewModel model) async {
     if (selectedPlaceItem != null) {
       MapMarker marker = MapMarker(
-          title: selectedPlaceItem.name,
-          address: selectedPlaceItem.address,
-          latitude: selectedPlaceItem.latitude,
-          longitude: selectedPlaceItem.longitude,
-          visited: false,
-          photos: selectedPlaceItem.photos
+        googlePlaceId: selectedPlaceItem.googlePlaceId,
+        name: selectedPlaceItem.name,
+        latitude: selectedPlaceItem.latitude,
+        longitude: selectedPlaceItem.longitude,
+        address: selectedPlaceItem.address,
+        adrAddress: selectedPlaceItem.placeItemDetail.adrAddress,
+        website: selectedPlaceItem.placeItemDetail.website,
+        phoneNumber: selectedPlaceItem.placeItemDetail.phoneNumber,
+        types: selectedPlaceItem.placeItemDetail.types,
+        photos: selectedPlaceItem.placeItemDetail.photos,
+        permanentlyClosed: selectedPlaceItem.permanentlyClosed,
+        visited: false,
       );
       await model.addMarker(marker);
       Navigator.of(context).pop();

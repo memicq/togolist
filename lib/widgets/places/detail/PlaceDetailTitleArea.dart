@@ -33,7 +33,7 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
                   child: buildIcon()
                 ),
                 Text(
-                  widget.marker.title,
+                  widget.marker.name,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
