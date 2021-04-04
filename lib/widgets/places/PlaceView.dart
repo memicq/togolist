@@ -27,6 +27,12 @@ class PlaceViewState extends State<PlaceView> {
   bool _isFocusingSearchArea = false;
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
@@ -55,9 +61,9 @@ class PlaceViewState extends State<PlaceView> {
     }
   }
 
-  void toggleFocusingSearchArea() {
+  void toggleFocusingSearchArea(bool hasFocus) {
     setState(() {
-      this._isFocusingSearchArea = !this._isFocusingSearchArea;
+      this._isFocusingSearchArea = hasFocus;
     });
   }
 
@@ -70,8 +76,7 @@ class PlaceViewState extends State<PlaceView> {
         left: 0,
         child: GestureDetector(
           onTap: (){
-            print("tapped");
-            toggleFocusingSearchArea();
+            toggleFocusingSearchArea(false);
             FocusScope.of(context).unfocus();
             },
           child: Container(

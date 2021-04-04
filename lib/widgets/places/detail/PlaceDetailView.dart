@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailImageArea.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailTitleArea.dart';
 
-class PlaceDetailView extends StatelessWidget {
+class PlaceDetailView extends StatefulWidget {
   MapMarker marker;
-
   PlaceDetailView({this.marker});
 
-  List<String> tags = ["tag1", "tag2", "tag3"];
+  @override
+  State<PlaceDetailView> createState() => PlaceDetailViewState();
+}
 
-  List<Widget> buildTags() {
-    return tags
-        .map((tag) => Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child:
-                Chip(
-                   label: Text(
-                  tag,
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                ),
-                backgroundColor: Colors.deepOrange.shade500,
-              ),
-            ))
-        .toList();
+class PlaceDetailViewState extends State<PlaceDetailView> {
+  bool _isVisited;
+  PlaceViewModel _placeViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    this._isVisited = widget.marker.visited;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
+  }
+
+  void onChangeVisitedSwitch(bool visited) {
+    _placeViewModel.toggleVisited(widget.marker);
+    setState(() {
+      this._isVisited = visited;
+    });
   }
 
   @override
@@ -33,19 +44,20 @@ class PlaceDetailView extends StatelessWidget {
         appBar: AppBar(
           title: Text("detail"),
           backgroundColor: Colors.white,
+          actions: <Widget>[
+            Switch(
+              value: _isVisited,
+              onChanged: onChangeVisitedSwitch,
+              activeColor: ColorSettings.primaryColor,
+            )
+          ],
         ),
         body: Container(
             width: double.infinity,
             alignment: Alignment.topLeft,
             child: Column(children: [
-              PlaceDetailTitleArea(marker: this.marker),
-              if (this.marker.photos.length != 0)
-                PlaceDetailImageArea(googlePhotos: this.marker.photos),
-              Container(
-                child: Row(
-                  children: buildTags(),
-                ),
-              ),
+              PlaceDetailTitleArea(marker: widget.marker),
+              if (widget.marker.photos.length != 0) PlaceDetailImageArea(googlePhotos: widget.marker.photos),
             ])
         )
     );

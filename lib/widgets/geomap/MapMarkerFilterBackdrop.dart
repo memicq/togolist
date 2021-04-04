@@ -89,7 +89,7 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
                   width: 100,
                   padding: EdgeInsets.only(bottom: 20, left: 10, right: 10),
                   child: GradatedTextButton(
-                    text: '適用',
+                    text: '閉じる',
                     onPressed: applyFilterCondition,
                   )
               ),

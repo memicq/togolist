@@ -30,13 +30,7 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 5),
-                  child: FlatButton(
-                    child: buildIcon(),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      model.toggleVisited(widget.marker);
-                    },
-                  ),
+                  child: buildIcon()
                 ),
                 Text(
                   widget.marker.title,

@@ -37,9 +37,7 @@ class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
   }
 
   void _onFocusChange() {
-    if (_focus.hasFocus) {
-      _placeViewState.toggleFocusingSearchArea();
-    }
+    _placeViewState.toggleFocusingSearchArea(_focus.hasFocus);
   }
 
   @override
