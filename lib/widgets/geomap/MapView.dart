@@ -19,7 +19,7 @@ class MapView extends StatefulWidget {
 }
 
 class MapViewState extends State<MapView> {
-  static const double DEFAULT_MAP_ZOOM_LEVEL = 13.0;
+  static const double DEFAULT_MAP_ZOOM_LEVEL = 10.0;
   static const double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
   static const Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
 

@@ -5,6 +5,8 @@ import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 
+import 'PlaceView.dart';
+
 class PlaceAppBarBottom extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PlaceAppBarBottomState();
@@ -13,6 +15,15 @@ class PlaceAppBarBottom extends StatefulWidget {
 class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
   TextEditingController queryString = TextEditingController();
   PlaceViewModel placeViewModel;
+  PlaceViewState _placeViewState;
+  FocusNode _focus = new FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _placeViewState = context.findAncestorStateOfType<PlaceViewState>();
+    _focus.addListener(_onFocusChange);
+  }
 
   @override
   void didChangeDependencies() {
@@ -23,6 +34,12 @@ class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
 
   void filterByQuery() {
     placeViewModel.filterMarkers(queryString.text);
+  }
+
+  void _onFocusChange() {
+    if (_focus.hasFocus) {
+      _placeViewState.toggleFocusingSearchArea();
+    }
   }
 
   @override
@@ -39,15 +56,21 @@ class PlaceAppBarBottomState extends State<PlaceAppBarBottom> {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(2))),
                   child: TextField(
+                    focusNode: _focus,
                     controller: queryString,
-                    onEditingComplete: filterByQuery,
+                    onChanged: (value) => filterByQuery(),
                     style: TextStyle(
                         fontSize: 14.0, height: 1.2, color: Colors.black),
                     decoration: InputDecoration(
-                        hintText: "名前・住所で検索",
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10),
-                        isDense: true),
+                      hintText: "名前・住所で検索",
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                      isDense: true,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                    ),
                   ))),
         ],
       ),

@@ -6,6 +6,7 @@ import 'package:togolist/repositories/MarkerRepositoryFB.dart';
 class PlaceViewModel extends ChangeNotifier {
   MarkerRepositoryFB _markerRepositoryFB = MarkerRepositoryFB();
 
+  List<MapMarker> _fullMarkers = List();
   List<MapMarker> viewMarkers = List();
 
   PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
@@ -13,7 +14,8 @@ class PlaceViewModel extends ChangeNotifier {
   String _filterQuery = '';
 
   Future<void> fetchMarkers() async {
-    this.viewMarkers = await _markerRepositoryFB.listMarker();
+    this._fullMarkers = await _markerRepositoryFB.listMarker();
+    this.viewMarkers = this._fullMarkers;
     this._filter();
     this._sort();
     notifyListeners();
@@ -42,6 +44,7 @@ class PlaceViewModel extends ChangeNotifier {
   void filterMarkers(String query) {
     this._filterQuery = query;
     this._filter();
+    this._sort();
     notifyListeners();
   }
 
@@ -56,7 +59,7 @@ class PlaceViewModel extends ChangeNotifier {
   }
 
   void _filter() {
-    List<MapMarker> filteredMarkers = this.viewMarkers.where((marker) =>
+    List<MapMarker> filteredMarkers = this._fullMarkers.where((marker) =>
     marker.title.contains(this._filterQuery) || marker.address.contains(this._filterQuery)
     ).toList();
     this.viewMarkers = filteredMarkers;

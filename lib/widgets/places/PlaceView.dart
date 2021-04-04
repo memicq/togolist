@@ -24,6 +24,8 @@ class PlaceViewState extends State<PlaceView> {
 
   BackdropService backdropService = BackdropService();
 
+  bool _isFocusingSearchArea = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -50,6 +52,46 @@ class PlaceViewState extends State<PlaceView> {
   void notifySlididableCardClosed(GlobalKey<SlidablePlaceItemCardState> key) {
     if (openingSlidableCardState == key) {
       openingSlidableCardState = null;
+    }
+  }
+
+  void toggleFocusingSearchArea() {
+    setState(() {
+      this._isFocusingSearchArea = !this._isFocusingSearchArea;
+    });
+  }
+
+  Widget buildFloatingElements() {
+    if (this._isFocusingSearchArea) {
+      return Positioned(
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        child: GestureDetector(
+          onTap: (){
+            print("tapped");
+            toggleFocusingSearchArea();
+            FocusScope.of(context).unfocus();
+            },
+          child: Container(
+            color: Colors.black.withOpacity(0.5),
+            constraints: BoxConstraints.expand(),
+          ),
+        ),
+      );
+    } else {
+      return Positioned(
+        right: 20,
+        bottom: 20,
+        child: GradatedIconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => {
+            backdropService.openBackdrop(
+                page: PlaceAdditionBackdrop(), height: 435.0)
+          },
+        ),
+      );
     }
   }
 
@@ -80,17 +122,7 @@ class PlaceViewState extends State<PlaceView> {
                     ),
                     ...buildCardList(model.viewMarkers),
                   ]))),
-              Positioned(
-                right: 20,
-                bottom: 20,
-                child: GradatedIconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => {
-                    backdropService.openBackdrop(
-                        page: PlaceAdditionBackdrop(), height: 435.0)
-                  },
-                ),
-              )
+              buildFloatingElements()
             ],
           );
         });

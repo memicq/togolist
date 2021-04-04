@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geodesy/geodesy.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {
@@ -19,6 +21,7 @@ class PlaceItemCard extends StatefulWidget {
 class PlaceItemCardState extends State<PlaceItemCard> {
   SlidableState slidable;
   Geodesy geodesy = Geodesy();
+  PlaceViewModel _placeViewModel;
 
   double distanceKm;
 
@@ -45,6 +48,8 @@ class PlaceItemCardState extends State<PlaceItemCard> {
     if (slidable == null) {
       slidable = Slidable.of(context);
     }
+
+    _placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
   }
 
   void openPlaceDetailPage(BuildContext context) {
@@ -96,6 +101,10 @@ class PlaceItemCardState extends State<PlaceItemCard> {
     }
   }
 
+  void updateVisited() async {
+    _placeViewModel.toggleVisited(widget.marker);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -111,8 +120,15 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: buildIcon(),
+                      padding: EdgeInsets.only(right: 5),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        iconSize: 18,
+                        splashRadius: 20,
+                        constraints: BoxConstraints.tight(Size(18, 18)),
+                        onPressed: updateVisited,
+                        icon: buildIcon(),
+                      ),
                     ),
                     Expanded(
                       child: Text(
