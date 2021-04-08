@@ -16,8 +16,8 @@ class PlaceDetailBasicInfoArea extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PlaceDetailItemCard(
-              title: "場所タイプ",
-              content: Text(this.marker.types.join(", "), style: TextStyle(fontSize: 12, color: Colors.black54)),
+              title: "住所",
+              content: Text(this.marker.address, style: TextStyle(fontSize: 12, color: Colors.black54)),
             ),
             PlaceDetailItemCard(
               title: "コンタクト",
@@ -46,6 +46,10 @@ class PlaceDetailBasicInfoArea extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            PlaceDetailItemCard(
+              title: "場所タイプ",
+              content: Text(this.marker.types.join(", "), style: TextStyle(fontSize: 12, color: Colors.black54)),
             ),
             SizedBox(
               height: 50,

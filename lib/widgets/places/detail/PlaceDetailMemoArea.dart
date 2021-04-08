@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:togolist/widgets/places/detail/PlaceDetailItemCard.dart';
 
 class PlaceDetailMemoArea extends StatefulWidget {
   @override
@@ -36,10 +37,9 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
     } else return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildTextField() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 200),
         child: Scrollbar(
@@ -58,6 +58,20 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
             minLines: 10,
           ),
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          PlaceDetailItemCard(
+            title: "メモ",
+            content: buildTextField(),
+          )
+        ],
       ),
     );
   }

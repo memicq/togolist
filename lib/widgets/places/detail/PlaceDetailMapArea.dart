@@ -14,7 +14,7 @@ class PlaceDetailMapArea extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PlaceDetailItemCard(
-                  title: "近傍マップ",
+                  title: "近くのマップ",
                   content: Container(
                     width: double.infinity,
                     height: 200,
@@ -22,6 +22,7 @@ class PlaceDetailMapArea extends StatelessWidget {
                       rotateGesturesEnabled: false,
                       scrollGesturesEnabled: false,
                       zoomGesturesEnabled: false,
+                      zoomControlsEnabled: false,
                       myLocationButtonEnabled: false,
                       myLocationEnabled: true,
                       markers: [
@@ -32,7 +33,7 @@ class PlaceDetailMapArea extends StatelessWidget {
                       ].toSet(),
                       initialCameraPosition: CameraPosition(
                         target: LatLng(marker.latitude, marker.longitude),
-                        zoom: 15
+                        zoom: 14
                       ),
                     )
                   )
@@ -40,6 +41,9 @@ class PlaceDetailMapArea extends StatelessWidget {
               PlaceDetailItemCard(
                   title: "最寄り駅",
                   content: ColoredBox(color: Colors.red)
+              ),
+              SizedBox(
+                height: 50,
               )
             ]
         )
