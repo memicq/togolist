@@ -37,6 +37,39 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
     Navigator.of(context).pop();
   }
 
+  Widget buildVisitedTile() {
+    return MapMarkerFilterItemTile(
+      iconData: FontAwesomeIcons.shoePrints,
+      title: '足跡',
+      description: '行った / 行ってない で絞り込む',
+      items: [
+        DropdownMenuItem(
+            child: Text(
+              "条件なし",
+              style: TextStyle(fontSize: 15, color: Colors.black54),
+            ),
+            value: MapMarkerFilterVisited.NOT_SET.index
+        ),
+        DropdownMenuItem(
+            child: Text(
+              "行った",
+              style: TextStyle(fontSize: 15),
+            ),
+            value: MapMarkerFilterVisited.VISITED.index
+        ),
+        DropdownMenuItem(
+            child: Text(
+              "行ってない",
+              style: TextStyle(fontSize: 15),
+            ),
+            value: MapMarkerFilterVisited.NOT_VISITED.index
+        ),
+      ],
+      selected: this.condition.visitedCondition.index,
+      onChanged: setVisitedCondition,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,22 +81,11 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
       padding: EdgeInsets.only(left: 10, right: 10, top: 20),
       child: Column(
         children: [
-          Text("フィルターを選択"), // TODO: 「キー」という言葉はおそらくわかりにくいので修正する
+          Text("フィルターを選択"),
           Divider(),
           Column(
             children: [
-              MapMarkerFilterItemTile(
-                iconData: FontAwesomeIcons.shoePrints,
-                title: '足跡',
-                description: '行った / 行ってない で絞り込む',
-                items: [
-                  DropdownMenuItem(child: Text("未設定"), value: MapMarkerFilterVisited.NOT_SET.index),
-                  DropdownMenuItem(child: Text("行った"), value: MapMarkerFilterVisited.VISITED.index),
-                  DropdownMenuItem(child: Text("行ってない"), value: MapMarkerFilterVisited.NOT_VISITED.index),
-                ],
-                selected: this.condition.visitedCondition.index,
-                onChanged: setVisitedCondition,
-              )
+              buildVisitedTile(),
             ],
           ),
           Spacer(),

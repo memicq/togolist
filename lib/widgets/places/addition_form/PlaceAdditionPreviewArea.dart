@@ -16,7 +16,7 @@ class PlaceAdditionPreviewArea extends StatelessWidget {
         height: 200,
         width: double.infinity,
         color: Colors.black12.withOpacity(0.05),
-        child: Icon(Icons.image_not_supported_outlined,
+        child: Icon(Icons.image_outlined,
             color: Colors.black38, size: 70),
       );
     }

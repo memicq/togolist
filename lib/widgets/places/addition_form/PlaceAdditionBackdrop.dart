@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/const/Credentials.dart';
 import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
@@ -73,13 +74,13 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Icon(Icons.drag_handle_rounded, color: Colors.grey),
-                    ),
+//                    Center(
+//                      child: Icon(Icons.drag_handle_rounded, color: Colors.grey),
+//                    ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20, top: 5),
+                      padding: EdgeInsets.only(left: 20, right: 20, top: 15),
                       child: FlatButton(
-                        color: Colors.deepOrangeAccent,
+                        color: ColorSettings.primaryColor['lighten'],
                         textColor: Colors.white,
                         onPressed: openPlaceAdditionDialog,
                         child: Row(
@@ -99,7 +100,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
                     ),
                     Divider(),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                      padding: EdgeInsets.only(bottom: 20, left: 20, right: 10),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

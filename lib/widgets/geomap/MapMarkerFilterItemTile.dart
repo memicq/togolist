@@ -32,10 +32,10 @@ class MapMarkerFilterItemTileState extends State<MapMarkerFilterItemTile>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.symmetric(vertical: 10),
     alignment: Alignment.center,
-
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
               width: 50,
@@ -59,7 +59,7 @@ class MapMarkerFilterItemTileState extends State<MapMarkerFilterItemTile>{
             ),
           ),
           Expanded(
-              flex: 4,
+              flex: 3,
               child: Container(
                 padding: EdgeInsets.only(left: 10, right: 15),
                 child: DropdownButton(

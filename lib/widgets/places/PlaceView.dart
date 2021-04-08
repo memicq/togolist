@@ -106,7 +106,7 @@ class PlaceViewState extends State<PlaceView> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(110.0),
         child: AppBar(
-          title: Text("Places", style: AppBarTitleStyle.textStyle),
+          title: Text("場所一覧", style: AppBarTitleStyle.textStyle),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(50.0),
               child: PlaceAppBarBottom()),

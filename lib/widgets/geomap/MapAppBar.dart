@@ -34,14 +34,14 @@ class MapAppBarState extends State<MapAppBar> {
 
   void openMapMarkerFilterBackdrop() {
     _backdropService.openBackdrop(
-        page: MapMarkerFilterBackdrop(), height: 250.0);
+        page: MapMarkerFilterBackdrop(), height: 220.0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<MapViewModel>(builder: (context, model, child) {
       return AppBar(
-        title: Text("Map", style: AppBarTitleStyle.textStyle),
+        title: Text("マップ", style: AppBarTitleStyle.textStyle),
         actions: [
           FlatButton(
               onPressed: () => openMapMarkerFilterBackdrop(),

@@ -6,12 +6,18 @@ class LocationViewModel extends ChangeNotifier {
 
   LocationData currentLocation;
 
+  final double _latitudeThreshold = 0.0001;
+  final double _longitudeThreshold = 0.0001;
+
   LocationViewModel() {
     Future(() async {
       updateLocation(await _locationService.getLocation());
 
       _locationService.onLocationChanged().listen((LocationData result) {
-        updateLocation(result);
+        if ((currentLocation.latitude - result.latitude).abs() > _latitudeThreshold
+            || (currentLocation.longitude - result.longitude).abs() > _longitudeThreshold) {
+          updateLocation(result);
+        }
       });
     });
   }

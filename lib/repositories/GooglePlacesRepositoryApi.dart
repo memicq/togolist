@@ -40,7 +40,7 @@ class GooglePlacesRepositoryApi {
   }
 
   Future<PlaceItemDetail> fetchPlaceDetailByPlaceId(String placeId) async {
-    PlacesDetailsResponse response = await places.getDetailsByPlaceId(placeId);
+    PlacesDetailsResponse response = await places.getDetailsByPlaceId(placeId, language: 'ja');
     PlaceDetails res = response.result;
 
     List<MapMarkerPhoto> photos = (res.photos != null ? res.photos : List())

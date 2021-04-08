@@ -38,7 +38,7 @@ class AccountView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            "Account",
+            "アカウント",
             style: AppBarTitleStyle.textStyle
         ),
       ),

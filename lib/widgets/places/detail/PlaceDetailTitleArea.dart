@@ -25,11 +25,12 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children:<Widget> [
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: 5),
+                  padding: EdgeInsets.only(right: 5, bottom: 3),
                   child: buildIcon()
                 ),
                 Text(
@@ -42,6 +43,7 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
             Text(
               widget.marker.address,
               style: TextStyle(fontSize: 12, color: Colors.grey),
+              textAlign: TextAlign.left,
             ),
           ],
         ),
