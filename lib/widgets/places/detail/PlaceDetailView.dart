@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/const/Style.dart';
@@ -34,11 +37,37 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
     _placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
   }
 
-  void onChangeVisitedSwitch(bool visited) {
+  void onChangeVisitedSwitch() {
     _placeViewModel.toggleVisited(widget.marker);
     setState(() {
-      this._isVisited = visited;
+      this._isVisited = !this._isVisited;
     });
+  }
+
+  Widget buildCheckButtonAndText() {
+    if (this._isVisited) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.check_box, color: ColorSettings.primaryColor),
+          Padding(
+            padding: EdgeInsets.only(left: 5),
+            child: Text("行った", style: TextStyle(color: ColorSettings.primaryColor)),
+          )
+        ],
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.check_box_outline_blank, color: ColorSettings.primaryColor),
+          Padding(
+            padding: EdgeInsets.only(left: 5),
+            child: Text("行った", style: TextStyle(color: ColorSettings.primaryColor)),
+          )
+        ],
+      );
+    }
   }
 
   @override
@@ -49,11 +78,16 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
         title: Text("詳細", style: AppBarTitleStyle.textStyle),
         backgroundColor: Colors.white,
         actions: <Widget>[
-          Switch(
-            value: this._isVisited,
-            onChanged: onChangeVisitedSwitch,
-            activeColor: ColorSettings.primaryColor,
-          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ButtonTheme(
+              minWidth: 30,
+              child: TextButton(
+                child: buildCheckButtonAndText(),
+                onPressed: onChangeVisitedSwitch,
+              ),
+            ),
+          )
         ],
       ),
       body: NotificationListener<ScrollNotification>(

@@ -15,27 +15,33 @@ class PlaceDetailMapArea extends StatelessWidget {
             children: [
               PlaceDetailItemCard(
                   title: "近くのマップ",
-                  content: Container(
-                    width: double.infinity,
-                    height: 200,
-                    child: GoogleMap(
-                      rotateGesturesEnabled: false,
-                      scrollGesturesEnabled: false,
-                      zoomGesturesEnabled: false,
-                      zoomControlsEnabled: false,
-                      myLocationButtonEnabled: false,
-                      myLocationEnabled: true,
-                      markers: [
-                        Marker(
-                          markerId: MarkerId(marker.googlePlaceId),
-                          position: LatLng(marker.latitude, marker.longitude),
-                        )
-                      ].toSet(),
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(marker.latitude, marker.longitude),
-                        zoom: 14
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                          width: double.infinity,
+                          height: 200,
+                          child: GoogleMap(
+                            rotateGesturesEnabled: false,
+                            scrollGesturesEnabled: false,
+                            zoomGesturesEnabled: false,
+                            zoomControlsEnabled: false,
+                            myLocationButtonEnabled: false,
+                            myLocationEnabled: true,
+                            markers: [
+                              Marker(
+                                markerId: MarkerId(marker.googlePlaceId),
+                                position: LatLng(marker.latitude, marker.longitude),
+                              )
+                            ].toSet(),
+                            initialCameraPosition: CameraPosition(
+                                target: LatLng(marker.latitude, marker.longitude),
+                                zoom: 14
+                            ),
+                          )
                       ),
-                    )
+                      Text("地図をタップでマップ画面へ飛びます", style: TextStyle(fontSize: 10, color: Colors.black54))
+                    ],
                   )
               ),
               PlaceDetailItemCard(

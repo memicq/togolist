@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/ExternalUrlLaunchService.dart';
@@ -33,18 +34,42 @@ class PlaceDetailBasicInfoArea extends StatelessWidget {
             PlaceDetailItemCard(
               title: "営業情報",
               content: Container(
-                padding: EdgeInsets.only(left: 5),
-                child: Column(
+                padding: EdgeInsets.only(left: 40),
+                child: Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
-                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+                    TableRow(
+                      children: [
+                        Text("月曜日:"),
+                        Text("9:00 - 20:00")
+                      ]
+                    ),
+                    TableRow(
+                        children: [
+                          Text("月曜日:"),
+                          Text("9:00 - 20:00")
+                        ]
+                    ),
+                    TableRow(
+                        children: [
+                          Text("月曜日:"),
+                          Text("9:00 - 20:00")
+                        ]
+                    ),
                   ],
-                ),
+                )
+
+//                Column(
+//                  children: [
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                    Text("月曜日: 9:00 - 20:00", style: TextStyle(fontSize: 12, color: Colors.black54)),
+//                  ],
+//                ),
               ),
             ),
             PlaceDetailItemCard(
