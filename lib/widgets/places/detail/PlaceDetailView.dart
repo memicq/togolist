@@ -37,10 +37,10 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
     _placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
   }
 
-  void onChangeVisitedSwitch() {
+  void onChangeVisitedSwitch(bool isVisited) {
     _placeViewModel.toggleVisited(widget.marker);
     setState(() {
-      this._isVisited = !this._isVisited;
+      this._isVisited = isVisited;
     });
   }
 
@@ -78,15 +78,10 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
         title: Text("詳細", style: AppBarTitleStyle.textStyle),
         backgroundColor: Colors.white,
         actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: ButtonTheme(
-              minWidth: 30,
-              child: TextButton(
-                child: buildCheckButtonAndText(),
-                onPressed: onChangeVisitedSwitch,
-              ),
-            ),
+          Switch(
+            value: this._isVisited,
+            onChanged: (value) { onChangeVisitedSwitch(value); },
+            activeColor: ColorSettings.primaryColor,
           )
         ],
       ),

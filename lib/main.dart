@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
+import 'package:togolist/const/LocaleSetting.dart';
 import 'package:togolist/services/BackdropService.dart';
-import 'package:togolist/view_models/UserViewModel.dart';
 import 'package:togolist/widgets/account/AccountView.dart';
 import 'package:togolist/widgets/account/LoginSwitcher.dart';
 import 'package:togolist/widgets/account/LoginView.dart';
-import 'package:togolist/widgets/friends/FriendView.dart';
 import 'package:togolist/widgets/layouts/MultipleChangeNotifierProviderWrapper.dart';
 import 'package:togolist/widgets/geomap/MapView.dart';
 import 'package:togolist/widgets/layouts/TabAndBackdropLayout.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'models/TabPage.dart';
 
@@ -88,6 +87,13 @@ class ToGoApp extends StatelessWidget {
                 backgroundColor: Colors.white,
                 primaryColor: ColorSettings.primaryColor,
                 fontFamily: 'Quicksand'),
+            locale: LocaleSetting.locale,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [ LocaleSetting.locale ],
             home: LoginSwitcher(
               child: TabAndBackdropLayout(
                 defaultPage: 1,

@@ -74,11 +74,17 @@ class PlaceViewModel extends ChangeNotifier {
       }
     } else if (_sortingKey == PlaceListSortingKey.DISTANCE) {
       if (_sortingOrder == PlaceListSortingOrder.ASC) {
-        this.viewMarkers.sort((a, b) => a.distanceFromMe.compareTo(b.distanceFromMe));
+        this.viewMarkers.sort((a, b) => _compareWithNull(a.distanceFromMe, b.distanceFromMe));
       } else {
-        this.viewMarkers.sort((b, a) => a.distanceFromMe.compareTo(b.distanceFromMe));
+        this.viewMarkers.sort((b, a) => _compareWithNull(a.distanceFromMe, b.distanceFromMe));
       }
     }
+  }
+
+  int _compareWithNull(double a, double b) {
+    if (b == null) return -1;
+    else if (a == null) return 1;
+    else return a.compareTo(b);
   }
 
   PlaceListSortingKey getCurrentSortingKey() {

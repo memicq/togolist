@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:togolist/const/LocaleSetting.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
@@ -20,8 +22,16 @@ class TabAndBackdropLayoutContent extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(
           primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey.shade50
+          scaffoldBackgroundColor: Colors.grey.shade50,
+          fontFamily: 'Quicksand'
         ),
+        locale: LocaleSetting.locale,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [ LocaleSetting.locale ],
         home: this.scaffold
     );
   }
@@ -55,6 +65,13 @@ class TabAndBackdropLayoutState extends State<TabAndBackdropLayout> {
       theme: ThemeData(
           fontFamily: 'Quicksand',
       ),
+      locale: LocaleSetting.locale,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [ LocaleSetting.locale ],
       home: widget.views[this.page].content,
     );
   }

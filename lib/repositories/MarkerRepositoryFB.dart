@@ -45,6 +45,7 @@ class MarkerRepositoryFB {
               adrAddress: doc['adrAddress'],
               website: doc['website'],
               phoneNumber: doc['phoneNumber'],
+              openingHoursJson: doc['openingHoursJson'],
               types: (doc['typeString'] as String).split(','),
               photos: photos,
               permanentlyClosed: doc['permanentlyClosed'],

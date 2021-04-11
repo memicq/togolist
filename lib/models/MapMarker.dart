@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:togolist/models/MapMarkerPhoto.dart';
 
 class MapMarker {
@@ -12,6 +14,7 @@ class MapMarker {
 
   String website;
   String phoneNumber;
+  String openingHoursJson;
 
   List<String> types;
   List<MapMarkerPhoto> photos = List();
@@ -31,6 +34,7 @@ class MapMarker {
     this.adrAddress,
     this.website,
     this.phoneNumber,
+    this.openingHoursJson,
     this.types,
     this.photos,
     this.permanentlyClosed,
@@ -48,10 +52,15 @@ class MapMarker {
       'adrAddress': this.adrAddress,
       'website': this.website,
       'phoneNumber': this.phoneNumber,
+      'openingHoursJson': this.openingHoursJson,
       'typeString': this.types.join(','),
       'permanentlyClosed': this.permanentlyClosed,
       'visited': this.visited,
       'memo': this.memo
     };
+  }
+
+  Map<String, String> getOpeningHours() {
+    return Map<String, String>.from(json.decode(this.openingHoursJson));
   }
 }

@@ -5,8 +5,18 @@ class ExternalUrlLaunchService {
   factory ExternalUrlLaunchService() =>  _locationService;
   ExternalUrlLaunchService._internal();
 
-  Future<void> launchUrl(String url) {
-
+  Future<void> launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+//        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      final Error error = ArgumentError('Could not launch $url');
+      throw error;
+    }
   }
 
   Future<void> launchPhone(String phoneNumber) {

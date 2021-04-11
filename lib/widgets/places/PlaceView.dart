@@ -29,7 +29,7 @@ class PlaceViewState extends State<PlaceView> {
   @override
   void initState() {
     super.initState();
-    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
+//    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
   }
 
   @override
@@ -75,10 +75,10 @@ class PlaceViewState extends State<PlaceView> {
         right: 0,
         left: 0,
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             toggleFocusingSearchArea(false);
             FocusScope.of(context).unfocus();
-            },
+          },
           child: Container(
             color: Colors.black.withOpacity(0.5),
             constraints: BoxConstraints.expand(),
@@ -112,8 +112,8 @@ class PlaceViewState extends State<PlaceView> {
               child: PlaceAppBarBottom()),
         ),
       ),
-      body: Consumer<PlaceViewModel>(builder: (context, model, child) {
-        return Consumer<LocationViewModel>(builder: (lcontext, lmodel, lchild) {
+      body: Consumer<LocationViewModel>(builder: (lcontext, lmodel, lchild) {
+        return Consumer<PlaceViewModel>(builder: (context, model, child) {
           return Stack(
             children: [
               Container(

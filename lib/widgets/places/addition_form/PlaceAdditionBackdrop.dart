@@ -42,6 +42,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
         adrAddress: selectedPlaceItem.placeItemDetail.adrAddress,
         website: selectedPlaceItem.placeItemDetail.website,
         phoneNumber: selectedPlaceItem.placeItemDetail.phoneNumber,
+        openingHoursJson: selectedPlaceItem.placeItemDetail.openingHoursJson,
         types: selectedPlaceItem.placeItemDetail.types,
         photos: selectedPlaceItem.placeItemDetail.photos,
         permanentlyClosed: selectedPlaceItem.permanentlyClosed,

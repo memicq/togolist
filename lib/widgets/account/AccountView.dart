@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
+import 'package:togolist/widgets/account/PrivacyPolicyView.dart';
 
 import 'AccountViewItemCard.dart';
 
 class AccountView extends StatelessWidget {
   final GoogleSignIn googleSignIn = new GoogleSignIn();
+
+
+  void openPrivacyPolicy(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) {
+          return PrivacyPolicyView();
+        })
+    );
+  }
 
   Widget switchByLoginCondition(BuildContext context, UserViewModel model) {
     if (model.user != null) {
@@ -28,7 +39,7 @@ class AccountView extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.only(left: 5, right: 10),
-                        child: Icon(Icons.person_pin, color: Colors.orangeAccent),
+                        child: Icon(Icons.person_pin, color: ColorSettings.primaryColor),
                       ),
                       Text('${model.user.email} としてログイン')
                     ],
@@ -52,6 +63,19 @@ class AccountView extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 5),
               child: Text("デベロッパー情報", style: TextStyle(fontSize: 12, color: Colors.black54)),
+            ),
+            AccountViewItemCard(
+                elevation: 1.0,
+                content: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Icon(Icons.privacy_tip_outlined),
+                    ),
+                    Text("プライバシーポリシー")
+                  ],
+                ),
+                onTap: () { openPrivacyPolicy(context); }
             ),
             AccountViewItemCard(
                 elevation: 1.0,
@@ -95,7 +119,7 @@ class AccountView extends StatelessWidget {
             Spacer(),
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 5, top: 15),
-              child: Text("デベロッパー情報", style: TextStyle(fontSize: 12, color: Colors.black54)),
+              child: Text("その他", style: TextStyle(fontSize: 12, color: Colors.black54)),
             ),
             AccountViewItemCard(
               elevation: 1.0,

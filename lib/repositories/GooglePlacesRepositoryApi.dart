@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:google_maps_webservice/places.dart';
@@ -50,12 +51,18 @@ class GooglePlacesRepositoryApi {
         width: photo.width.toInt()))
         .toList();
 
+    Map<String, String> weekdayOpeningHours = Map.fromIterables(
+        (res.openingHours != null) ? res.openingHours.weekdayText.map((w) => w.split(':').first.trim()) : List.empty(),
+        (res.openingHours != null) ? res.openingHours.weekdayText.map((w) => w.split(':').elementAt(1).trim()): List.empty()
+    );
+
     return PlaceItemDetail(
       name: res.name,
       website: res.website,
       phoneNumber: res.formattedPhoneNumber,
       adrAddress: res.adrAddress,
       formattedAddress: res.formattedAddress,
+      openingHoursJson: json.encode(weekdayOpeningHours),
       types: res.types,
       photos: photos,
     );

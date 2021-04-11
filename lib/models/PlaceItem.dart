@@ -41,6 +41,7 @@ class PlaceItemDetail {
   String phoneNumber;
   String adrAddress;
   String formattedAddress;
+  String openingHoursJson;
   List<String> types;
   List<MapMarkerPhoto> photos;
 
@@ -50,12 +51,13 @@ class PlaceItemDetail {
     this.phoneNumber,
     this.adrAddress,
     this.formattedAddress,
+    this.openingHoursJson,
     this.types,
     this.photos,
   });
 
   @override
   String toString() {
-    return "$name, $website, $phoneNumber, $adrAddress, $formattedAddress with ${photos.length} photos";
+    return "$name, $website, $phoneNumber, $adrAddress, $formattedAddress, $openingHoursJson, with ${photos.length} photos";
   }
 }

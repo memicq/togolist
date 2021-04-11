@@ -70,6 +70,9 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
           PlaceDetailItemCard(
             title: "メモ",
             content: buildTextField(),
+          ),
+          SizedBox(
+            height: 200,
           )
         ],
       ),

@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons: ^1.0.0
   google_maps_flutter: ^1.2.0
@@ -41,11 +43,15 @@ flutter:
   fonts:
     - family: Quicksand
       fonts:
+        - asset: assets/fonts/quicksand/Quicksand-Regular.ttf
         - asset: assets/fonts/quicksand/Quicksand-Medium.ttf
-#        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
-#          style: bold
+          weight: 700
     - family: Roboto
       fonts:
-        - asset: assets/fonts/roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/roboto/Roboto-Light.ttf
 #        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
 #          style: bold
+    - family: NotoSansJP
+      fonts:
+#        - asset: assets/fonts/Noto_Sans_JP/NotoSansJP-Regular.otf
+        - asset: assets/fonts/Noto_Sans_JP/NotoSansJP-Light.otf

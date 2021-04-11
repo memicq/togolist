@@ -84,7 +84,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
           children: [
             Padding(
                 padding: EdgeInsets.only(right: 2, bottom: 1),
-                child: Icon(Icons.directions_walk, size: 16, color: Color(0xBB000000))
+                child: Icon(Icons.directions_walk_rounded, size: 15, color: Color(0xBB000000))
             ),
             Text(
               "$distanceKm km",
@@ -134,7 +134,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                       child: Text(
                         widget.marker.name,
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black, fontWeight: FontWeight.w700),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

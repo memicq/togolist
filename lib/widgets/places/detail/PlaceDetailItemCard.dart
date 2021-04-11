@@ -13,7 +13,7 @@ class PlaceDetailItemCard extends StatelessWidget {
       elevation: 0.5,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

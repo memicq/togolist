@@ -62,6 +62,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
       this._sortingKey = sortingKey;
     });
 
+    print("toggleSortingOrder: ${_sortingKey}, ${_sortingOrder}");
     widget.placeViewModel.sortMarkers(
         sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
@@ -77,6 +78,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
       });
     }
 
+    print("toggleSortingOrder: ${_sortingKey}, ${_sortingOrder}");
     widget.placeViewModel.sortMarkers(
         sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
@@ -86,7 +88,6 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-
         SizedBox(
           height: 35,
           child: TextButton(
