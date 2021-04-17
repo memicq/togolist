@@ -5,4 +5,5 @@ class Credentials {
 
   static String admobUnitIdIOS = "ca-app-pub-5680575878112984/1628479469";
   static String testAdmobUnitIdIOS = "ca-app-pub-3940256099942544/2934735716";
+  static String testAdmobUnitIdAndroid = "ca-app-pub-3940256099942544/6300978111";
 }

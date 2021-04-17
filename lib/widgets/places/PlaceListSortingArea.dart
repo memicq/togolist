@@ -87,7 +87,7 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Row(
           children: [
             Text("aa")

@@ -10,6 +10,7 @@
         android:label="togolist"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDkG6ptpHahNuTQ7Y1giVWUgyuK_S6LZ3g"/>
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-5680575878112984~9525783803"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

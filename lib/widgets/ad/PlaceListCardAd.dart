@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:togolist/const/Credentials.dart';
@@ -13,13 +15,25 @@ class PlaceListCardAd extends StatefulWidget {
 class PlaceListCardAdState extends State<PlaceListCardAd> {
   int height = 100;
 
+  String _unitId;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isIOS) {
+      _unitId = Credentials.testAdmobUnitIdIOS;
+    } else if (Platform.isAndroid) {
+      _unitId = Credentials.testAdmobUnitIdAndroid;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           child: AdmobBanner(
-                adUnitId: Credentials.testAdmobUnitIdIOS,
+                adUnitId: _unitId,
                 adSize: AdmobBannerSize(
                     width: MediaQuery.of(context).size.width.toInt(),
                     height: height
