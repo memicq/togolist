@@ -142,4 +142,12 @@ class PlaceViewModel extends ChangeNotifier {
   bool isEmptyViewMarker() {
     return viewMarkers.isNotEmpty;
   }
+
+  int getTotalCount() {
+    return _fullMarkers.length;
+  }
+
+  int getDisplayCount() {
+    return viewMarkers.length;
+  }
 }

@@ -277,7 +277,7 @@ extension GooglePlaceTypeExt on GooglePlaceType {
     GooglePlaceType(type: GooglePlaceTypeEnum.PlaceOfWorship, category: 1, code: "place_of_worship", japaneseName: "礼拝所"),
     GooglePlaceType(type: GooglePlaceTypeEnum.PlusCode, category: 1, code: "plus_code", japaneseName: "Plusコード"),
     GooglePlaceType(type: GooglePlaceTypeEnum.PointOfInterest, category: 1, code: "point_of_interest", japaneseName: "人気がある"),
-    GooglePlaceType(type: GooglePlaceTypeEnum.Political, category: 1, code: "political", japaneseName: "政治"),
+    GooglePlaceType(type: GooglePlaceTypeEnum.Political, category: 1, code: "political", japaneseName: "政治的"),
     GooglePlaceType(type: GooglePlaceTypeEnum.PostBox, category: 1, code: "post_box", japaneseName: "郵便ポスト"),
     GooglePlaceType(type: GooglePlaceTypeEnum.PostalCode, category: 1, code: "postal_code", japaneseName: "郵便番号"),
     GooglePlaceType(type: GooglePlaceTypeEnum.PostalCodePrefix, category: 1, code: "postal_code_prefix", japaneseName: "郵便番号（前半）"),

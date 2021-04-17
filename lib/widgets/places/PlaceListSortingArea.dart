@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/PlaceListSortingDialog.dart';
@@ -88,11 +89,9 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Row(
-          children: [
-            Text("aa")
-          ],
-        ),
+        Consumer<PlaceViewModel>(builder: (context, model, child) {
+          return Text("${model.getTotalCount()}件中${model.getDisplayCount()}件");
+        }),
         Row(
           children: [
             SizedBox(
