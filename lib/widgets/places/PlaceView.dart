@@ -13,7 +13,7 @@ import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
 
-import 'PlaceListSortingArea.dart';
+import 'PlaceListHeaderArea.dart';
 import 'SlidablePlaceItemCard.dart';
 
 class PlaceView extends StatefulWidget {
@@ -29,8 +29,6 @@ class PlaceViewState extends State<PlaceView> {
   BackdropService backdropService = BackdropService();
 
   bool _isFocusingSearchArea = false;
-
-
 
   @override
   void didChangeDependencies() {
@@ -178,7 +176,7 @@ class PlaceViewState extends State<PlaceView> {
                   child: ListView(
                       children: [
                         SizedBox(height: 10,),
-                        PlaceListSortingArea(
+                        PlaceListHeaderArea(
                           placeViewModel: model,
                           locationDisabled: (lmodel.currentLocation == null),
                         ),

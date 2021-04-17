@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/repositories/MarkerRepositoryFB.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
 
 class LoginView extends StatefulWidget {

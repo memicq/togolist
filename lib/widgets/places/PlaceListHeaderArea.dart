@@ -6,17 +6,17 @@ import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/PlaceListSortingDialog.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
 
-class PlaceListSortingArea extends StatefulWidget {
+class PlaceListHeaderArea extends StatefulWidget {
   PlaceViewModel placeViewModel;
   bool locationDisabled = false;
 
-  PlaceListSortingArea({this.placeViewModel, this.locationDisabled = false});
+  PlaceListHeaderArea({this.placeViewModel, this.locationDisabled = false});
 
   @override
-  State<StatefulWidget> createState() => PlaceListSortingAreaState();
+  State<StatefulWidget> createState() => PlaceListHeaderAreaState();
 }
 
-class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
+class PlaceListHeaderAreaState extends State<PlaceListHeaderArea> {
   PlaceViewState placeViewState;
 
   PlaceListSortingKey _sortingKey;
@@ -90,7 +90,10 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Consumer<PlaceViewModel>(builder: (context, model, child) {
-          return Text("${model.getTotalCount()}件中${model.getDisplayCount()}件");
+          return Text(
+            "${model.getDisplayCount()}件 / 全${model.getTotalCount()}件",
+            style: TextStyle(color: Colors.black54, fontSize: 14),
+          );
         }),
         Row(
           children: [
