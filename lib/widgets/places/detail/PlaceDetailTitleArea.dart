@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 
 class PlaceDetailTitleArea extends StatefulWidget {
@@ -37,6 +36,7 @@ class PlaceDetailTitleAreaState extends State<PlaceDetailTitleArea> {
                   widget.marker.name,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

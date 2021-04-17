@@ -8,7 +8,6 @@ import 'PlaceDetailMapArea.dart';
 import 'PlaceDetailTabBarItem.dart';
 
 class PlaceDetailTabLayout extends StatefulWidget {
-
   MapMarker marker;
   PlaceDetailTabLayout({this.marker});
 
@@ -37,7 +36,7 @@ class PlaceDetailTabLayoutState extends State<PlaceDetailTabLayout> {
       );
     } else if (activeIndex == 2) {
       return Center(
-        child: PlaceDetailMemoArea()
+        child: PlaceDetailMemoArea(marker: widget.marker),
       );
     }
   }

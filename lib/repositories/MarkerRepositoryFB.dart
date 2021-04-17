@@ -17,7 +17,7 @@ class MarkerRepositoryFB {
   Future<void> _initUserDatabase() async {
     final FirebaseUser user = await auth.currentUser();
     if (user != null) {
-      print("update database uid: ${user.uid}");
+      print("MarkerRepositoryFB update database uid: ${user.uid}");
       this.userId = user.uid;
     }
   }
@@ -46,9 +46,10 @@ class MarkerRepositoryFB {
               website: doc['website'],
               phoneNumber: doc['phoneNumber'],
               openingHoursJson: doc['openingHoursJson'],
-              types: (doc['typeString'] as String).split(','),
+              types: (doc['typeString'] != null) ? (doc['typeString'] as String).split(',') : List(),
               photos: photos,
               permanentlyClosed: doc['permanentlyClosed'],
+              stationIds: (doc['stationIdsString'] != null) ? (doc['stationIdsString'] as String).split(',') : List(),
               visited: doc['visited'],
               memo: doc['memo']
           );
@@ -114,5 +115,14 @@ class MarkerRepositoryFB {
         .updateData({
           "visited": visited
         });
+  }
+
+  Future<void> updateMemo(MapMarker marker, String memo) async {
+    await Firestore.instance
+        .collection('users')
+        .document('${this.userId}')
+        .collection('markers')
+        .document('${marker.markerId}')
+        .updateData({"memo": memo});
   }
 }

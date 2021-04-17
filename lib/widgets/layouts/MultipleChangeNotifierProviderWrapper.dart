@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
+import 'package:togolist/view_models/StationViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
 
 import '../../view_models/MapViewModel.dart';
@@ -19,7 +20,9 @@ class MultipleChangeNotifierProviderWrapper extends StatelessWidget {
     return ChangeNotifierProvider<UserViewModel>(
         create: (_) => UserViewModel(),
         child: Consumer<UserViewModel>(builder: (context, model, _) {
-          return ChangeNotifierProvider<MapViewModel>(
+          return ChangeNotifierProvider<StationViewModel>(
+              create: (_) => StationViewModel()..fetchStations(),
+          child: ChangeNotifierProvider<MapViewModel>(
               create: (_) => MapViewModel(),
               child: ChangeNotifierProvider<PlaceViewModel>(
                   create: (_) => PlaceViewModel(),
@@ -28,7 +31,7 @@ class MultipleChangeNotifierProviderWrapper extends StatelessWidget {
                       child: child
                   )
               )
-          );
+          ));
         })
     );
   }

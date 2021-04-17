@@ -6,7 +6,9 @@ import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
+import 'package:togolist/models/Station.dart';
 import 'package:togolist/repositories/GooglePlacesRepositoryApi.dart';
+import 'package:togolist/repositories/ExpressHeartrailsRepositoryApi.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
@@ -20,12 +22,15 @@ class PlaceAdditionBackdrop extends StatefulWidget {
 
 class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
   GooglePlacesRepositoryApi _placesRepositoryApi = GooglePlacesRepositoryApi();
+  ExpressHeartrailsRepositoryApi _heartrailsRepositoryApi = ExpressHeartrailsRepositoryApi();
 
   PlaceItem selectedPlaceItem = null;
+  List<Station> nearestStations;
 
   void updateSelectedItem(PlaceItem item) async {
     PlaceItemDetail detail = await _placesRepositoryApi.fetchPlaceDetailByPlaceId(item.googlePlaceId);
     item.setPlaceItemDetail(detail);
+    nearestStations = await _heartrailsRepositoryApi.listNearestStations(item.latitude, item.longitude);
     setState(() {
       this.selectedPlaceItem = item;
     });
@@ -48,7 +53,7 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
         permanentlyClosed: selectedPlaceItem.permanentlyClosed,
         visited: false,
       );
-      await model.addMarker(marker);
+      await model.addMarker(marker, nearestStations);
       Navigator.of(context).pop();
     }
   }
@@ -75,9 +80,6 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-//                    Center(
-//                      child: Icon(Icons.drag_handle_rounded, color: Colors.grey),
-//                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
                       child: FlatButton(

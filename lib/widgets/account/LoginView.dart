@@ -17,13 +17,11 @@ class LoginViewState extends State<LoginView> {
 
   bool isButtonDisplayed = true;
 
-  Future<FirebaseUser> doSignIn() async {
+  Future<FirebaseUser> doGoogleSignIn() async {
     GoogleSignInAccount googleCurrentUser = googleSignIn.currentUser;
     try {
-      if (googleCurrentUser == null)
-        googleCurrentUser = await googleSignIn.signInSilently();
-      if (googleCurrentUser == null)
-        googleCurrentUser = await googleSignIn.signIn();
+      if (googleCurrentUser == null) googleCurrentUser = await googleSignIn.signInSilently();
+      if (googleCurrentUser == null) googleCurrentUser = await googleSignIn.signIn();
       if (googleCurrentUser == null) return null;
 
       GoogleSignInAuthentication googleAuth = await googleCurrentUser.authentication;
@@ -41,12 +39,32 @@ class LoginViewState extends State<LoginView> {
     }
   }
 
-  void processSignIn() async {
+  void processGuestSignIn() async {
     setState(() {
       isButtonDisplayed = false;
     });
 
-    await doSignIn().then((FirebaseUser user) async {
+    final FirebaseUser user = (await auth.signInAnonymously()).user;
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    userViewModel.setUser(user);
+
+    if (userViewModel.user != null) {
+      await MarkerRepositoryFB().updateUser();
+
+      Navigator.of(context, rootNavigator: true).pop();
+    } else {
+      setState(() {
+        isButtonDisplayed = true;
+      });
+    }
+  }
+
+  void processGoogleSignIn() async {
+    setState(() {
+      isButtonDisplayed = false;
+    });
+
+    await doGoogleSignIn().then((FirebaseUser user) async {
       final userViewModel = Provider.of<UserViewModel>(context, listen: false);
       userViewModel.setUser(user);
 
@@ -80,22 +98,33 @@ class LoginViewState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     FlatButton(
+                      onPressed: () => processGuestSignIn(),
+                      child: SizedBox(
+                          width: 140,
+                          child: Center(
+                              child: Text("匿名ログイン")
+                          )
+                      ),
+                      color: Colors.grey,
+                      textColor: Colors.white,
+                    ),
+                    FlatButton(
                       onPressed: () => {},
                       child: SizedBox(
                           width: 140,
                           child: Center(
-                              child: Text("Login by Email")
+                              child: Text("Emailでログイン")
                           )
                       ),
                       color: Colors.orangeAccent,
                       textColor: Colors.white,
                     ),
                     FlatButton(
-                      onPressed: () => processSignIn(),
+                      onPressed: () => processGoogleSignIn(),
                       child: SizedBox(
                           width: 140,
                           child: Center(
-                            child: Text("Login by Google"),
+                            child: Text("Googleでログイン"),
                           )
                       ),
                       color: Colors.redAccent,

@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/BackdropService.dart';
+import 'package:togolist/utils/ListUtil.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
+import 'package:togolist/widgets/ad/PlaceListCardAd.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 import 'package:togolist/widgets/places/PlaceAppBarBottom.dart';
@@ -26,11 +30,7 @@ class PlaceViewState extends State<PlaceView> {
 
   bool _isFocusingSearchArea = false;
 
-  @override
-  void initState() {
-    super.initState();
-//    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
-  }
+
 
   @override
   void didChangeDependencies() {
@@ -39,13 +39,18 @@ class PlaceViewState extends State<PlaceView> {
   }
 
   List<Widget> buildCardList(List<MapMarker> markers) {
-    return markers.map((marker) {
+    List<Widget> cards = markers.map((marker) {
       GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
       return Consumer<LocationViewModel>(builder: (context, model, child) {
         return SlidablePlaceItemCard(
             key: key, marker: marker, location: model.currentLocation);
       });
     }).toList();
+
+    List<Widget> ads = (cards.isEmpty) ? List()
+        : List.filled(((cards.length - 1) / 10).floor(), PlaceListCardAd());
+
+    return ListUtil.insertWithStride(cards, ads, 10).toList();
   }
 
   void notifySlididableCardOpened(GlobalKey<SlidablePlaceItemCardState> key) {
@@ -100,6 +105,58 @@ class PlaceViewState extends State<PlaceView> {
     }
   }
 
+  Widget buildNonExistentView(PlaceViewModel model) {
+    if (!model.isEmptyMarker()) {
+      return Positioned(
+        top: 120,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add_location_alt_outlined,
+                color: Colors.black38,
+                size: 70,
+              ),
+              SizedBox(height: 10),
+              Text("場所が追加されていません。",
+                  style: TextStyle(color: Colors.black38, fontSize: 12)),
+              Text("右下のボタンから場所を追加してください。",
+                  style: TextStyle(color: Colors.black38, fontSize: 12))
+            ],
+          ),
+        ),
+      );
+    } else if (!model.isEmptyViewMarker()) {
+      return Positioned(
+        top: 120,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.not_listed_location_outlined,
+                color: Colors.black38,
+                size: 70,
+              ),
+              SizedBox(height: 10),
+              Text("絞り込み結果がありません。",
+                  style: TextStyle(color: Colors.black38, fontSize: 12)),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,15 +175,18 @@ class PlaceViewState extends State<PlaceView> {
             children: [
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Center(
-                      child: ListView(children: [
-                    Padding(padding: EdgeInsets.only(top: 10)),
-                    PlaceListSortingArea(
-                      placeViewModel: model,
-                      locationDisabled: (lmodel.currentLocation == null),
-                    ),
-                    ...buildCardList(model.viewMarkers),
-                  ]))),
+                  child: ListView(
+                      children: [
+                        SizedBox(height: 10,),
+                        PlaceListSortingArea(
+                          placeViewModel: model,
+                          locationDisabled: (lmodel.currentLocation == null),
+                        ),
+                        ...buildCardList(model.viewMarkers)
+                      ]
+                  )
+              ),
+              buildNonExistentView(model),
               buildFloatingElements()
             ],
           );

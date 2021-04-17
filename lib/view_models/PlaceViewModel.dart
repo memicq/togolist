@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
+import 'package:togolist/models/Station.dart';
 import 'package:togolist/repositories/MarkerRepositoryFB.dart';
+import 'package:togolist/repositories/StationRepositoryFB.dart';
 
 class PlaceViewModel extends ChangeNotifier {
   MarkerRepositoryFB _markerRepositoryFB = MarkerRepositoryFB();
+  StationRepositoryFB _stationRepositoryFB = StationRepositoryFB();
 
   List<MapMarker> _fullMarkers = List();
   List<MapMarker> viewMarkers = List();
@@ -21,13 +24,21 @@ class PlaceViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addMarker(MapMarker marker) async {
+  Future<void> addMarker(MapMarker marker, List<Station> stations) async {
+    marker.stationIds = await saveStations(stations);
     await _markerRepositoryFB.createMarker(marker);
     await fetchMarkers();
     notifyListeners();
   }
 
   Future<void> deleteMarker(MapMarker marker) async {
+    await _stationRepositoryFB.decrementCount(marker.stationIds);
+    List<Station> stations = await _stationRepositoryFB.listStationsByIds(marker.stationIds);
+    List<String> deleteIds = stations
+        .where((station) => station.markerCounts == 0)
+        .map((station) => station.stationId).toList();
+    await _stationRepositoryFB.batchDelete(deleteIds);
+
     await _markerRepositoryFB.deleteMarker(marker);
     await fetchMarkers();
     notifyListeners();
@@ -39,6 +50,13 @@ class PlaceViewModel extends ChangeNotifier {
     MapMarker m = this.viewMarkers.firstWhere((m) => m.markerId == marker.markerId);
     if (m != null){ m.visited = updated; }
     notifyListeners();
+  }
+
+  Future<MapMarker> saveMemo(MapMarker marker, String memo) async {
+    await _markerRepositoryFB.updateMemo(marker, memo);
+    marker.memo = memo;
+    notifyListeners();
+    return marker;
   }
 
   void filterMarkers(String query) {
@@ -81,6 +99,24 @@ class PlaceViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<String>> saveStations(List<Station> stations) async {
+    List<Station> existingStations = await _stationRepositoryFB.listStations();
+
+    List<Station> commonStations = existingStations
+        .where((station) => stations.indexWhere((s) => Station.checkSameStation(s, station)) != -1)
+        .toList();
+    List<Station> newStations = stations
+        .where((station) => commonStations.indexWhere((s) => Station.checkSameStation(s, station)) == -1)
+        .toList();
+    List<String> newStationIds = (await _stationRepositoryFB.saveStations(newStations)).whereType<String>().toList();
+    List<String> commonIds = commonStations.map((s) => s.stationId).whereType<String>().toList();
+    List<String> bindingIds = newStationIds + commonIds;
+
+    await _stationRepositoryFB.incrementCount(bindingIds);
+
+    return bindingIds;
+  }
+
   int _compareWithNull(double a, double b) {
     if (b == null) return -1;
     else if (a == null) return 1;
@@ -97,5 +133,13 @@ class PlaceViewModel extends ChangeNotifier {
 
   String getFilterQuery() {
     return _filterQuery;
+  }
+
+  bool isEmptyMarker() {
+    return _fullMarkers.isNotEmpty;
+  }
+
+  bool isEmptyViewMarker() {
+    return viewMarkers.isNotEmpty;
   }
 }

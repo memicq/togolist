@@ -20,8 +20,10 @@ class MapMarker {
   List<MapMarkerPhoto> photos = List();
   bool permanentlyClosed;
 
+  List<String> stationIds = List();
   bool visited = false;
   String memo = '';
+
   double distanceFromMe = null;
 
   MapMarker({
@@ -38,6 +40,7 @@ class MapMarker {
     this.types,
     this.photos,
     this.permanentlyClosed,
+    this.stationIds,
     this.visited = false,
     this.memo = '',
   });
@@ -55,6 +58,7 @@ class MapMarker {
       'openingHoursJson': this.openingHoursJson,
       'typeString': this.types.join(','),
       'permanentlyClosed': this.permanentlyClosed,
+      'stationIdsString': this.stationIds.join(','),
       'visited': this.visited,
       'memo': this.memo
     };

@@ -11,10 +11,13 @@ import 'package:togolist/widgets/geomap/MapView.dart';
 import 'package:togolist/widgets/layouts/TabAndBackdropLayout.dart';
 import 'package:togolist/widgets/places/PlaceView.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 
 import 'models/TabPage.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Admob.initialize();
   runApp(ToGoApp());
 }
 

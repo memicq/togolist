@@ -72,7 +72,7 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
       actionPane: SlidableScrollActionPane(),
       secondaryActions: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 4),
+          padding: EdgeInsets.symmetric(vertical: 5),
           child: Consumer<PlaceViewModel>(builder: (context, model, child) {
             return IconSlideAction(
               caption: '削除',

@@ -1,9 +1,11 @@
+import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
+import 'package:togolist/widgets/account/InquiryDialog.dart';
 import 'package:togolist/widgets/account/PrivacyPolicyView.dart';
 
 import 'AccountViewItemCard.dart';
@@ -18,6 +20,20 @@ class AccountView extends StatelessWidget {
           return PrivacyPolicyView();
         })
     );
+  }
+
+  void openInquiryDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return InquiryDialog();
+        });
+  }
+
+  void _requestReview() {
+    AppReview.requestReview.then((onValue) {
+      print(onValue);
+    });
   }
 
   Widget switchByLoginCondition(BuildContext context, UserViewModel model) {
@@ -62,7 +78,7 @@ class AccountView extends StatelessWidget {
             Spacer(),
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 5),
-              child: Text("デベロッパー情報", style: TextStyle(fontSize: 12, color: Colors.black54)),
+              child: Text("このアプリについて", style: TextStyle(fontSize: 12, color: Colors.black54)),
             ),
             AccountViewItemCard(
                 elevation: 1.0,
@@ -88,7 +104,7 @@ class AccountView extends StatelessWidget {
                     Text("お問い合わせ・要望フォーム")
                   ],
                 ),
-                onTap: () {}
+                onTap: () { openInquiryDialog(context); }
             ),
             AccountViewItemCard(
                 elevation: 1.0,
@@ -101,7 +117,7 @@ class AccountView extends StatelessWidget {
                   Text("アプリを評価する")
                 ],
               ),
-              onTap: () {}
+              onTap: () { _requestReview(); }
             ),
             AccountViewItemCard(
                 elevation: 0.5,
@@ -128,9 +144,9 @@ class AccountView extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Icon(Icons.logout, color: Colors.redAccent),
+                    child: Icon(Icons.logout, color: Colors.red),
                   ),
-                  Text("ログアウト", style: TextStyle(color: Colors.redAccent),)
+                  Text("ログアウト", style: TextStyle(color: Colors.red),)
                 ],
               ),
               onTap: () async {

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailItemCard.dart';
 
 class PlaceDetailMemoArea extends StatefulWidget {
+  MapMarker marker;
+  PlaceDetailMemoArea({this.marker});
+
   @override
   State<StatefulWidget> createState() => PlaceDetailMemoAreaState();
 }
@@ -9,6 +15,9 @@ class PlaceDetailMemoArea extends StatefulWidget {
 class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
   FocusNode _focus = FocusNode();
   bool _hasFocus;
+  PlaceViewModel _placeViewModel;
+
+  TextEditingController _memoValue = TextEditingController();
 
   @override
   void initState() {
@@ -17,10 +26,23 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
     _hasFocus = _focus.hasFocus;
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _memoValue.text = widget.marker.memo;
+    _placeViewModel = Provider.of<PlaceViewModel>(context, listen: false);
+  }
+
   void _onFocusChange() {
     setState(() {
       _hasFocus = _focus.hasFocus;
     });
+  }
+
+  Future<void> saveMemo() async {
+    MapMarker updated = await _placeViewModel.saveMemo(widget.marker, _memoValue.text);
+    widget.marker = updated;
+    FocusScope.of(context).unfocus();
   }
 
   Widget switchShowSaveIconButton() {
@@ -31,7 +53,7 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
         height: double.infinity,
         child: IconButton(
           icon: Icon(Icons.save_alt),
-          onPressed: (){},
+          onPressed: () { saveMemo(); },
         ),
       );
     } else return null;
@@ -44,6 +66,7 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
         constraints: BoxConstraints(maxHeight: 200),
         child: Scrollbar(
           child: TextField(
+            controller: _memoValue,
             focusNode: _focus,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
@@ -54,8 +77,12 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
                 ),
               ),
             ),
-            maxLines: 10,
-            minLines: 10,
+            maxLines: 15,
+            minLines: 15,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black87
+            ),
           ),
         ),
       ),
@@ -71,9 +98,7 @@ class PlaceDetailMemoAreaState extends State<PlaceDetailMemoArea> {
             title: "メモ",
             content: buildTextField(),
           ),
-          SizedBox(
-            height: 200,
-          )
+          SizedBox(height: 200)
         ],
       ),
     );

@@ -88,29 +88,38 @@ class PlaceListSortingAreaState extends State<PlaceListSortingArea> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        SizedBox(
-          height: 35,
-          child: TextButton(
-            child: Text("${this._sortingKey.name}順",
-                style: TextStyle(
-                    color: Colors.deepOrange,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold)),
-            onPressed: openSortingDialog,
-          ),
+        Row(
+          children: [
+            Text("aa")
+          ],
         ),
-        SizedBox(
-          height: 35,
-          width: 35,
-          child: TextButton(
-            child: Icon(
-              buildIcon(),
-              color: Colors.deepOrange.shade400,
-              size: 17,
+        Row(
+          children: [
+            SizedBox(
+              height: 35,
+              child: TextButton(
+                child: Text("${this._sortingKey.name}順",
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold)),
+                onPressed: openSortingDialog,
+              ),
             ),
-            onPressed: toggleSortingOrder,
-          ),
-        ),
+            SizedBox(
+              height: 35,
+              width: 35,
+              child: TextButton(
+                child: Icon(
+                  buildIcon(),
+                  color: Colors.deepOrange.shade400,
+                  size: 17,
+                ),
+                onPressed: toggleSortingOrder,
+              ),
+            ),
+          ],
+        )
       ]),
     );
   }

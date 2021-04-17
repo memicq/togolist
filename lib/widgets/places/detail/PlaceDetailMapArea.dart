@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/models/Station.dart';
+import 'package:togolist/view_models/StationViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailItemCard.dart';
 
-class PlaceDetailMapArea extends StatelessWidget {
+class PlaceDetailMapArea extends StatefulWidget {
   MapMarker marker;
   PlaceDetailMapArea({this.marker});
+
+  @override
+  State<StatefulWidget> createState() => PlaceDetailMapAreaState();
+}
+
+class PlaceDetailMapAreaState extends State<PlaceDetailMapArea> {
+
+  List<Widget> buildStations(StationViewModel model) {
+    List<Station> stations = model.getFilteredStations(widget.marker.stationIds);
+    if (stations.isEmpty) {
+      return [Container()];
+    } else {
+      return stations.map((s) =>
+          SelectableText("・ ${s.line} / ${s.nameWithSuffix()}", style: TextStyle(fontSize: 13, color: Colors.black54))
+      ).toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +50,12 @@ class PlaceDetailMapArea extends StatelessWidget {
                             myLocationEnabled: true,
                             markers: [
                               Marker(
-                                markerId: MarkerId(marker.googlePlaceId),
-                                position: LatLng(marker.latitude, marker.longitude),
+                                markerId: MarkerId(widget.marker.googlePlaceId),
+                                position: LatLng(widget.marker.latitude, widget.marker.longitude),
                               )
                             ].toSet(),
                             initialCameraPosition: CameraPosition(
-                                target: LatLng(marker.latitude, marker.longitude),
+                                target: LatLng(widget.marker.latitude, widget.marker.longitude),
                                 zoom: 14
                             ),
                           )
@@ -44,12 +64,20 @@ class PlaceDetailMapArea extends StatelessWidget {
                     ],
                   )
               ),
-              PlaceDetailItemCard(
-                  title: "最寄り駅",
-                  content: ColoredBox(color: Colors.red)
-              ),
+              Consumer<StationViewModel>(builder: (context, model, _) {
+                return PlaceDetailItemCard(
+                    title: "近くの駅",
+                    content: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: buildStations(model)
+                      ),
+                    )
+                );
+              }),
               SizedBox(
-                height: 50,
+                height: 100,
               )
             ]
         )
