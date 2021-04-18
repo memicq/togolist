@@ -1,33 +1,31 @@
-
-import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 
 class LocationService {
+//   for singleton
   static final LocationService _locationService = LocationService._internal();
-
-  factory LocationService() {
-    return _locationService;
+  factory LocationService() => _locationService;
+  LocationService._internal() {
+    initLocation();
   }
 
-  LocationService._internal();
+  Location _location;
+  final double _latitudeThreshold = 0.0001;
+  final double _longitudeThreshold = 0.0001;
 
-  Location _location = new Location();
-  String _errorText = null;
+  LocationData currentLocation;
 
-  Future<LocationData> getCurrentLocation() async {
-    LocationData location;
+  void initLocation() {
+    _location = new Location();
 
-    try {
-      location = await _location.getLocation();
-    } on PlatformException catch(e) {
-      if (e.code == 'PERMISSION_DENITED')
-        _errorText = 'Permission denited';
-      else if (e.code == 'PERMISSION_DENITED_NEVER_ASK')
-        _errorText = 'Permission denited - please ask the user to enable it from the app settings';
+    Future(() async {
+      currentLocation = await _location.getLocation();
+    });
 
-      location = null;
-    }
-
-    return location;
+    _location.onLocationChanged().listen((LocationData newLocation) {
+      if ((currentLocation.latitude - newLocation.latitude).abs() > _latitudeThreshold
+          || (currentLocation.longitude - newLocation.longitude).abs() > _longitudeThreshold) {
+        currentLocation = newLocation;
+      }
+    });
   }
 }

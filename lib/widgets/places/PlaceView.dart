@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
 import 'package:togolist/services/BackdropService.dart';
+import 'package:togolist/services/LocationService.dart';
 import 'package:togolist/utils/ListUtil.dart';
-import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/ad/PlaceListCardAd.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
@@ -25,15 +23,21 @@ class PlaceView extends StatefulWidget {
 class PlaceViewState extends State<PlaceView> {
   GlobalKey<SlidablePlaceItemCardState> openingSlidableCardState = null;
 
-  BackdropService backdropService = BackdropService();
+  BackdropService _backdropService = BackdropService();
+  LocationService _locationService = LocationService();
 
   bool _isFocusingSearchArea = false;
 
-  List<Widget> buildCardList(PlaceViewModel pModel, LocationViewModel lModel) {
-    print("${pModel.getCurrentSortingOrder()}, ${pModel.getCurrentSortingKey()}");
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
+  }
+
+  List<Widget> buildCardList(PlaceViewModel pModel) {
     List<Widget> cards = pModel.viewMarkers.map((marker) {
       GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
-      return SlidablePlaceItemCard(key: key, marker: marker, location: lModel.currentLocation);
+      return SlidablePlaceItemCard(key: key, marker: marker);
     }).toList();
 
     List<Widget> ads = (cards.isEmpty)
@@ -87,8 +91,7 @@ class PlaceViewState extends State<PlaceView> {
         child: GradatedIconButton(
           icon: Icon(Icons.add),
           onPressed: () => {
-            backdropService.openBackdrop(
-                page: PlaceAdditionBackdrop(), height: 435.0)
+            _backdropService.openBackdrop(page: PlaceAdditionBackdrop(), height: 435.0)
           },
         ),
       );
@@ -112,10 +115,8 @@ class PlaceViewState extends State<PlaceView> {
                 size: 70,
               ),
               SizedBox(height: 10),
-              Text("場所が追加されていません。",
-                  style: TextStyle(color: Colors.black38, fontSize: 12)),
-              Text("右下のボタンから場所を追加してください。",
-                  style: TextStyle(color: Colors.black38, fontSize: 12))
+              Text("場所が追加されていません。", style: TextStyle(color: Colors.black38, fontSize: 12)),
+              Text("右下のボタンから場所を追加してください。", style: TextStyle(color: Colors.black38, fontSize: 12))
             ],
           ),
         ),
@@ -136,8 +137,7 @@ class PlaceViewState extends State<PlaceView> {
                 size: 70,
               ),
               SizedBox(height: 10),
-              Text("絞り込み結果がありません。",
-                  style: TextStyle(color: Colors.black38, fontSize: 12)),
+              Text("絞り込み結果がありません。", style: TextStyle(color: Colors.black38, fontSize: 12)),
             ],
           ),
         ),
@@ -159,20 +159,19 @@ class PlaceViewState extends State<PlaceView> {
               child: PlaceAppBarBottom()),
         ),
       ),
-      body: Consumer<LocationViewModel>(builder: (lcontext, lmodel, lchild) {
-        return Consumer<PlaceViewModel>(builder: (context, model, child) {
+      body: Consumer<PlaceViewModel>(builder: (context, model, child) {
           return Stack(
             children: [
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: ListView(
                       children: [
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         PlaceListHeaderArea(
                           placeViewModel: model,
-                          locationDisabled: (lmodel.currentLocation == null),
+                          locationDisabled: (_locationService.currentLocation == null),
                         ),
-                        ...buildCardList(model, lmodel)
+                        ...buildCardList(model)
                       ]
                   )
               ),
@@ -180,7 +179,6 @@ class PlaceViewState extends State<PlaceView> {
               buildFloatingElements()
             ],
           );
-        });
       }),
       resizeToAvoidBottomInset: false,
     );

@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:geodesy/geodesy.dart';
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
-import 'package:togolist/utils/GeographUtil.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
 class PlaceItemCard extends StatefulWidget {
   MapMarker marker;
-  LocationData location;
 
-  PlaceItemCard({Key key, this.marker, this.location}) : super(key: key);
+  PlaceItemCard({Key key, this.marker}) : super(key: key);
 
   @override
   State<PlaceItemCard> createState() => PlaceItemCardState();
@@ -22,20 +18,6 @@ class PlaceItemCard extends StatefulWidget {
 class PlaceItemCardState extends State<PlaceItemCard> {
   SlidableState slidable;
   PlaceViewModel _placeViewModel;
-
-  double distanceKm;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.location != null) {
-      GeoPoint userLatLng = GeoPoint(latitude: widget.location.latitude, longitude: widget.location.longitude);
-      GeoPoint markerLatLng = GeoPoint(latitude: widget.marker.latitude, longitude: widget.marker.longitude);
-      this.distanceKm = GeographUtil.calculateDistanceKm(userLatLng, markerLatLng);
-      widget.marker.distanceFromMe = this.distanceKm;
-    }
-  }
 
   @override
   void didChangeDependencies() {
@@ -72,7 +54,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
   }
 
   Widget buildDistance() {
-    if (distanceKm != null) {
+    if (widget.marker.distanceFromMe != null) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
         child: Row(
@@ -83,7 +65,7 @@ class PlaceItemCardState extends State<PlaceItemCard> {
                 child: Icon(Icons.directions_walk_rounded, size: 15, color: Color(0xBB000000))
             ),
             Text(
-              "$distanceKm km",
+              "${widget.marker.distanceFromMe} km",
               style: TextStyle(
                   fontSize: 13,
                   color: Color(0xBB000000)

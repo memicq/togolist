@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceListSortingKey.dart';
 import 'package:togolist/models/Station.dart';
 import 'package:togolist/repositories/MarkerRepositoryFB.dart';
 import 'package:togolist/repositories/StationRepositoryFB.dart';
+import 'package:togolist/services/LocationService.dart';
+import 'package:togolist/utils/GeographUtil.dart';
+import 'package:togolist/view_models/LocationViewModel.dart';
 
 class PlaceViewModel extends ChangeNotifier {
   MarkerRepositoryFB _markerRepositoryFB = MarkerRepositoryFB();
   StationRepositoryFB _stationRepositoryFB = StationRepositoryFB();
+  LocationService _locationService = LocationService();
 
   List<MapMarker> _fullMarkers = List();
   List<MapMarker> viewMarkers = List();
@@ -18,6 +23,7 @@ class PlaceViewModel extends ChangeNotifier {
 
   Future<void> fetchMarkers() async {
     this._fullMarkers = await _markerRepositoryFB.listMarker();
+    _updateDistance();
     this.viewMarkers = this._fullMarkers;
     this._filter();
     this._sort();
@@ -81,7 +87,7 @@ class PlaceViewModel extends ChangeNotifier {
     this.viewMarkers = filteredMarkers;
   }
 
-  void _sort(){
+  void _sort() {
     if (_sortingKey == PlaceListSortingKey.PLACE_NAME) {
       if (_sortingOrder == PlaceListSortingOrder.ASC) {
         this.viewMarkers.sort((a, b) => a.name.compareTo(b.name));
@@ -119,6 +125,17 @@ class PlaceViewModel extends ChangeNotifier {
     if (b == null) return -1;
     else if (a == null) return 1;
     else return a.compareTo(b);
+  }
+
+  void _updateDistance()  {
+    LocationData loc = _locationService.currentLocation;
+    if (loc != null) {
+      this._fullMarkers.forEach((m) {
+        GeoPoint gp1 = GeoPoint(latitude: loc.latitude, longitude: loc.longitude);
+        GeoPoint gp2 = GeoPoint(latitude: m.latitude, longitude: m.longitude);
+        m.distanceFromMe = GeographUtil.calculateDistanceKm(gp1, gp2);
+      });
+    }
   }
 
   PlaceListSortingKey getCurrentSortingKey() {

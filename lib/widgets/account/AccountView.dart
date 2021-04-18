@@ -150,7 +150,6 @@ class AccountView extends StatelessWidget {
                 ],
               ),
               onTap: () async {
-                print("logout");
                 await model.logout();
                 await googleSignIn.signOut();
                 Navigator.of(context, rootNavigator: true)

@@ -22,16 +22,13 @@ class MultipleChangeNotifierProviderWrapper extends StatelessWidget {
         child: Consumer<UserViewModel>(builder: (context, model, _) {
           return ChangeNotifierProvider<StationViewModel>(
               create: (_) => StationViewModel()..fetchStations(),
-          child: ChangeNotifierProvider<MapViewModel>(
-              create: (_) => MapViewModel(),
-              child: ChangeNotifierProvider<PlaceViewModel>(
-                  create: (_) => PlaceViewModel(),
-                  child: ChangeNotifierProvider<LocationViewModel>(
-                      create: (_) => LocationViewModel(),
-                      child: child
+                  child: ChangeNotifierProvider<MapViewModel>(
+                      create: (_) => MapViewModel(),
+                      child: ChangeNotifierProvider<PlaceViewModel>(
+                          create: (_) => PlaceViewModel(), child: child
+                      )
                   )
-              )
-          ));
+          );
         })
     );
   }

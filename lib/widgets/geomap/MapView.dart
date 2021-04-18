@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/services/LocationService.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
@@ -19,6 +20,8 @@ class MapView extends StatefulWidget {
 }
 
 class MapViewState extends State<MapView> {
+  LocationService _locationService = LocationService();
+
   static const double DEFAULT_MAP_ZOOM_LEVEL = 10.0;
   static const double PLACE_FOCUS_ZOOM_LEVEL = 15.0;
   static const Offset GOOGLE_ANCHOR_OFFSET = Offset(0.5, 0.8);
@@ -96,54 +99,47 @@ class MapViewState extends State<MapView> {
               icon: Icon(
                 Icons.near_me,
               ),
-              onPressed: () =>
-                  currentPlaceCamera(currentLocation)));
+              onPressed: () => currentPlaceCamera(currentLocation)));
     } else {
       return Container();
     }
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-          appBar: MapAppBar(),
-          body: Center(
-            child: Consumer<MapViewModel>(builder: (context, model, child) {
-              return Consumer<LocationViewModel>(
-                  builder: (lContext, lModel, lChild) {
-                    return Stack(alignment: Alignment.topLeft, children: [
-                      Container(
-                          child: GoogleMap(
-                              onMapCreated: (controller) =>
-                                  _onMapCreated(controller, lModel.currentLocation),
-                              onCameraMove: (CameraPosition cameraPosition) {
-                                currentCameraPosition = cameraPosition;
-                                setMarkerRotation(cameraPosition);
-                              },
-                              initialCameraPosition: INITIAL_CAMERA_POSITION,
-                              myLocationEnabled: true,
-                              myLocationButtonEnabled: false,
-                              zoomControlsEnabled: false,
-                              zoomGesturesEnabled: true,
-                              rotateGesturesEnabled: true,
-                              markers: model.viewMarkers
-                                  .map((marker) => Marker(
-                                  markerId: MarkerId(marker.address),
-                                  position:
-                                  LatLng(marker.latitude, marker.longitude),
-                                  infoWindow: InfoWindow(
-                                      title: marker.name,
-                                      snippet: marker.address),
-                                  flat: true,
-                                  icon: BitmapDescriptor.defaultMarker,
-                                  anchor: GOOGLE_ANCHOR_OFFSET,
-                                  onTap: () => pointCamera(marker),
-                                  rotation: markerRotation))
-                                  .toSet())),
-                      currentLocationButton(lModel.currentLocation)
-                    ]);
-                  });
-            }),
-          ));
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MapAppBar(),
+      body: Center(
+          child: Consumer<MapViewModel>(builder: (context, model, child) {
+        return Stack(alignment: Alignment.topLeft, children: [
+          Container(
+              child: GoogleMap(
+                  onMapCreated: (controller) => _onMapCreated(controller, _locationService.currentLocation),
+                  onCameraMove: (CameraPosition cameraPosition) {
+                    currentCameraPosition = cameraPosition;
+                    setMarkerRotation(cameraPosition);
+                  },
+                  initialCameraPosition: INITIAL_CAMERA_POSITION,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  zoomGesturesEnabled: true,
+                  rotateGesturesEnabled: true,
+                  markers: model.viewMarkers
+                      .map((marker) => Marker(
+                          markerId: MarkerId(marker.address),
+                          position: LatLng(marker.latitude, marker.longitude),
+                          infoWindow: InfoWindow(
+                              title: marker.name, snippet: marker.address),
+                          flat: true,
+                          icon: BitmapDescriptor.defaultMarker,
+                          anchor: GOOGLE_ANCHOR_OFFSET,
+                          onTap: () => pointCamera(marker),
+                          rotation: markerRotation))
+                      .toSet())),
+          currentLocationButton(_locationService.currentLocation)
+        ]);
+      })),
+    );
   }
+}

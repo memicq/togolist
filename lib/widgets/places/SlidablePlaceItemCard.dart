@@ -12,8 +12,7 @@ import 'PlaceView.dart';
 
 class SlidablePlaceItemCard extends StatefulWidget {
   MapMarker marker;
-  LocationData location;
-  SlidablePlaceItemCard({Key key, this.marker, this.location}): super(key: key);
+  SlidablePlaceItemCard({Key key, this.marker}): super(key: key);
 
   @override
   State<StatefulWidget> createState() => SlidablePlaceItemCardState();
@@ -67,7 +66,6 @@ class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
       child: PlaceItemCard(
           key: placeItemCardGlobalKey,
           marker: widget.marker,
-          location: widget.location
       ),
       actionPane: SlidableScrollActionPane(),
       secondaryActions: [

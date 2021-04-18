@@ -52,7 +52,7 @@ class TabAndBackdropLayoutState extends State<TabAndBackdropLayout> {
   int page;
 
   BackdropService _backdropService = BackdropService();
-  GlobalTabService _globalTabService = GlobalTabService();
+//  GlobalTabService _globalTabService = GlobalTabService();
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class TabAndBackdropLayoutState extends State<TabAndBackdropLayout> {
 
     this.page = widget.defaultPage;
     this._backdropService.setOpenBackdropFunction(openBackdrop);
-    this._globalTabService.views = widget.views;
+//    this._globalTabService.views = widget.views;
   }
 
   Widget buildContent(BuildContext context) {

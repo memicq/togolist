@@ -5,10 +5,12 @@ class BackdropService {
   factory BackdropService() => _backdropService;
   BackdropService._internal();
 
+  bool isAlreadySet = false;
   Function openBackdrop = ({Widget page, double height}) { print("openBackDrop is null"); };
   void setOpenBackdropFunction(Function openBackdrop){
-    if (this.openBackdrop == null) {
+    if (!this.isAlreadySet) {
       this.openBackdrop = openBackdrop;
+      this.isAlreadySet == true;
     }
   }
 }
