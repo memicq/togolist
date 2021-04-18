@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/LocationService.dart';
-import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/geomap/MapAppBar.dart';

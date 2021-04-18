@@ -7,7 +7,6 @@ import 'package:togolist/repositories/MarkerRepositoryFB.dart';
 import 'package:togolist/repositories/StationRepositoryFB.dart';
 import 'package:togolist/services/LocationService.dart';
 import 'package:togolist/utils/GeographUtil.dart';
-import 'package:togolist/view_models/LocationViewModel.dart';
 
 class PlaceViewModel extends ChangeNotifier {
   MarkerRepositoryFB _markerRepositoryFB = MarkerRepositoryFB();
@@ -20,6 +19,10 @@ class PlaceViewModel extends ChangeNotifier {
   PlaceListSortingKey _sortingKey = PlaceListSortingKey.PLACE_NAME;
   PlaceListSortingOrder _sortingOrder = PlaceListSortingOrder.ASC;
   String _filterQuery = '';
+
+  PlaceViewModel() {
+    _locationService.locationChangedCallback = () => fetchMarkers();
+  }
 
   Future<void> fetchMarkers() async {
     this._fullMarkers = await _markerRepositoryFB.listMarker();

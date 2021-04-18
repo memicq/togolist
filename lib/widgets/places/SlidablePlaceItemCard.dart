@@ -20,7 +20,6 @@ class SlidablePlaceItemCard extends StatefulWidget {
 
 
 class SlidablePlaceItemCardState extends State<SlidablePlaceItemCard> {
-
   SlidableController slidableController;
 
   GlobalKey<PlaceItemCardState> placeItemCardGlobalKey = GlobalKey();

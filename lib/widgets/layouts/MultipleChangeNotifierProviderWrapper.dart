@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:togolist/view_models/LocationViewModel.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/view_models/StationViewModel.dart';
 import 'package:togolist/view_models/UserViewModel.dart';
