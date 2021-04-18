@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:togolist/models/GooglePlaceType.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/ExternalUrlLaunchService.dart';
@@ -74,15 +73,10 @@ class PlaceDetailBasicInfoArea extends StatelessWidget {
             onPressed: () {
               _launchService.launchInBrowser(this.marker.website);
             }),
-      IconButton(
-          icon: Icon(FontAwesomeIcons.instagram), onPressed: () {}),
-      IconButton(
-          icon: Icon(FontAwesomeIcons.twitter), onPressed: () {}),
-      IconButton(
-          icon: Icon(FontAwesomeIcons.facebook), onPressed: () {}),
-    ]
-        .where((type) => type != null)
-        .toList();
+//      IconButton(icon: Icon(FontAwesomeIcons.instagram), onPressed: () {}),
+//      IconButton(icon: Icon(FontAwesomeIcons.twitter), onPressed: () {}),
+//      IconButton(icon: Icon(FontAwesomeIcons.facebook), onPressed: () {}),
+    ].where((type) => type != null).toList();
   }
 
   @override
@@ -107,9 +101,7 @@ class PlaceDetailBasicInfoArea extends StatelessWidget {
           title: "場所タイプ",
           content: buildTypeRow(),
         ),
-        SizedBox(
-          height: 200,
-        )
+        SizedBox(height: 200)
       ],
     ));
   }

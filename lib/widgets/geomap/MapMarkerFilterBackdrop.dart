@@ -5,7 +5,8 @@ import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarkerFilterCondition.dart';
 import 'package:togolist/view_models/MapViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
-import 'package:togolist/widgets/geomap/MapMarkerFilterItemTile.dart';
+import 'package:togolist/widgets/geomap/MapMarkerFilterAutocompleteInputTile.dart';
+import 'package:togolist/widgets/geomap/MapMarkerFilterDropdownTile.dart';
 
 class MapMarkerFilterBackdrop extends StatefulWidget {
   MapMarkerFilterBackdrop();
@@ -38,7 +39,7 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
   }
 
   Widget buildVisitedTile() {
-    return MapMarkerFilterItemTile(
+    return MapMarkerFilterDropdownTile(
       iconData: FontAwesomeIcons.shoePrints,
       title: '足跡',
       description: '行った / 行ってない で絞り込む',
@@ -70,6 +71,14 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
     );
   }
 
+  Widget buildStationTile() {
+    return MapMarkerFilterAutocompleteInputTile(
+      iconData: FontAwesomeIcons.subway,
+      title: '近くの駅',
+      description: '近くの駅・沿線で探す',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,6 +94,7 @@ class MapMarkerFilterBackdropState extends State<MapMarkerFilterBackdrop> {
           Divider(),
           Column(
             children: [
+//              buildStationTile(),
               buildVisitedTile(),
             ],
           ),

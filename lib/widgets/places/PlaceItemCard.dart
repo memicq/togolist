@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
 import 'package:togolist/models/MapMarker.dart';
+import 'package:togolist/utils/GeographUtil.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailView.dart';
 
@@ -20,7 +21,6 @@ class PlaceItemCard extends StatefulWidget {
 
 class PlaceItemCardState extends State<PlaceItemCard> {
   SlidableState slidable;
-  Geodesy geodesy = Geodesy();
   PlaceViewModel _placeViewModel;
 
   double distanceKm;
@@ -30,13 +30,9 @@ class PlaceItemCardState extends State<PlaceItemCard> {
     super.initState();
 
     if (widget.location != null) {
-      LatLng userLatLng =
-          LatLng(widget.location.latitude, widget.location.longitude);
-      LatLng markerLatLng =
-          LatLng(widget.marker.latitude, widget.marker.longitude);
-      double distanceMeter =
-          geodesy.distanceBetweenTwoGeoPoints(userLatLng, markerLatLng);
-      this.distanceKm = ((distanceMeter / 100.0).roundToDouble() / 10.0);
+      GeoPoint userLatLng = GeoPoint(latitude: widget.location.latitude, longitude: widget.location.longitude);
+      GeoPoint markerLatLng = GeoPoint(latitude: widget.marker.latitude, longitude: widget.marker.longitude);
+      this.distanceKm = GeographUtil.calculateDistanceKm(userLatLng, markerLatLng);
       widget.marker.distanceFromMe = this.distanceKm;
     }
   }

@@ -63,9 +63,7 @@ class PlaceListHeaderAreaState extends State<PlaceListHeaderArea> {
       this._sortingKey = sortingKey;
     });
 
-    print("toggleSortingOrder: ${_sortingKey}, ${_sortingOrder}");
-    widget.placeViewModel.sortMarkers(
-        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
+    widget.placeViewModel.sortMarkers(sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   void toggleSortingOrder() {
@@ -79,9 +77,7 @@ class PlaceListHeaderAreaState extends State<PlaceListHeaderArea> {
       });
     }
 
-    print("toggleSortingOrder: ${_sortingKey}, ${_sortingOrder}");
-    widget.placeViewModel.sortMarkers(
-        sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
+    widget.placeViewModel.sortMarkers(sortingKey: this._sortingKey, sortingOrder: this._sortingOrder);
   }
 
   @override

@@ -28,7 +28,6 @@ class PlaceViewModel extends ChangeNotifier {
     marker.stationIds = await saveStations(stations);
     await _markerRepositoryFB.createMarker(marker);
     await fetchMarkers();
-    notifyListeners();
   }
 
   Future<void> deleteMarker(MapMarker marker) async {
@@ -41,7 +40,6 @@ class PlaceViewModel extends ChangeNotifier {
 
     await _markerRepositoryFB.deleteMarker(marker);
     await fetchMarkers();
-    notifyListeners();
   }
 
   Future<void> toggleVisited(MapMarker marker) async {
@@ -83,7 +81,7 @@ class PlaceViewModel extends ChangeNotifier {
     this.viewMarkers = filteredMarkers;
   }
 
-  void _sort() {
+  void _sort(){
     if (_sortingKey == PlaceListSortingKey.PLACE_NAME) {
       if (_sortingOrder == PlaceListSortingOrder.ASC) {
         this.viewMarkers.sort((a, b) => a.name.compareTo(b.name));

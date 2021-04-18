@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MapMarkerFilterItemTile extends StatefulWidget {
+class MapMarkerFilterDropdownTile extends StatefulWidget {
   IconData iconData;
   String title;
   String description;
@@ -8,7 +8,7 @@ class MapMarkerFilterItemTile extends StatefulWidget {
   int selected;
   Function onChanged = (int value){};
 
-  MapMarkerFilterItemTile({
+  MapMarkerFilterDropdownTile({
     this.iconData,
     this.title,
     this.description,
@@ -18,10 +18,10 @@ class MapMarkerFilterItemTile extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => MapMarkerFilterItemTileState();
+  State<StatefulWidget> createState() => MapMarkerFilterDropdownTileState();
 }
 
-class MapMarkerFilterItemTileState extends State<MapMarkerFilterItemTile>{
+class MapMarkerFilterDropdownTileState extends State<MapMarkerFilterDropdownTile>{
   void onChangeValue(dynamic value) {
     setState(() {
       widget.selected = value;

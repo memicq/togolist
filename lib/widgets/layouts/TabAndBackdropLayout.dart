@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:togolist/const/LocaleSetting.dart';
 import 'package:togolist/services/BackdropService.dart';
+import 'package:togolist/services/GlobalTabService.dart';
 import 'package:togolist/widgets/common/GradatedIconButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionBackdrop.dart';
 
@@ -50,14 +51,16 @@ class TabAndBackdropLayout extends StatefulWidget {
 class TabAndBackdropLayoutState extends State<TabAndBackdropLayout> {
   int page;
 
-  BackdropService backdropService = BackdropService();
+  BackdropService _backdropService = BackdropService();
+  GlobalTabService _globalTabService = GlobalTabService();
 
   @override
   void initState() {
     super.initState();
 
     this.page = widget.defaultPage;
-    this.backdropService.setOpenBackdropFunction(openBackdrop);
+    this._backdropService.setOpenBackdropFunction(openBackdrop);
+    this._globalTabService.views = widget.views;
   }
 
   Widget buildContent(BuildContext context) {

@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/Style.dart';
-import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/services/BackdropService.dart';
 import 'package:togolist/utils/ListUtil.dart';
 import 'package:togolist/view_models/LocationViewModel.dart';
@@ -30,22 +29,15 @@ class PlaceViewState extends State<PlaceView> {
 
   bool _isFocusingSearchArea = false;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<PlaceViewModel>(context, listen: false).fetchMarkers();
-  }
-
-  List<Widget> buildCardList(List<MapMarker> markers) {
-    List<Widget> cards = markers.map((marker) {
+  List<Widget> buildCardList(PlaceViewModel pModel, LocationViewModel lModel) {
+    print("${pModel.getCurrentSortingOrder()}, ${pModel.getCurrentSortingKey()}");
+    List<Widget> cards = pModel.viewMarkers.map((marker) {
       GlobalKey<SlidablePlaceItemCardState> key = GlobalKey();
-      return Consumer<LocationViewModel>(builder: (context, model, child) {
-        return SlidablePlaceItemCard(
-            key: key, marker: marker, location: model.currentLocation);
-      });
+      return SlidablePlaceItemCard(key: key, marker: marker, location: lModel.currentLocation);
     }).toList();
 
-    List<Widget> ads = (cards.isEmpty) ? List()
+    List<Widget> ads = (cards.isEmpty)
+        ? List()
         : List.filled(((cards.length - 1) / 10).floor(), PlaceListCardAd());
 
     return ListUtil.insertWithStride(cards, ads, 10).toList();
@@ -180,7 +172,7 @@ class PlaceViewState extends State<PlaceView> {
                           placeViewModel: model,
                           locationDisabled: (lmodel.currentLocation == null),
                         ),
-                        ...buildCardList(model.viewMarkers)
+                        ...buildCardList(model, lmodel)
                       ]
                   )
               ),

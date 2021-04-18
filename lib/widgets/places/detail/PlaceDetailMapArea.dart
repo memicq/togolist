@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:provider/provider.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/Station.dart';
+import 'package:togolist/utils/GeographUtil.dart';
 import 'package:togolist/view_models/StationViewModel.dart';
 import 'package:togolist/widgets/places/detail/PlaceDetailItemCard.dart';
 
@@ -21,9 +22,16 @@ class PlaceDetailMapAreaState extends State<PlaceDetailMapArea> {
     if (stations.isEmpty) {
       return [Container()];
     } else {
-      return stations.map((s) =>
-          SelectableText("・ ${s.line} / ${s.nameWithSuffix()}", style: TextStyle(fontSize: 13, color: Colors.black54))
-      ).toList();
+      return stations.map((s){
+        double dist = GeographUtil.calculateDistanceKm(
+            GeoPoint(latitude: s.latitude, longitude: s.longitude),
+            GeoPoint(latitude: widget.marker.latitude, longitude: widget.marker.longitude)
+        );
+        return SelectableText(
+            "・ ${s.nameWithSuffix()} / ${s.line} （${dist} km）",
+            style: TextStyle(fontSize: 13, color: Colors.black54)
+        );
+      }).toList();
     }
   }
 
@@ -41,7 +49,7 @@ class PlaceDetailMapAreaState extends State<PlaceDetailMapArea> {
                       Container(
                           width: double.infinity,
                           height: 200,
-                          child: GoogleMap(
+                          child: google.GoogleMap(
                             rotateGesturesEnabled: false,
                             scrollGesturesEnabled: false,
                             zoomGesturesEnabled: false,
@@ -49,13 +57,13 @@ class PlaceDetailMapAreaState extends State<PlaceDetailMapArea> {
                             myLocationButtonEnabled: false,
                             myLocationEnabled: true,
                             markers: [
-                              Marker(
-                                markerId: MarkerId(widget.marker.googlePlaceId),
-                                position: LatLng(widget.marker.latitude, widget.marker.longitude),
+                              google.Marker(
+                                markerId: google.MarkerId(widget.marker.googlePlaceId),
+                                position: google.LatLng(widget.marker.latitude, widget.marker.longitude),
                               )
                             ].toSet(),
-                            initialCameraPosition: CameraPosition(
-                                target: LatLng(widget.marker.latitude, widget.marker.longitude),
+                            initialCameraPosition: google.CameraPosition(
+                                target: google.LatLng(widget.marker.latitude, widget.marker.longitude),
                                 zoom: 14
                             ),
                           )
