@@ -9,9 +9,9 @@ class PlaceAdditionPreviewArea extends StatelessWidget {
   PlaceAdditionPreviewArea({this.placeItem});
 
   Widget buildPlacePreviewImageArea() {
-    if (this.placeItem != null && this.placeItem.placeItemDetail.photos != null) {
-      return PlaceDetailImageArea(googlePhotos: this.placeItem.placeItemDetail.photos);
-    } else {
+//    if (this.placeItem != null && this.placeItem.placeItemDetail.photos != null) {
+//      return PlaceDetailImageArea(googlePhotos: this.placeItem.placeItemDetail.photos);
+//    } else {
       return Container(
         height: 200,
         width: double.infinity,
@@ -19,7 +19,7 @@ class PlaceAdditionPreviewArea extends StatelessWidget {
         child: Icon(Icons.image_outlined,
             color: Colors.black38, size: 70),
       );
-    }
+//    }
   }
 
   Widget buildPlacePreviewTitleArea() {

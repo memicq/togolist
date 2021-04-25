@@ -97,8 +97,8 @@ class PlaceDetailViewState extends State<PlaceDetailView> {
                   alignment: Alignment.topLeft,
                   child: Column(children: [
                     PlaceDetailTitleArea(marker: widget.marker),
-                    if (widget.marker.photos.length != 0)
-                      PlaceDetailImageArea(googlePhotos: widget.marker.photos),
+//                    if (widget.marker.photos.length != 0)
+//                      PlaceDetailImageArea(googlePhotos: widget.marker.photos),
                     PlaceDetailTabLayout(marker: widget.marker)
                   ])),
             ),

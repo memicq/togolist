@@ -14,7 +14,7 @@ class ExpressHeartrailsRepositoryApi {
   ExpressHeartrailsRepositoryApi._internal();
 
   Future<List<Station>> listNearestStations(double latitude, double longitude) async {
-    String url = "http://express.heartrails.com/api/json?method=getStations""&x=${longitude}&y=${latitude}";
+    String url = "https://togolistapi.herokuapp.com/near_stations?latitude=${latitude}&longitude=${longitude}";
     http.Response res = await http.get(url);
     List<dynamic> stations = json.decode(res.body)['response']['station'];
     return stations.map((station) {

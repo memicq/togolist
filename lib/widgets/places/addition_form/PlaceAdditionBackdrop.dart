@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:togolist/const/ColorSetting.dart';
-import 'package:togolist/const/Credentials.dart';
-import 'package:togolist/const/FontSettings.dart';
 import 'package:togolist/const/Shape.dart';
 import 'package:togolist/models/MapMarker.dart';
 import 'package:togolist/models/PlaceItem.dart';
 import 'package:togolist/models/Station.dart';
 import 'package:togolist/repositories/GooglePlacesRepositoryApi.dart';
 import 'package:togolist/repositories/ExpressHeartrailsRepositoryApi.dart';
-import 'package:togolist/view_models/MapViewModel.dart';
+import 'package:togolist/repositories/InstagramGraphRepositoryApi.dart';
 import 'package:togolist/view_models/PlaceViewModel.dart';
 import 'package:togolist/widgets/common/GradatedTextButton.dart';
 import 'package:togolist/widgets/places/addition_form/PlaceAdditionFormDialog.dart';
@@ -23,6 +21,7 @@ class PlaceAdditionBackdrop extends StatefulWidget {
 class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
   GooglePlacesRepositoryApi _placesRepositoryApi = GooglePlacesRepositoryApi();
   ExpressHeartrailsRepositoryApi _heartrailsRepositoryApi = ExpressHeartrailsRepositoryApi();
+  InstagramGraphRepositoryApi _instagramGraphRepositoryApi = InstagramGraphRepositoryApi();
 
   PlaceItem selectedPlaceItem = null;
   List<Station> nearestStations;
@@ -34,6 +33,11 @@ class PlaceAdditionBackdropState extends State<PlaceAdditionBackdrop> {
     setState(() {
       this.selectedPlaceItem = item;
     });
+
+//    List<String> tagIds = await _instagramGraphRepositoryApi.getInstagramHashTagIds(this.selectedPlaceItem.name);
+//    tagIds.forEach((tagId) async {
+//      await _instagramGraphRepositoryApi.getInstagramMediaFromTagId(tagId);
+//    });
   }
 
   void savePlace(BuildContext context, PlaceViewModel model) async {
